@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable, of } from 'rxjs';
 import { UserDto } from 'src/users/dto/user.dto';
@@ -10,36 +10,21 @@ const saltRounds = 10;
 export class AuthService {
 
     constructor(
-        private usersService: UsersService,
         private jwtService: JwtService
     ) {}
 
     generateJWT(user: UserDto) : Observable<string> {
-        return from(this.jwtService.signAsync({user}));
+        const payload = { username: user.username, sub: user.id };
+        return from(this.jwtService.signAsync(payload));
     }
 
     hashPassword(password: string) : Observable<string> {
-        return bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-            if(err) {
-                console.error(err);
-                return of('');
-            }
-            else {
-                return of(hashedPassword);
-            }
-        })
+        return from<string>(bcrypt.hash(password, saltRounds));
     }
 
     comparePasswords(password: string, passwordHash: string) : Observable<boolean> {
-        return bcrypt.compare(password, passwordHash, (err, comparisonResult) => {
-            if(err) {
-                console.error(err);
-                return of(false);
-            }
-            else {
-                return of(comparisonResult);
-            }
-        })
+        return of<boolean>(bcrypt.compare(password, passwordHash));
     }
 
+    
 }
