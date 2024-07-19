@@ -46,7 +46,7 @@ export class UsersService {
     }
 
     findOneByEmail(email: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password']}));
+        return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password', 'role']}));
     }
 
     updateOne(id: number, userData: UpdateUserDto) : Observable<ReturnUserDto> {

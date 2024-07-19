@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../service/users.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { UserDto } from '../dto/user.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRoles } from '../dto/user.dto';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -33,6 +36,8 @@ export class UsersController {
         return this.usersService.updateOne(id, userData);
     }
 
+    @Roles(UserRoles.ADMIN)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     deleteOne(@Param('id') id:number) : Observable<any> {
         return this.usersService.deleteOne(id);
