@@ -47,7 +47,7 @@ export class AuthService {
     }
 
     generateJWT(user: UserDto) : Observable<string> {
-        const payload = { username: user.username, sub: user.id, role: user.role };
+        const payload = { email: user.email, sub: user.id };
         return from(this.jwtService.signAsync(payload));
     }
 
