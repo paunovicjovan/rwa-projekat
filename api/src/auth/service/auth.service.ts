@@ -1,8 +1,10 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { from, Observable, of } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap, throwError } from 'rxjs';
+import { ReturnUserDto } from 'src/users/dto/return-user.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
+import { LoginRequestDto } from '../dto/login-request.dto';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -10,8 +12,39 @@ const saltRounds = 10;
 export class AuthService {
 
     constructor(
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @Inject(forwardRef(() => UsersService))
+        private usersService: UsersService
     ) {}
+
+    login(credentials: LoginRequestDto) : Observable<string> {
+        return this.validateUser(credentials.email, credentials.password).pipe(
+            switchMap((user: UserDto) => {
+                if(user)
+                    return this.generateJWT(user);
+            })
+        )
+    } 
+
+    private validateUser(email: string, password: string): Observable<UserDto> {
+        return this.usersService.findOneByEmail(email).pipe(
+            switchMap((user: UserDto) => {
+                return this.comparePasswords(password, user.password).pipe(
+                    map((isCorrectPassword: boolean) => {
+                        if(isCorrectPassword)
+                            return user;
+                        else {
+                            throw new UnauthorizedException();
+                        }
+                    })
+                )
+            })
+        )
+    }
+
+    comparePasswords(password: string, passwordHash: string) : Observable<any | boolean> {
+        return from<any | boolean>(bcrypt.compare(password, passwordHash));
+    }
 
     generateJWT(user: UserDto) : Observable<string> {
         const payload = { username: user.username, sub: user.id };
@@ -21,10 +54,4 @@ export class AuthService {
     hashPassword(password: string) : Observable<string> {
         return from<string>(bcrypt.hash(password, saltRounds));
     }
-
-    comparePasswords(password: string, passwordHash: string) : Observable<boolean> {
-        return of<boolean>(bcrypt.compare(password, passwordHash));
-    }
-
-    
 }

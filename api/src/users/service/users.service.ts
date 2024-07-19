@@ -14,6 +14,7 @@ export class UsersService {
     constructor(
         @InjectRepository(UserEntity)
         private usersRepository: Repository<UserEntity>,
+        @Inject(forwardRef(() => AuthService))
         private authService: AuthService
     ) {}
 
@@ -30,7 +31,7 @@ export class UsersService {
                         const {password, ...result} = savedUser;
                         return result;
                     }),
-                    catchError(err=> throwError(()=>new Error(err)))
+                    catchError(err => throwError(() => new Error(err)))
                 )
             })
         )
@@ -41,7 +42,11 @@ export class UsersService {
     }
 
     findOneById(id: number): Observable<ReturnUserDto> {
-        return from(this.usersRepository.findOne({where:{id}}))
+        return from(this.usersRepository.findOne({where:{id}}));
+    }
+
+    findOneByEmail(email: string) : Observable<UserDto> {
+        return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password']}));
     }
 
     updateOne(id: number, userData: UpdateUserDto) : Observable<ReturnUserDto> {
