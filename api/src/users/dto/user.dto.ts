@@ -5,6 +5,7 @@ export interface UserDto {
     email: string;
     password: string;
     role: UserRoles;
+    profileImage?: string;
 }
 
 export enum UserRoles {

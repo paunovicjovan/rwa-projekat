@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../service/users.service';
 import { Observable, of } from 'rxjs';
@@ -8,6 +8,9 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRoles } from '../dto/user.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import * as path from 'path';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 
 @Controller('users')
 export class UsersController {
@@ -42,4 +45,20 @@ export class UsersController {
     deleteOne(@Param('id') id:number) : Observable<any> {
         return this.usersService.deleteOne(id);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
+    @Post('upload-profile-image')
+    uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<ReturnUserDto> {
+        const user = req.user;
+        return this.usersService.updateOne(user.id, { profileImage: file.filename });
+    }
+
+    @Get('profile-image/:imageName')
+    getProfileImage(@Param('imageName') imageName: string, @Res() res) : Observable<Object> {
+        const relativeFilePath = `uploads/profile-images/${imageName}`;
+        const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
+        return of(res.sendFile(absoluteFilePath));
+    }
+
 }

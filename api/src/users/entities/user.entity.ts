@@ -20,4 +20,7 @@ export class UserEntity {
 
     @Column({type:'enum', enum: UserRoles, default:UserRoles.USER})
     role: UserRoles;
+
+    @Column({default: null})
+    profileImage: string;
 }

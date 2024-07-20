@@ -5,4 +5,5 @@ export interface ReturnUserDto {
     email: string;
     username: string;
     role: UserRoles;
+    profileImage?: string;
 }
