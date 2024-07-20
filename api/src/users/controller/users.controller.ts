@@ -51,7 +51,7 @@ export class UsersController {
     @Post('upload-profile-image')
     uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<ReturnUserDto> {
         const user = req.user;
-        return this.usersService.updateOne(user.id, { profileImage: file.filename });
+        return this.usersService.updateProfileImage(user.id, file.filename);
     }
 
     @Get('profile-image/:imageName')

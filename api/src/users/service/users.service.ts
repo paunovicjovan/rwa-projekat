@@ -4,10 +4,11 @@ import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
-import { catchError, from, map, Observable, switchMap, throwError } from 'rxjs';
+import { catchError, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from 'src/auth/service/auth.service';
+import * as fs from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -49,6 +50,12 @@ export class UsersService {
         return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password', 'role']}));
     }
 
+    updateProfileImage(userId: number, imageName: string) : Observable<ReturnUserDto> {
+        return this.deleteProfileImageFromFileSystem(userId).pipe(
+            switchMap(() => this.updateOne(userId, {profileImage: imageName})),
+        )
+    }
+
     updateOne(id: number, userData: UpdateUserDto) : Observable<ReturnUserDto> {
         return from(this.usersRepository.update(id, userData)).pipe(
             switchMap(() => this.findOneById(id))
@@ -56,6 +63,21 @@ export class UsersService {
     }
 
     deleteOne(id: number) : Observable<any> {
-        return from(this.usersRepository.delete(id));
+        return this.deleteProfileImageFromFileSystem(id).pipe(
+            switchMap(()=> {
+                return this.usersRepository.delete(id);
+            })
+        )
+    }
+
+    private deleteProfileImageFromFileSystem(userId: number): Observable<ReturnUserDto> {
+        return this.findOneById(userId).pipe(
+            tap((user: ReturnUserDto) => {
+                if(user.profileImage !== null) {
+                    const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
+                    fs.unlinkSync(userProfileImagePath);
+                }
+            })
+        );
     }
 }
