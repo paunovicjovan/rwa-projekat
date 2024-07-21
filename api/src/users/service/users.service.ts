@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserDto } from '../dto/user.dto';
+import { UserDto, UserRoles } from '../dto/user.dto';
 import { catchError, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -20,12 +20,22 @@ export class UsersService {
     ) {}
 
     create(user: CreateUserDto) : Observable<ReturnUserDto> {
-        return this.authService.hashPassword(user.password).pipe(
+        return from(this.usersRepository.findOne({where: {email: user.email}})).pipe(
+            switchMap((existingUserByEmail: ReturnUserDto) => {
+                if(existingUserByEmail)
+                    return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'))
+                return from(this.usersRepository.findOne({where: {username: user.username}}))
+            }),
+
+            switchMap((existingUserByUsername: ReturnUserDto) => {
+                if(existingUserByUsername)
+                    return throwError(() => new Error('Već postoji korisnik sa zadatim korisničkim imenom.'))
+                return this.authService.hashPassword(user.password)
+            }),
+            
             switchMap((passwordHash: string) => {
-                const newUser = new UserEntity();
-                newUser.username = user.username;
-                newUser.email = user.email;
-                newUser.password = passwordHash;
+                user.password = passwordHash;
+                const newUser = this.makeUserEntity(user);
 
                 return from(this.usersRepository.save(newUser)).pipe(
                     map((savedUser: UserDto) => {
@@ -36,6 +46,19 @@ export class UsersService {
                 )
             })
         )
+    }
+
+    private makeUserEntity(user: CreateUserDto) : UserEntity {
+        const userEntity = new UserEntity();
+        userEntity.firstName = user.firstName;
+        userEntity.lastName = user.lastName;
+        userEntity.username = user.username;
+        userEntity.email = user.email;
+        userEntity.password = user.password;
+        userEntity.role = UserRoles.USER;
+        userEntity.dateCreated = new Date();
+        
+        return userEntity;
     }
 
     findAll(): Observable<ReturnUserDto[]> {
@@ -50,7 +73,7 @@ export class UsersService {
         return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password', 'role']}));
     }
 
-    updateProfileImage(userId: number, imageName: string) : Observable<ReturnUserDto> {
+    updateProfileImage(userId: number, imageName: string | null) : Observable<ReturnUserDto> {
         return this.deleteProfileImageFromFileSystem(userId).pipe(
             switchMap(() => this.updateOne(userId, {profileImage: imageName})),
         )

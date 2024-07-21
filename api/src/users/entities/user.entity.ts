@@ -8,12 +8,17 @@ export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    firstName: string;
+
+    @Column()
+    lastName: string;
+
     @Column({unique:true})
     username: string;
 
     @Column({unique:true})
     email: string;
-
 
     @Column({select:false})
     password: string;
@@ -21,6 +26,9 @@ export class UserEntity {
     @Column({type:'enum', enum: UserRoles, default:UserRoles.USER})
     role: UserRoles;
 
-    @Column({default: null})
-    profileImage: string;
+    @Column({default: null, nullable: true})
+    profileImage: string | null;
+
+    @Column({type:"date", default: () => 'CURRENT_DATE'})
+    dateCreated: Date;
 }

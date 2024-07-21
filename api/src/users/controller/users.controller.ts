@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../service/users.service';
-import { Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -30,8 +30,11 @@ export class UsersController {
     }
 
     @Post()
-    create(@Body() user: CreateUserDto) : Observable<ReturnUserDto> {
-        return this.usersService.create(user);
+    create(@Body() user: CreateUserDto) : Observable<ReturnUserDto | string> {
+        return this.usersService.create(user).pipe(
+            map((user: ReturnUserDto) => user),
+            catchError((err) => of(err.message))
+        );
     }
 
     @Put(':id')
@@ -60,5 +63,4 @@ export class UsersController {
         const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
         return of(res.sendFile(absoluteFilePath));
     }
-
 }
