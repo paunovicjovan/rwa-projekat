@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from '../../shared/shared.module';
+import { CoreModule } from '../../core/core.module';
 
 
 @NgModule({
@@ -14,12 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
     RegisterComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
+    SharedModule
   ]
 })
 export class AuthModule { }
