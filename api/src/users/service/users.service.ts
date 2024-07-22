@@ -71,7 +71,7 @@ export class UsersService {
     }
 
     findOneByEmail(email: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{email}, select:['id', 'email', 'username', 'password', 'role']}));
+        return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage']}));
     }
 
     updateProfileImage(userId: number, imageName: string | null) : Observable<ReturnUserDto> {

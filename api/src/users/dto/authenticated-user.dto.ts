@@ -1,5 +1,6 @@
 import { ReturnUserDto } from "./return-user.dto";
 
-export type AuthenticatedUserDto = ReturnUserDto & {
+export interface AuthenticatedUserDto {
+    user: ReturnUserDto;
     token: string;
 }

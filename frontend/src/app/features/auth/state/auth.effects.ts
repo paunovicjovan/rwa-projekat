@@ -13,8 +13,8 @@ export const login$ = createEffect(
             exhaustMap(({loginRequest}) =>
                 authService.login(loginRequest).pipe(
                     map((response: LoginResponse) => {
-                        localStorage.setItem('token', response.access_token)
-                        return authActions.loginSuccess({token: response.access_token})
+                        localStorage.setItem('token', response.token!);
+                        return authActions.loginSuccess({currentUser: response.user, token: response.token!})
                     }),
                     catchError((errorResponse : HttpErrorResponse) => {
                         return of(authActions.loginFailure({errorMessage: errorResponse.error.message}))

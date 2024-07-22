@@ -22,7 +22,7 @@ export const authReducer = createReducer(
         return {
             ...state, 
             isSubmitting: false, 
-            //currentUser: action.currentUser, 
+            currentUser: action.currentUser, 
             token: action.token
         }
     }),

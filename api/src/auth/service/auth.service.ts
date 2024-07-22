@@ -5,6 +5,7 @@ import { ReturnUserDto } from 'src/users/dto/return-user.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { LoginRequestDto } from '../dto/login-request.dto';
+import { AuthenticatedUserDto } from 'src/users/dto/authenticated-user.dto';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -17,11 +18,15 @@ export class AuthService {
         private usersService: UsersService
     ) {}
 
-    login(credentials: LoginRequestDto) : Observable<string> {
+    login(credentials: LoginRequestDto) : Observable<AuthenticatedUserDto> {
         return this.validateUser(credentials.email, credentials.password).pipe(
             switchMap((user: UserDto) => {
                 if(user)
-                    return this.generateJWT(user);
+                    return this.generateJWT(user).pipe(
+                        map((token: string) => {
+                            return {user, token}
+                        })
+                    )
             })
         )
     } 
@@ -32,7 +37,10 @@ export class AuthService {
                 return this.comparePasswords(password, user.password).pipe(
                     map((isCorrectPassword: boolean) => {
                         if(isCorrectPassword)
+                        {
+                            delete user.password;
                             return user;
+                        }
                         else {
                             throw new UnauthorizedException();
                         }
