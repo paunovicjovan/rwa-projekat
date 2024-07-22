@@ -3,12 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserDto, UserRoles } from '../dto/user.dto';
+import { UserDto } from '../dto/user.dto';
 import { catchError, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from 'src/auth/service/auth.service';
 import * as fs from 'fs';
+import { UserRoles } from '../enums/user-roles.enum';
 
 @Injectable()
 export class UsersService {

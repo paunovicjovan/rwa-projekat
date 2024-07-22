@@ -5,12 +5,12 @@ import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { UserRoles } from '../dto/user.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
+import { UserRoles } from '../enums/user-roles.enum';
 
 @Controller('users')
 export class UsersController {

@@ -1,4 +1,4 @@
-import { UserRoles } from "./user.dto";
+import { UserRoles } from "../enums/user-roles.enum";
 
 export interface ReturnUserDto {
     id: number;

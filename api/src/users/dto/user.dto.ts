@@ -1,3 +1,4 @@
+import { UserRoles } from "../enums/user-roles.enum";
 
 export interface UserDto {
     id: number;
@@ -8,9 +9,4 @@ export interface UserDto {
     password: string;
     role: UserRoles;
     profileImage: string | null;
-}
-
-export enum UserRoles {
-    ADMIN = 'admin',
-    USER = 'user'
 }
