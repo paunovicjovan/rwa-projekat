@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="wrapper">
+    <h3 style="text-align: center;">Registruj se</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
+        <div class="container">
+            <!-- <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p> -->
+            <mat-form-field>
+                <input matInput placeholder="Ime" formControlName="firstName">
+                <mat-hint *ngIf="registerForm.controls['firstName'].errors">Ime je obavezno</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Prezime" formControlName="lastName">
+                <mat-hint *ngIf="registerForm.controls['lastName'].errors">Prezime je obavezno</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Korisničko ime" formControlName="username">
+                <mat-hint *ngIf="registerForm.controls['username'].errors">Korisničko ime je obavezno</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="E-mail" formControlName="email">
+                <mat-hint *ngIf="registerForm.controls['email'].errors">E-mail je obavezan</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Lozinka" formControlName="password">
+                <mat-hint *ngIf="registerForm.controls['password'].errors">Lozinka je obavezna</mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="password" placeholder="Potvrdi lozinku" formControlName="passwordConfirm">
+                <mat-hint *ngIf="registerForm.controls['passwordConfirm'].errors">Potvrda lozinke je obavezna i mora se slagati sa unetom lozinkom</mat-hint>
+            </mat-form-field>
+            <button mat-flat-button color="primary" [disabled]="registerForm.invalid" type="submit">Registruj Se</button>
+        </div>
+    </form>
+</div>

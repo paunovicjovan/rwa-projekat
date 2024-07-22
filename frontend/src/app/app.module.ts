@@ -20,7 +20,7 @@ import { EffectsModule } from '@ngrx/effects';
     CoreModule,
     AuthModule,
     StoreModule.forRoot({}, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreDevtoolsModule.instrument({ maxAge: 100, logOnly: !isDevMode() }),
     EffectsModule.forRoot([])
   ],
   providers: [

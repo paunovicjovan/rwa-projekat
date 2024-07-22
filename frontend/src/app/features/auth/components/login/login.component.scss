@@ -4,6 +4,7 @@
     align-items: center;
     flex-direction: column;
     padding: 80px;
+    background-color: #fffaee;
 }
 
 form {
@@ -16,6 +17,9 @@ form {
     align-items: center;
     justify-content: space-between;
     height: 230px;
+    background-color: #f8d188;
+    padding: 50px;
+    border-radius: 20px;
 }
 
 .container > * {

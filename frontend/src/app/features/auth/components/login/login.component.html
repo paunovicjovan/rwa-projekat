@@ -5,7 +5,7 @@
             <div class="container">
                 <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
                 <mat-form-field>
-                    <input matInput placeholder="Email" formControlName="email">
+                    <input matInput placeholder="E-mail" formControlName="email">
                     <mat-hint *ngIf="loginForm.controls['email'].errors">Unesite ispravan e-mail</mat-hint>
                 </mat-form-field>
                 <mat-form-field>

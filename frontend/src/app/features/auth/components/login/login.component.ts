@@ -5,6 +5,7 @@ import { AppState } from '../../../../state/app-state.interface';
 import { login } from '../../state/auth.actions';
 import { combineLatest, Observable } from 'rxjs';
 import * as authSelectors from '../../state/auth.selectors';
+import { LoginRequest } from '../../models/login-request.interface';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import * as authSelectors from '../../state/auth.selectors';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
+
   loginForm!: FormGroup;
   dataFromStore$!: Observable<any>;
 
@@ -35,7 +37,7 @@ export class LoginComponent implements OnInit {
   }
 
   onLoginFormSubmit() {
-    const credentials = this.loginForm.getRawValue();
+    const credentials : LoginRequest = this.loginForm.getRawValue();
     this.store.dispatch(login({loginRequest: credentials}))
   }
 
