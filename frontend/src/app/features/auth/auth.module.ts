@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
-import { CoreModule } from '../../core/core.module';
-
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features.enum';
+import { authReducer } from './state/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import * as authEffects from './state/auth.effects';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,9 @@ import { CoreModule } from '../../core/core.module';
     RegisterComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(Features.Auth, authReducer),
+    EffectsModule.forFeature(authEffects)
   ]
 })
 export class AuthModule { }

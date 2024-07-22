@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
 import { login } from '../../state/auth.actions';
+import { combineLatest, Observable } from 'rxjs';
+import * as authSelectors from '../../state/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +13,7 @@ import { login } from '../../state/auth.actions';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  dataFromStore$!: Observable<any>;
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>
@@ -23,6 +26,11 @@ export class LoginComponent implements OnInit {
         Validators.email
       ]],
       password: [null, [Validators.required]]
+    });
+
+    this.dataFromStore$ = combineLatest({
+      isSubmitting: this.store.select(authSelectors.selectIsSubmitting),
+      error: this.store.select(authSelectors.selectErrorMessage)
     })
   }
 

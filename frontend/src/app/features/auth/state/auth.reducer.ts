@@ -3,10 +3,10 @@ import { AuthState } from "../models/auth-state.interface";
 import * as authActions from './auth.actions'
 
 export const initialState: AuthState = {
-    isLoading: false,
+    isSubmitting: false,
     currentUser: undefined,
     token: null,
-    error: null
+    errorMessage: null
 }
 
 export const authReducer = createReducer(
@@ -14,23 +14,23 @@ export const authReducer = createReducer(
     on(authActions.login, state => {
         return {
             ...state, 
-            isLoading: true,
-            error: null
+            isSubmitting: true,
+            errorMessage: null
         }
     }),
     on(authActions.loginSuccess, (state, action) => {
         return {
             ...state, 
-            isLoading: false, 
-            currentUser: action.currentUser, 
+            isSubmitting: false, 
+            //currentUser: action.currentUser, 
             token: action.token
         }
     }),
     on(authActions.loginFailure, (state, action) => {
         return {
             ...state,
-            isLoading: false,
-            error: action.error
+            isSubmitting: false,
+            errorMessage: action.errorMessage
         }
     })
 )

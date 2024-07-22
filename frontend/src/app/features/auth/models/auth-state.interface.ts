@@ -1,8 +1,8 @@
 import { User } from "../../users/models/user.interface";
 
 export interface AuthState {
-    isLoading: boolean;
+    isSubmitting: boolean;
     currentUser: User | undefined | null;
     token: string | null;
-    error: string | null;
+    errorMessage: string | null;
 }

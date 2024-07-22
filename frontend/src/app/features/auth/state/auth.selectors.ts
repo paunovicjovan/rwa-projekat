@@ -4,12 +4,12 @@ import { Features } from '../../features.enum';
 
 export const authFeature = createFeatureSelector<AuthState>(Features.Auth);
 
-export const selectAuthError = createSelector(
+export const selectErrorMessage = createSelector(
   authFeature,
-  (state: AuthState) => state.error
+  (state: AuthState) => state.errorMessage
 );
 
-export const selectIsLoading = createSelector(
-    authFeature,
-    (state: AuthState) => state.isLoading
+export const selectIsSubmitting = createSelector(
+  authFeature,
+  (state: AuthState) => state.isSubmitting
 );

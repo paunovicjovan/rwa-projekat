@@ -1,16 +1,19 @@
-<div class="wrapper">
-    <h3 style="text-align: center;">Prijavi se</h3>
-    <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
-        <div class="container">
-            <mat-form-field>
-                <input matInput placeholder="Email" formControlName="email">
-                <mat-hint *ngIf="loginForm.controls['email'].errors">Unesite ispravan e-mail</mat-hint>
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput type="password" placeholder="Password" formControlName="password">
-            <mat-hint *ngIf="loginForm.controls['password'].errors">Unesite lozinku</mat-hint>
-            </mat-form-field>
-            <button mat-flat-button color="primary" [disabled]="loginForm.invalid" type="submit">Prijavi Se</button>
-        </div>
-    </form>
-</div>
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <div class="wrapper">
+        <h3 style="text-align: center;">Prijavi se</h3>
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
+            <div class="container">
+                <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
+                <mat-form-field>
+                    <input matInput placeholder="Email" formControlName="email">
+                    <mat-hint *ngIf="loginForm.controls['email'].errors">Unesite ispravan e-mail</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Password" formControlName="password">
+                    <mat-hint *ngIf="loginForm.controls['password'].errors">Unesite lozinku</mat-hint>
+                </mat-form-field>
+                <button mat-flat-button color="primary" [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit">Prijavi Se</button>
+            </div>
+        </form>
+    </div>
+</ng-container>

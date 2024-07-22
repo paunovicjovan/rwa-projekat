@@ -8,6 +8,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { StoreModule } from '@ngrx/store';
 import { authReducer } from './features/auth/state/auth.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -18,8 +19,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppRoutingModule,
     CoreModule,
     AuthModule,
-    StoreModule.forRoot({ auth: authReducer }, {}),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    StoreModule.forRoot({}, {}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot([])
   ],
   providers: [
     provideAnimationsAsync()
