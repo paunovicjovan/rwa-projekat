@@ -7,5 +7,6 @@ export interface User {
     email: string;
     username: string;
     role: UserRoles;
+    dateCreated: Date;
     profileImage: string | null;
 }

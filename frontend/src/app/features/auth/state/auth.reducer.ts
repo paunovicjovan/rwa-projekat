@@ -4,7 +4,7 @@ import * as authActions from './auth.actions'
 
 export const initialState: AuthState = {
     isSubmitting: false,
-    currentUser: undefined,
+    currentLoggedInUser: undefined,
     token: null,
     errorMessage: null
 }
@@ -22,7 +22,7 @@ export const authReducer = createReducer(
         return {
             ...state, 
             isSubmitting: false, 
-            currentUser: action.currentUser, 
+            currentLoggedInUser: action.currentUser, 
             token: action.token
         }
     }),
@@ -44,7 +44,7 @@ export const authReducer = createReducer(
         return {
             ...state, 
             isSubmitting: false, 
-            currentUser: action.currentUser, 
+            currentLoggedInUser: action.currentUser, 
             token: action.token
         }
     }),
