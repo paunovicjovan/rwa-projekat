@@ -6,10 +6,12 @@ import {MatIconModule} from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
-    NavbarComponent
+    NavbarComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,

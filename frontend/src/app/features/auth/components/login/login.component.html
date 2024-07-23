@@ -1,6 +1,6 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="wrapper">
-        <h3 style="text-align: center;">Prijavi se</h3>
+        <h3>Prijava</h3>
         <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
             <div class="container">
                 <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
@@ -14,6 +14,7 @@
                 </mat-form-field>
                 <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting"></mat-spinner>
                 <br>
+                <span class="login-span">Nemate nalog? <a routerLink="/register">Registrujte se</a></span>
                 <button mat-flat-button color="primary" [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit">Prijavi Se</button>
             </div>
         </form>

@@ -8,6 +8,7 @@ import { AuthModule } from './features/auth/auth.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
+import { UsersModule } from './features/users/users.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { EffectsModule } from '@ngrx/effects';
     AppRoutingModule,
     CoreModule,
     AuthModule,
+    UsersModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 100, logOnly: !isDevMode() }),
     EffectsModule.forRoot([])

@@ -7,6 +7,14 @@
     background-color: #fffaee;
 }
 
+h3 {
+    text-align: center;
+}
+
+.login-span {
+    text-align: end;
+}
+
 form {
     width: clamp(250px, 40%, 600px);
 }
