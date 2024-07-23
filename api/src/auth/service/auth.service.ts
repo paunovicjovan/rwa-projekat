@@ -21,7 +21,7 @@ export class AuthService {
 
     register(user: CreateUserDto) : Observable<AuthResponseDto> {
         return this.usersService.findOneByEmail(user.email).pipe(
-            switchMap((existingUserByEmail: UserDto) => {
+            switchMap((existingUserByEmail: ReturnUserDto) => {
                 if(existingUserByEmail)
                     return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'));
                 return this.usersService.findOneByUsername(user.username);
@@ -77,7 +77,7 @@ export class AuthService {
     } 
 
     private validateUser(email: string, password: string): Observable<UserDto> {
-        return this.usersService.findOneByEmail(email).pipe(
+        return this.usersService.findOneByEmailWithPassword(email).pipe(
             switchMap((user: UserDto) => {
                 return this.comparePasswords(password, user.password).pipe(
                     map((isCorrectPassword: boolean) => {
