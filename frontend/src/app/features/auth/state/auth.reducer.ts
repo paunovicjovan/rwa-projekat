@@ -32,5 +32,27 @@ export const authReducer = createReducer(
             isSubmitting: false,
             errorMessage: action.errorMessage
         }
-    })
+    }),
+    on(authActions.register, state => {
+        return {
+            ...state, 
+            isSubmitting: true,
+            errorMessage: null
+        }
+    }),
+    on(authActions.registerSuccess, (state, action) => {
+        return {
+            ...state, 
+            isSubmitting: false, 
+            currentUser: action.currentUser, 
+            token: action.token
+        }
+    }),
+    on(authActions.registerFailure, (state, action) => {
+        return {
+            ...state,
+            isSubmitting: false,
+            errorMessage: action.errorMessage
+        }
+    }),
 )

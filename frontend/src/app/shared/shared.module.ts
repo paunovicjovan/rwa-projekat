@@ -5,27 +5,26 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+const modules = [
+  CommonModule,
+  RouterModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  MatProgressSpinnerModule
+]
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    ...modules
   ],
   exports: [
-    CommonModule,
-    RouterModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    ...modules
   ]
 })
 export class SharedModule { }
