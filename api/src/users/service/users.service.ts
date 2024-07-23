@@ -15,51 +15,11 @@ import { UserRoles } from '../enums/user-roles.enum';
 export class UsersService {
     constructor(
         @InjectRepository(UserEntity)
-        private usersRepository: Repository<UserEntity>,
-        @Inject(forwardRef(() => AuthService))
-        private authService: AuthService
+        private usersRepository: Repository<UserEntity>
     ) {}
 
     create(user: CreateUserDto) : Observable<ReturnUserDto> {
-        return from(this.usersRepository.findOne({where: {email: user.email}})).pipe(
-            switchMap((existingUserByEmail: ReturnUserDto) => {
-                if(existingUserByEmail)
-                    return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'))
-                return from(this.usersRepository.findOne({where: {username: user.username}}))
-            }),
-
-            switchMap((existingUserByUsername: ReturnUserDto) => {
-                if(existingUserByUsername)
-                    return throwError(() => new Error('Već postoji korisnik sa zadatim korisničkim imenom.'))
-                return this.authService.hashPassword(user.password)
-            }),
-            
-            switchMap((passwordHash: string) => {
-                user.password = passwordHash;
-                const newUser = this.makeUserEntity(user);
-
-                return from(this.usersRepository.save(newUser)).pipe(
-                    map((savedUser: UserDto) => {
-                        const {password, ...result} = savedUser;
-                        return result;
-                    }),
-                    catchError(err => throwError(() => new Error(err)))
-                )
-            })
-        )
-    }
-
-    private makeUserEntity(user: CreateUserDto) : UserEntity {
-        const userEntity = new UserEntity();
-        userEntity.firstName = user.firstName;
-        userEntity.lastName = user.lastName;
-        userEntity.username = user.username;
-        userEntity.email = user.email;
-        userEntity.password = user.password;
-        userEntity.role = UserRoles.USER;
-        userEntity.dateCreated = new Date();
-        
-        return userEntity;
+        return from(this.usersRepository.save(user));
     }
 
     findAll(): Observable<ReturnUserDto[]> {
@@ -72,6 +32,10 @@ export class UsersService {
 
     findOneByEmail(email: string) : Observable<UserDto> {
         return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage']}));
+    }
+
+    findOneByUsername(username: string) : Observable<ReturnUserDto> {
+        return from(this.usersRepository.findOne({where:{username}}));
     }
 
     updateProfileImage(userId: number, imageName: string | null) : Observable<ReturnUserDto> {

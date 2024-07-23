@@ -5,20 +5,65 @@ import { ReturnUserDto } from 'src/users/dto/return-user.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { LoginRequestDto } from '../dto/login-request.dto';
-import { AuthenticatedUserDto } from 'src/users/dto/authenticated-user.dto';
+import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
+import { UserRoles } from 'src/users/enums/user-roles.enum';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { UserEntity } from 'src/users/entities/user.entity';
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 @Injectable()
 export class AuthService {
 
     constructor(
         private jwtService: JwtService,
-        @Inject(forwardRef(() => UsersService))
         private usersService: UsersService
     ) {}
 
-    login(credentials: LoginRequestDto) : Observable<AuthenticatedUserDto> {
+    register(user: CreateUserDto) : Observable<AuthResponseDto> {
+        return this.usersService.findOneByEmail(user.email).pipe(
+            switchMap((existingUserByEmail: UserDto) => {
+                if(existingUserByEmail)
+                    return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'));
+                return this.usersService.findOneByUsername(user.username);
+            }),
+
+            switchMap((existingUserByUsername: ReturnUserDto) => {
+                if(existingUserByUsername)
+                    return throwError(() => new Error('Već postoji korisnik sa zadatim korisničkim imenom.'));
+                return this.hashPassword(user.password);
+            }),
+            
+            switchMap((passwordHash: string) => {
+                user.password = passwordHash;
+                const newUser = this.makeUserEntity(user);
+                return this.usersService.create(newUser);
+            }),
+
+            switchMap((user: UserDto) => {
+                return this.generateJWT(user).pipe(
+                    map((token: string) => {
+                        const {password, ...userWithoutPassword} = user;
+                        return {user: userWithoutPassword, token: token}
+                    })
+                )
+            })
+        )
+    }
+
+    private makeUserEntity(user: CreateUserDto) : UserEntity {
+        const userEntity = new UserEntity();
+        userEntity.firstName = user.firstName;
+        userEntity.lastName = user.lastName;
+        userEntity.username = user.username;
+        userEntity.email = user.email;
+        userEntity.password = user.password;
+        userEntity.role = UserRoles.USER;
+        userEntity.dateCreated = new Date();
+        
+        return userEntity;
+    }
+
+    login(credentials: LoginRequestDto) : Observable<AuthResponseDto> {
         return this.validateUser(credentials.email, credentials.password).pipe(
             switchMap((user: UserDto) => {
                 if(user)
@@ -38,8 +83,8 @@ export class AuthService {
                     map((isCorrectPassword: boolean) => {
                         if(isCorrectPassword)
                         {
-                            delete user.password;
-                            return user;
+                            const {password, ...userWithoutPassword} = user;
+                            return userWithoutPassword as UserDto;
                         }
                         else {
                             throw new UnauthorizedException();
@@ -60,6 +105,7 @@ export class AuthService {
     }
 
     hashPassword(password: string) : Observable<string> {
+        const saltRounds = 10;
         return from<string>(bcrypt.hash(password, saltRounds));
     }
 }

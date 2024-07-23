@@ -29,14 +29,6 @@ export class UsersController {
         return this.usersService.findOneById(id);
     }
 
-    @Post()
-    create(@Body() user: CreateUserDto) : Observable<ReturnUserDto | string> {
-        return this.usersService.create(user).pipe(
-            map((user: ReturnUserDto) => user),
-            catchError((err) => of(err.message))
-        );
-    }
-
     @Put(':id')
     updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<ReturnUserDto> {
         return this.usersService.updateOne(id, userData);
