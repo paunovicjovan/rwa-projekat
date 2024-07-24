@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/user.interface';
-import { UserRoles } from '../../models/user-roles.enum';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
 import * as usersSelectors from '../../state/users.selectors'
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
+import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-user-profile',
@@ -16,8 +15,12 @@ export class UserProfileComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   dataFromStore$!: Observable<any>;
+  apiUrl: string = environment.apiUrl;
 
   ngOnInit(): void {
-    this.dataFromStore$ = this.store.select(usersSelectors.selectIsLoadingAndUser);
+    this.dataFromStore$ = combineLatest({
+      isLoading: this.store.select(usersSelectors.selectIsLoading),
+      chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile)
+    })
   }
 }

@@ -4,17 +4,21 @@
         <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
             <div class="container">
                 <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
+                
                 <mat-form-field>
                     <input matInput placeholder="E-mail" formControlName="email">
-                    <mat-hint *ngIf="loginForm.controls['email'].errors">Unesite ispravan e-mail</mat-hint>
+                    <mat-hint *ngIf="loginForm.controls['email'].touched && loginForm.controls['email'].errors">Unesite ispravan e-mail</mat-hint>
                 </mat-form-field>
+
                 <mat-form-field>
                     <input matInput type="password" placeholder="Password" formControlName="password">
-                    <mat-hint *ngIf="loginForm.controls['password'].errors">Unesite lozinku</mat-hint>
+                    <mat-hint *ngIf="loginForm.controls['password'].touched && loginForm.controls['password'].errors">Unesite lozinku</mat-hint>
                 </mat-form-field>
+
                 <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting"></mat-spinner>
                 <br>
                 <span class="login-span">Nemate nalog? <a routerLink="/register">Registrujte se</a></span>
+                <br>
                 <button mat-flat-button color="primary" [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit">Prijavi Se</button>
             </div>
         </form>

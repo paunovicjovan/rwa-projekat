@@ -6,6 +6,8 @@ import { AppState } from '../../../../state/app-state.interface';
 import { register } from '../../state/auth.actions';
 import { combineLatest, Observable } from 'rxjs';
 import * as authSelectors from '../../state/auth.selectors';
+import { createPasswordStrengthValidator } from '../../custom-form-validators/password-strength.validator';
+import { createPasswordsMatchValidator } from '../../custom-form-validators/passwords-match.validator';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +24,11 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.selectDataFromStore();
+  }
+
+  initializeForm() {
     this.registerForm = this.formBuilder.group({
       firstName: [null, [Validators.required, Validators.minLength(3)]],
       lastName: [null, [Validators.required, Validators.minLength(3)]],
@@ -32,21 +39,22 @@ export class RegisterComponent implements OnInit {
         [
           Validators.required,
           Validators.minLength(5),
-          //custom validator da sadrzi broj i specijalni znak
+          createPasswordStrengthValidator()
         ],
       ],
       passwordConfirm: [
         null,
         [
           Validators.required,
-          Validators.minLength(5),
-          //custom validator da sadrzi broj i specijalni znak
-          //custom validator poklapanje sa password
+          Validators.minLength(5)
         ],
       ],
+    }, {
+      validators: createPasswordsMatchValidator()
     });
+  }
 
-    
+  selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isSubmitting: this.store.select(authSelectors.selectIsSubmitting),
       error: this.store.select(authSelectors.selectErrorMessage)

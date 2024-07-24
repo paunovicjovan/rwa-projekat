@@ -4,8 +4,12 @@ import { Features } from "../../features.enum";
 
 export const usersFeature = createFeatureSelector<UsersState>(Features.Users);
 
-export const selectIsLoadingAndUser = createSelector(
+export const selectIsLoading = createSelector(
     usersFeature,
-    (state: UsersState) => ({isLoading: state.isLoading, chosenUserProfile: state.chosenUserProfile})
+    (state: UsersState) => state.isLoading
 );
   
+export const selectChosenUserProfile = createSelector(
+    usersFeature,
+    (state: UsersState) => state.chosenUserProfile
+);

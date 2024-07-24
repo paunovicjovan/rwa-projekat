@@ -12,11 +12,13 @@ export const usersReducer = createReducer(
     on(usersActions.loadUserProfile, (state)=>{
         return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            chosenUserProfile: null
         }
     }),
     on(usersActions.loadUserProfileSuccess, (state, action)=>{
         return {
+            ...state,
             isLoading: false,
             chosenUserProfile: action.loadedUser
         }

@@ -22,6 +22,11 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.selectDataFromStore();
+  }
+
+  initializeForm() {
     this.loginForm = this.formBuilder.group({
       email: [null, [
         Validators.required,
@@ -29,7 +34,9 @@ export class LoginComponent implements OnInit {
       ]],
       password: [null, [Validators.required]]
     });
+  }
 
+  selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isSubmitting: this.store.select(authSelectors.selectIsSubmitting),
       error: this.store.select(authSelectors.selectErrorMessage)

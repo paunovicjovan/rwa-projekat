@@ -60,7 +60,7 @@ export const redirectAfterLogin$ = createEffect((actions$ = inject(Actions), rou
             return usersActions.loadUserProfile({userId: currentUser.id})
         }),
         tap(() => {
-            router.navigateByUrl('/user-profile')
+            router.navigate(['..', 'user-profile'])
         })
     )
 }, {
