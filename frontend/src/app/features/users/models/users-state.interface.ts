@@ -1,6 +1,7 @@
 import { User } from "./user.interface";
+import { EntityState } from '@ngrx/entity'
 
-export interface UsersState {
+export interface UsersState extends EntityState<User> {
     isLoading: boolean;
     chosenUserProfile: User | null;
 }
