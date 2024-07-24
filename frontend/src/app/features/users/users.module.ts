@@ -6,14 +6,18 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { Features } from '../features.enum';
 import { usersReducer } from './state/users.reducer';
-import * as usersEffects from './state/users.effects'
+import * as usersEffects from './state/users.effects';
+import { UsersPageComponent } from './components/users-page/users-page.component';
+import { UsersSearchFiltersComponent } from './components/users-search-filters/users-search-filters.component'
 
 
 
 @NgModule({
   declarations: [
     UserProfileComponent,
-    UserProfileDetailsComponent
+    UserProfileDetailsComponent,
+    UsersPageComponent,
+    UsersSearchFiltersComponent
   ],
   imports: [
     SharedModule,

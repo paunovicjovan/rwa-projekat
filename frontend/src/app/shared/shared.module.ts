@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 const modules = [
   CommonModule,
@@ -17,7 +18,8 @@ const modules = [
   FormsModule,
   ReactiveFormsModule,
   MatProgressSpinnerModule,
-  MatCardModule
+  MatCardModule,
+  MatIconModule
 ]
 
 @NgModule({

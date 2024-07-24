@@ -1,0 +1,16 @@
+<mat-card class="filters" appearance="outlined">
+    <form [formGroup]="searchForm">
+        <mat-form-field>
+            <input matInput placeholder="Korisničko ime" formControlName="username">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Ime" formControlName="firstName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Prezime" formControlName="lastName">
+        </mat-form-field>
+    </form>
+
+</mat-card>

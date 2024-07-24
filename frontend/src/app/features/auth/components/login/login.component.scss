@@ -3,7 +3,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding: 80px;
     background-color: #fffaee;
 }
 
@@ -16,7 +15,7 @@ h3 {
 }
 
 form {
-    width: clamp(250px, 40%, 600px);
+    width: clamp(250px, 80%, 600px);
 }
 
 .container {
