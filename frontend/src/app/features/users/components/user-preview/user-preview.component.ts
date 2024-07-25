@@ -1,16 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from '../../models/user.interface';
 import { environment } from '../../../../../environments/environment.development';
 
 @Component({
-  selector: 'app-user-profile-details',
-  templateUrl: './user-profile-details.component.html',
-  styleUrl: './user-profile-details.component.scss'
+  selector: 'app-user-preview',
+  templateUrl: './user-preview.component.html',
+  styleUrl: './user-preview.component.scss'
 })
-export class UserProfileDetailsComponent implements OnInit {
-  
-  
-  @Input({required: true}) user!: User;
+export class UserPreviewComponent {
+
+  @Input({required: true}) user!: User; 
 
   profileImageUrl!: string;
 

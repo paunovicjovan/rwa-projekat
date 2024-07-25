@@ -15,7 +15,6 @@ export class UserProfileComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   dataFromStore$!: Observable<any>;
-  apiUrl: string = environment.apiUrl;
 
   ngOnInit(): void {
     this.dataFromStore$ = combineLatest({

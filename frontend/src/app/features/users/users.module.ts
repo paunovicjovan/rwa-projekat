@@ -8,7 +8,8 @@ import { Features } from '../features.enum';
 import { usersReducer } from './state/users.reducer';
 import * as usersEffects from './state/users.effects';
 import { UsersPageComponent } from './components/users-page/users-page.component';
-import { UsersSearchFiltersComponent } from './components/users-search-filters/users-search-filters.component'
+import { UsersSearchFiltersComponent } from './components/users-search-filters/users-search-filters.component';
+import { UserPreviewComponent } from './components/user-preview/user-preview.component';
 
 
 
@@ -17,7 +18,8 @@ import { UsersSearchFiltersComponent } from './components/users-search-filters/u
     UserProfileComponent,
     UserProfileDetailsComponent,
     UsersPageComponent,
-    UsersSearchFiltersComponent
+    UsersSearchFiltersComponent,
+    UserPreviewComponent,
   ],
   imports: [
     SharedModule,
