@@ -56,15 +56,13 @@ export class UsersSearchFiltersComponent implements OnInit, OnDestroy {
 
     return formControl?.valueChanges.pipe(
       startWith(''),
-      debounceTime(400),
+      debounceTime(500),
       distinctUntilChanged()
     )
   }
 
   observeFilterChanges() {
-    const combinedFilters$ = combineLatest([this.username$, this.firstName$, this.lastName$]).pipe(
-      debounceTime(400)
-    );
+    const combinedFilters$ = combineLatest([this.username$, this.firstName$, this.lastName$]);
 
     this.filtersSubscription = combinedFilters$
     .subscribe(

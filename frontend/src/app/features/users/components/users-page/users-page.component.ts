@@ -45,7 +45,6 @@ export class UsersPageComponent implements OnInit {
       page: event.pageIndex + 1,
       limit: event.pageSize
     }
-    console.log(filterData);
     this.store.dispatch(usersActions.filterUsers({ filterData }));
   }
 
