@@ -3,19 +3,19 @@
         <h3>Pretraga korisnika</h3>
         <app-users-search-filters (onFilterChange)="onFilterChange($event)"></app-users-search-filters>
         <br>
-        <mat-spinner *ngIf="dataFromStore.isLoading"></mat-spinner>
+        <!-- <mat-spinner *ngIf="dataFromStore.isLoading"></mat-spinner> -->
 
-        <ng-container *ngIf="!dataFromStore.isLoading">
+        <!-- <ng-container *ngIf="!dataFromStore.isLoading"> -->
             <app-user-preview *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
             <br>
             <mat-paginator 
                 [length]="dataFromStore.paginationMetadata.totalItems" 
-                [pageSize]="dataFromStore.paginationMetadata.itemCount" 
+                [pageSize]="dataFromStore.paginationMetadata.itemsPerPage" 
                 [pageSizeOptions]="[5, 10, 25, 100]" 
                 [showFirstLastButtons]="true"
                 (page)="pageEvent = $event; onPaginateChange($event)">
             </mat-paginator>
             <br>
-        </ng-container>
+        <!-- </ng-container> -->
     </div>
 </ng-container>
