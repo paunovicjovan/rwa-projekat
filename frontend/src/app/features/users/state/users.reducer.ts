@@ -3,12 +3,22 @@ import { UsersState } from "../models/users-state.interface";
 import * as usersActions from './users.actions'
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { User } from "../models/user.interface";
+import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
+
+const initialPaginationMetadataState : PaginationMetadata = {
+    totalItems: 0,
+    itemCount: 10,
+    itemsPerPage: 10,
+    totalPages: 1,
+    currentPage: 1    
+}
 
 export const initialState: UsersState = {
     ids: [],
     entities: {},
     isLoading: false,
-    chosenUserProfile: null
+    chosenUserProfile: null,
+    paginationMetadata: initialPaginationMetadataState
 }
 
 export const usersAdapter: EntityAdapter<User> = createEntityAdapter<User>();
@@ -42,7 +52,13 @@ export const usersReducer = createReducer(
         }
     }),
     on(usersActions.filterUsersSuccess, (state, action)=>{
-        return usersAdapter.setAll(action.users, {...state, isLoading: false})
+        return usersAdapter.setAll(action.paginatedUsers.items, {
+            ...state, 
+            isLoading: false, 
+            paginationMetadata: {
+                ...action.paginatedUsers.meta
+            }
+        })
     }),
     on(usersActions.filterUsersFailure, (state)=>{
         return {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
@@ -12,6 +12,7 @@ import {
 import { AppState } from '../../../../state/app-state.interface';
 import * as usersActions from '../../state/users.actions'
 import { FilterUsersRequest } from '../../models/filter-users-request.interface';
+import { UsersFilters } from '../../models/users-filters.interface';
 
 @Component({
   selector: 'app-users-search-filters',
@@ -24,6 +25,7 @@ export class UsersSearchFiltersComponent implements OnInit, OnDestroy {
   firstName$!: Observable<string>;
   lastName$!: Observable<string>;
   filtersSubscription?: Subscription;
+  @Output() onFilterChange: EventEmitter<UsersFilters> = new EventEmitter<UsersFilters>();
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>
@@ -60,23 +62,14 @@ export class UsersSearchFiltersComponent implements OnInit, OnDestroy {
   }
 
   observeFilterChanges() {
-    const combinedFilters$ = combineLatest([this.username$, this.firstName$, this.lastName$]);
+    const combinedFilters$ = combineLatest([this.username$, this.firstName$, this.lastName$]).pipe(
+      debounceTime(1000)
+    );
 
     this.filtersSubscription = combinedFilters$
     .subscribe(
-      ([firstName, lastName, username]) => {
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Username:', username);
-        //fix
-        const data : FilterUsersRequest = {
-          limit:10,
-          page: 1,
-          firstName,
-          lastName,
-          username
-        }
-        this.store.dispatch(usersActions.filterUsers({filterData: data}));
+      ([username, firstName, lastName]) => {
+        this.onFilterChange.emit({username, firstName, lastName});
       }
     );
   }

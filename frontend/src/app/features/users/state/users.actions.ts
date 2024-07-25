@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../models/user.interface';
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
+import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
@@ -23,7 +24,7 @@ export const filterUsers = createAction(
 
 export const filterUsersSuccess = createAction(
   '[Users] Load Users Success',
-  props<{ users: User[] }>() //mozda treba da se menja ovde kad se napravi paginacija (zbog metadata)
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
 )
 
 export const filterUsersFailure = createAction(

@@ -2,7 +2,7 @@
 export interface FilterUsersRequest {
     page: number;
     limit: number;
-    username?: string;
-    firstName?: string;
-    lastName?: string;
+    username: string;
+    firstName: string;
+    lastName: string;
 }

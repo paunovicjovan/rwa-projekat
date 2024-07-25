@@ -4,6 +4,7 @@ import { UsersService } from "../services/users.service";
 import * as usersActions from '../state/users.actions'
 import { catchError, exhaustMap, map, of, switchMap } from "rxjs";
 import { User } from "../models/user.interface";
+import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -25,15 +26,14 @@ export const loadUserProfile$ = createEffect(
     {functional: true}
 )
 
-//privremeno
 export const filterUsers$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.filterUsers),
             switchMap(({filterData}) =>
-                usersService.filterUsers().pipe(
-                    map((users: User[]) => {
-                        return usersActions.filterUsersSuccess({ users })
+                usersService.filterUsers(filterData).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.filterUsersSuccess({ paginatedUsers })
                     }),
                     catchError(() => {
                         return of(usersActions.filterUsersFailure())
