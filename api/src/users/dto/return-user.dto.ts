@@ -8,4 +8,5 @@ export interface ReturnUserDto {
     username: string;
     role: UserRoles;
     profileImage: string | null;
+    dateCreated: Date;
 }

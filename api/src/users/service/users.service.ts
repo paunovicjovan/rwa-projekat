@@ -1,15 +1,17 @@
 import { Body, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
-import { catchError, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, filter, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { AuthService } from 'src/auth/service/auth.service';
 import * as fs from 'fs';
 import { UserRoles } from '../enums/user-roles.enum';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,8 +24,19 @@ export class UsersService {
         return from(this.usersRepository.save(user));
     }
 
-    findAll(): Observable<ReturnUserDto[]> {
-        return from(this.usersRepository.find());
+    findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Observable<Pagination<ReturnUserDto>> {
+        return from(paginate<ReturnUserDto>(
+            this.usersRepository, 
+            options, 
+            {
+                where: {
+                    username: Like(`%${filters.username}%`),
+                    firstName: Like(`%${filters.firstName}%`),
+                    lastName: Like(`%${filters.lastName}%`)
+                },
+                order: { dateCreated: 'DESC' }
+            }
+        ))
     }
 
     findOneById(id: number): Observable<ReturnUserDto> {

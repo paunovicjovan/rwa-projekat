@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../service/users.service';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
@@ -11,6 +11,8 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../enums/user-roles.enum';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 
 @Controller('users')
 export class UsersController {
@@ -20,8 +22,24 @@ export class UsersController {
     ) {}
 
     @Get()
-    findAll() : Observable<ReturnUserDto[]> {
-        return this.usersService.findAll();
+    findManyPaginated(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('username') username: string = '',
+        @Query('firstName') firstName: string = '',
+        @Query('lastName') lastName: string = ''
+    ) {
+        limit = Math.min(100, limit);
+        const paginateOptions : IPaginationOptions = {
+            limit,
+            page
+        }
+        const usersFilters : SearchUsersFilters = {
+            username,
+            firstName,
+            lastName
+        }
+        return this.usersService.findManyPaginated(paginateOptions, usersFilters);
     }
 
     @Get(':id')

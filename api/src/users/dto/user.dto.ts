@@ -9,4 +9,5 @@ export interface UserDto {
     password: string;
     role: UserRoles;
     profileImage: string | null;
+    dateCreated: Date;
 }
