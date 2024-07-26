@@ -10,6 +10,13 @@
         <button mat-mini-fab class="btn" (click)="logout()">
             <mat-icon fontIcon="logout"></mat-icon>
         </button>
+
+        <span>{{currentUser.firstName}} {{currentUser.lastName}}</span>
+        
+        <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+currentUser.profileImage" alt="">
+        <ng-template #defaultProfileImage>
+            <img src="assets/default-profile-image.jpg" alt="">
+        </ng-template>
     </ng-container>
 
     <ng-template #notLoggedIn>

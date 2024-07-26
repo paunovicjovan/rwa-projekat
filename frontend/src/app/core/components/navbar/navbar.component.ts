@@ -6,6 +6,7 @@ import * as authActions from '../../../features/auth/state/auth.actions';
 import { Observable } from 'rxjs';
 import { User } from '../../../features/users/models/user.interface';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-navbar',
@@ -15,10 +16,9 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
 
   currentLoggedInUser$!: Observable<User | null | undefined>
+  apiUrl: string = environment.apiUrl;
 
-  constructor(private store: Store<AppState>,
-              private router: Router
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.currentLoggedInUser$ = this.store.select(authSelectors.selectCurrentLoggedInUser);
