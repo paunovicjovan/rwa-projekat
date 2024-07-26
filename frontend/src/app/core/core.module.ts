@@ -5,9 +5,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
+import { jwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
     MatButtonModule
   ],
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
     JwtHelperService,
     {provide:JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],

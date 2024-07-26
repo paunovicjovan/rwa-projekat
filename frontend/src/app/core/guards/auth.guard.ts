@@ -6,8 +6,8 @@ export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.hasValidJwt()) {
-    return router.createUrlTree(['/login']);
+  if (authService.hasValidJwt()) {
+    return true;
   }
-  return true;
+  return router.createUrlTree(['/login']);
 };

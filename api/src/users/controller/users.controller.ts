@@ -21,6 +21,7 @@ export class UsersController {
         private usersService: UsersService
     ) {}
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     findManyPaginated(
         @Query('page') page: number = 1,
