@@ -1,8 +1,9 @@
 <mat-card class="example-card" appearance="outlined">
     <mat-card-header>
-        <div mat-card-avatar class="profile-image">
+        <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="chooseNewProfileImage()">
             <img [src]="profileImageUrl"/>
         </div>
+        <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" class="file-input"/> 
         <mat-card-title>{{user.username}}</mat-card-title>
         <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
     </mat-card-header>
@@ -10,7 +11,4 @@
         <p>Uloga: {{user.role}}</p>
         <p>Korisnik aplikacije od: {{user.dateCreated}}</p>
     </mat-card-content>
-    <mat-card-actions>
-        <button mat-button>Follow</button>
-    </mat-card-actions>
 </mat-card>

@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { UsersState } from "../models/users-state.interface";
 import { Features } from "../../features.enum";
 import { usersAdapter } from "./users.reducer";
+import { authFeature } from "../../auth/state/auth.selectors";
 
 export const usersFeature = createFeatureSelector<UsersState>(Features.Users);
 
@@ -26,3 +27,9 @@ export const selectUsersPaginationMetadata = createSelector(
     usersFeature,
     (state: UsersState) => state.paginationMetadata
 );
+
+export const selectIsUserOnOwnProfile = createSelector(
+    usersFeature,
+    authFeature,
+    (usersState, authState) => usersState.chosenUserProfile?.id === authState.currentLoggedInUser?.id
+)

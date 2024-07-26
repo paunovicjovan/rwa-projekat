@@ -1,6 +1,6 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="wrapper">
         <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading"></mat-spinner>
-        <app-user-profile-details *ngIf="dataFromStore.chosenUserProfile" [user]="dataFromStore.chosenUserProfile"></app-user-profile-details>
+        <app-user-profile-details *ngIf="dataFromStore.chosenUserProfile" [user]="dataFromStore.chosenUserProfile" [isOwnProfile]="dataFromStore.isUserOnOwnProfile"></app-user-profile-details>
     </div>
 </ng-container>

@@ -21,14 +21,29 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'user-profile/:username',
-    component: UserProfilePageComponent
-  },
-  {
-    path: 'search-users',
-    component: UsersPageComponent,
+    path: 'users',
+    children: [
+      {
+        path: '',
+        component: UsersPageComponent
+      },
+      {
+        path: ':username',
+        component: UserProfilePageComponent
+      }
+    ],
     canActivate: [authGuard]
-  }
+  },
+  // {
+  //   path: 'user-profile/:username',
+  //   component: UserProfilePageComponent,
+  //   canActivate: [authGuard]
+  // },
+  // {
+  //   path: 'search-users',
+  //   component: UsersPageComponent,
+  //   canActivate: [authGuard]
+  // }
 ];
 
 @NgModule({

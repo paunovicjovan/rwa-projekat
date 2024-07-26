@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatBadgeModule } from '@angular/material/badge';
 
 const modules = [
   CommonModule,
@@ -21,7 +22,8 @@ const modules = [
   MatProgressSpinnerModule,
   MatCardModule,
   MatIconModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatBadgeModule
 ]
 
 @NgModule({

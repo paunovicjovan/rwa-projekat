@@ -23,6 +23,6 @@ export class UserPreviewComponent {
   }
 
   visitUserProfile() {
-    this.router.navigateByUrl(`user-profile/${this.user.username}`);
+    this.router.navigateByUrl(`users/${this.user.username}`);
   }
 }
