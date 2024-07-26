@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class TokenPersistenceService {
+export class LocalStorageService {
 
   set(key: string, data: unknown): void {
     try{

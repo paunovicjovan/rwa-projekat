@@ -5,8 +5,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatIconModule} from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,9 @@ import { HomeComponent } from './components/home/home.component';
     MatButtonModule
   ],
   providers: [
-    provideHttpClient()
+    provideHttpClient(),
+    JwtHelperService,
+    {provide:JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],
   exports: [
     NavbarComponent

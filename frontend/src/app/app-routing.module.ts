@@ -5,6 +5,7 @@ import { RegisterComponent } from './features/auth/components/register/register.
 import { HomeComponent } from './core/components/home/home.component';
 import { UserProfileComponent } from './features/users/components/user-profile/user-profile.component';
 import { UsersPageComponent } from './features/users/components/users-page/users-page.component';
+import { authGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
   },
   {
     path: 'search-users',
-    component: UsersPageComponent
+    component: UsersPageComponent,
+    canActivate: [authGuard]
   }
 ];
 

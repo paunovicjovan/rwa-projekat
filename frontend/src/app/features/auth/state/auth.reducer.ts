@@ -55,4 +55,11 @@ export const authReducer = createReducer(
             errorMessage: action.errorMessage
         }
     }),
+    on(authActions.logout, (state) => {
+        return {
+            ...state,
+            currentLoggedInUser: null,
+            token: null
+        }
+    })
 )

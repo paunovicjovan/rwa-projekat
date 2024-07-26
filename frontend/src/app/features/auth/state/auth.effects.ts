@@ -6,18 +6,16 @@ import * as usersActions from '../../users/state/users.actions'
 import { catchError, exhaustMap, map, of, tap } from "rxjs";
 import { AuthResponse } from "../models/auth-response.interface";
 import { HttpErrorResponse } from "@angular/common/http";
-import { TokenPersistenceService } from "../../../core/services/token-persistence.service";
 import { Router } from "@angular/router";
 import { User } from "../../users/models/user.interface";
 
 export const login$ = createEffect(
-    (action$ = inject(Actions), authService = inject(AuthService), tokenPersistanceService = inject(TokenPersistenceService)) => {
+    (action$ = inject(Actions), authService = inject(AuthService)) => {
         return action$.pipe(
             ofType(authActions.login),
             exhaustMap(({loginRequest}) =>
                 authService.login(loginRequest).pipe(
                     map((response: AuthResponse) => {
-                        tokenPersistanceService.set('token', response.token!);
                         return authActions.loginSuccess({currentUser: response.user, token: response.token!})
                     }),
                     catchError((errorResponse : HttpErrorResponse) => {
@@ -32,13 +30,12 @@ export const login$ = createEffect(
 )
 
 export const register$ = createEffect(
-    (action$ = inject(Actions), authService = inject(AuthService), tokenPersistanceService = inject(TokenPersistenceService)) => {
+    (action$ = inject(Actions), authService = inject(AuthService)) => {
         return action$.pipe(
             ofType(authActions.register),
             exhaustMap(({registerRequest}) =>
                 authService.register(registerRequest).pipe(
                     map((response: AuthResponse) => {
-                        tokenPersistanceService.set('token', response.token!);
                         return authActions.registerSuccess({currentUser: response.user, token: response.token!})
                     }),
                     catchError((errorResponse : HttpErrorResponse) => {
@@ -65,4 +62,16 @@ export const redirectAfterLogin$ = createEffect((actions$ = inject(Actions), rou
     )
 }, {
     functional:true
+})
+
+export const redirectAfterLogout$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(authActions.logout),
+        tap(() => {
+            router.navigateByUrl('/')
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
 })

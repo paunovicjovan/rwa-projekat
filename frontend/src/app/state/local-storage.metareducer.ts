@@ -3,7 +3,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import { Features } from "../features/features.enum";
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-    return localStorageSync({keys: ['auth'], rehydrate: true, restoreDates: true})(reducer);
+    return localStorageSync({keys: [Features.Auth], rehydrate: true, restoreDates: true})(reducer);
 }
 
 export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
