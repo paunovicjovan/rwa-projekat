@@ -56,7 +56,7 @@ export class UsersSearchFiltersComponent implements OnInit, OnDestroy {
 
     return formControl?.valueChanges.pipe(
       startWith(''),
-      debounceTime(500),
+      debounceTime(300),
       distinctUntilChanged()
     )
   }

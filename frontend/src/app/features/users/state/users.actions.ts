@@ -5,7 +5,7 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.int
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
-  props<{ userId: number }>()
+  props<{ username: string }>()
 );
 
 export const loadUserProfileSuccess = createAction(
@@ -29,4 +29,8 @@ export const filterUsersSuccess = createAction(
 
 export const filterUsersFailure = createAction(
   '[Users] Load Users Failure'
+)
+
+export const clearLoadedUsers = createAction(
+  '[Users] Clear Loaded Users'
 )

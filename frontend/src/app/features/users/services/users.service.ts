@@ -14,8 +14,8 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(id: number) : Observable<User> {
-    return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
+  getUser(username: string) : Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${username}`);
   }
 
   filterUsers(filterData: FilterUsersRequest) : Observable<PaginatedResponse<User>> {

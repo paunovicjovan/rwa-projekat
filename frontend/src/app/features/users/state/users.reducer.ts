@@ -65,5 +65,8 @@ export const usersReducer = createReducer(
             ...state,
             isLoading: false
         }
+    }),
+    on(usersActions.clearLoadedUsers, (state)=>{
+        return usersAdapter.removeAll(state);
     })
 )

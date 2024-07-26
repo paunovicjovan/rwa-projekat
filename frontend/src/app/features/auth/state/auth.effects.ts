@@ -53,15 +53,13 @@ export const register$ = createEffect(
 export const redirectAfterLogin$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
     return actions$.pipe(
         ofType(authActions.loginSuccess, authActions.registerSuccess),
-        map(({currentUser} : {currentUser: User})=>{
-            return usersActions.loadUserProfile({userId: currentUser.id})
-        }),
-        tap(() => {
-            router.navigate(['..', 'user-profile'])
+        tap(({currentUser} : {currentUser: User}) => {
+            router.navigate(['..', 'user-profile', currentUser.username])
         })
     )
 }, {
-    functional:true
+    functional:true,
+    dispatch: false
 })
 
 export const redirectAfterLogout$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{

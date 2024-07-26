@@ -10,14 +10,5 @@ import { loadUserProfile } from '../../../features/users/state/users.actions';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
-  id: number = 21;
 
-  constructor(private router: Router, 
-              private store: Store<AppState>
-  ) {}
-
-  onClick() {
-    this.store.dispatch(loadUserProfile({userId: this.id}))
-    this.router.navigateByUrl('user-profile');
-  }
 }

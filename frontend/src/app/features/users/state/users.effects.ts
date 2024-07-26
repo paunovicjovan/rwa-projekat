@@ -10,8 +10,8 @@ export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.loadUserProfile),
-            exhaustMap(({userId}) =>
-                usersService.getUser(userId).pipe(
+            exhaustMap(({username}) =>
+                usersService.getUser(username).pipe(
                     map((user: User) => {
                         return usersActions.loadUserProfileSuccess({loadedUser: user})
                     }),

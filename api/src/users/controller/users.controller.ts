@@ -43,9 +43,9 @@ export class UsersController {
         return this.usersService.findManyPaginated(paginateOptions, usersFilters);
     }
 
-    @Get(':id')
-    findOneById(@Param('id') id: number) : Observable<ReturnUserDto> {
-        return this.usersService.findOneById(id);
+    @Get(':username')
+    findOneByUsername(@Param('username') username: string) : Observable<ReturnUserDto> {
+        return this.usersService.findOneByUsername(username);
     }
 
     @Put(':id')

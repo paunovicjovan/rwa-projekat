@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { UsersFilters } from '../../models/users-filters.interface';
 import { Store } from '@ngrx/store';
@@ -13,7 +13,7 @@ import { combineLatest, Observable } from 'rxjs';
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss'
 })
-export class UsersPageComponent implements OnInit {
+export class UsersPageComponent implements OnInit, OnDestroy {
 
   pageEvent!: PageEvent;
   filtersState!: UsersFilters;
@@ -56,5 +56,9 @@ export class UsersPageComponent implements OnInit {
       limit: 10
     }
     this.store.dispatch(usersActions.filterUsers({ filterData }));
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(usersActions.clearLoadedUsers());
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UserProfilePageComponent } from './components/user-profile-page/user-profile-page.component';
 import { UserProfileDetailsComponent } from './components/user-profile-details/user-profile-details.component';
 import { SharedModule } from '../../shared/shared.module';
 import { StoreModule } from '@ngrx/store';
@@ -15,7 +15,7 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
 
 @NgModule({
   declarations: [
-    UserProfileComponent,
+    UserProfilePageComponent,
     UserProfileDetailsComponent,
     UsersPageComponent,
     UsersSearchFiltersComponent,
