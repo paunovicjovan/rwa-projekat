@@ -9,6 +9,8 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { UsersModule } from './features/users/users.module';
+import { metaReducers } from './state/local-storage.metareducer';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { UsersModule } from './features/users/users.module';
     CoreModule,
     AuthModule,
     UsersModule,
-    StoreModule.forRoot({}, {}),
+    StoreModule.forRoot({}, {
+      metaReducers
+    }),
     StoreDevtoolsModule.instrument({ maxAge: 100, logOnly: !isDevMode() }),
     EffectsModule.forRoot([])
   ],

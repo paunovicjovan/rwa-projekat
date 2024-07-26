@@ -13,3 +13,8 @@ export const selectIsSubmitting = createSelector(
   authFeature,
   (state: AuthState) => state.isSubmitting
 );
+
+export const selectCurrentLoggedInUser = createSelector(
+  authFeature,
+  (state: AuthState) => state.currentLoggedInUser
+);

@@ -1,13 +1,25 @@
 <mat-toolbar>
     <span routerLink="/" class="logo">RWA projekat</span>
     <span class="example-spacer"></span>
-    <button mat-mini-fab class="btn" routerLink="/search-users">
-        <mat-icon fontIcon="people"></mat-icon>
-    </button>
-    <button mat-stroked-button class="btn" routerLink="/login">
-        Prijava
-    </button>
-    <button mat-flat-button color="primary" routerLink="/register">
-        Registracija
-    </button>
+
+    <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
+        <button mat-mini-fab class="btn" routerLink="/search-users">
+            <mat-icon fontIcon="people"></mat-icon>
+        </button>
+
+        <button mat-mini-fab class="btn" routerLink="/">
+            <mat-icon fontIcon="logout"></mat-icon>
+        </button>
+    </ng-container>
+
+    <ng-template #notLoggedIn>
+        <button mat-stroked-button class="btn" routerLink="/login">
+            Prijava
+        </button>
+        <button mat-flat-button color="primary" routerLink="/register">
+            Registracija
+        </button>
+    </ng-template>
+    
+
 </mat-toolbar>
