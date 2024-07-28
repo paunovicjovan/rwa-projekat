@@ -58,7 +58,7 @@ export class UsersService {
     updateProfileImage(userId: number, imageName: string | null) : Observable<ReturnUserDto> {
         return this.deleteProfileImageFromFileSystem(userId).pipe(
             switchMap(() => this.updateOne(userId, {profileImage: imageName})),
-        )
+        );
     }
 
     updateOne(id: number, userData: UpdateUserDto) : Observable<ReturnUserDto> {
@@ -85,4 +85,6 @@ export class UsersService {
             })
         );
     }
+
+
 }

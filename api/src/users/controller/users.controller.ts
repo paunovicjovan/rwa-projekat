@@ -55,6 +55,13 @@ export class UsersController {
 
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
+    @Put('/role/:id')
+    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<ReturnUserDto> {
+        return this.usersService.updateOne(id, userData);
+    }
+
+    @Roles(UserRoles.ADMIN)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     deleteOne(@Param('id') id:number) : Observable<any> {
         return this.usersService.deleteOne(id);
