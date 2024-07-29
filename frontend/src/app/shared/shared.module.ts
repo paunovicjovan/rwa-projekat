@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 const modules = [
   CommonModule,
@@ -29,12 +30,15 @@ const modules = [
 ]
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    FormatDatePipe
+  ],
   imports: [
     ...modules
   ],
   exports: [
-    ...modules
+    ...modules,
+    FormatDatePipe
   ]
 })
 export class SharedModule { }

@@ -13,7 +13,7 @@
     </mat-card-header>
     
     <mat-card-content>
-        <p>Korisnik aplikacije od: {{user.dateCreated}}</p>
+        <p>Korisnik aplikacije od: {{user.dateCreated | formatDate}}</p>
         <ng-container *ngIf="loggedInUser?.role === 'admin' && !isOwnProfile; else nonAdminView">
             <mat-form-field>
                 <mat-label>Uloga</mat-label>
