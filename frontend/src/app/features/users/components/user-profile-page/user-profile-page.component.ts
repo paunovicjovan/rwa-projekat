@@ -38,8 +38,7 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
-      chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile),
-      isUserOnOwnProfile: this.store.select(usersSelectors.selectIsUserOnOwnProfile)
+      chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile)
     });
   }
 
