@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatSelectModule } from '@angular/material/select';
 
 const modules = [
   CommonModule,
@@ -23,7 +24,8 @@ const modules = [
   MatCardModule,
   MatIconModule,
   MatPaginatorModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatSelectModule
 ]
 
 @NgModule({

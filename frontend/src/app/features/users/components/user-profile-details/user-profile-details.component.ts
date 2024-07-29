@@ -1,6 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { User } from '../../models/user.interface';
 import { environment } from '../../../../../environments/environment.development';
+import { AppState } from '../../../../state/app-state.interface';
+import { select, Store } from '@ngrx/store';
+import * as authSelectors from '../../../auth/state/auth.selectors';
+import * as usersActions from '../../state/users.actions';
+import { UserRoles } from '../../models/user-roles.enum';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -11,16 +16,21 @@ export class UserProfileDetailsComponent implements OnInit {
   
   
   @Input({required: true}) user!: User;
-  @Input({required: true}) isOwnProfile!: boolean;
   @ViewChild("profileImageUpload", {static:false}) profileImageUpload!:ElementRef;
-
-  profileImageUrl!: string;
+  loggedInUser!: User | null | undefined;
+  isOwnProfile: boolean = false;
+  apiUrl: string = environment.apiUrl;
+  roles: string[] = Object.values(UserRoles);
+  selectedRole!: UserRoles;
   
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.profileImageUrl = this.user.profileImage ?
-                           `${environment.apiUrl}/users/profile-image/${this.user.profileImage}` :
-                           'assets/default-profile-image.jpg';
+    this.store.select(authSelectors.selectCurrentLoggedInUser).subscribe((currentLoggedInUser)=>{
+      this.loggedInUser = currentLoggedInUser;
+      this.isOwnProfile = this.loggedInUser?.id === this.user.id;
+    });
+    this.selectedRole = this.user.role;
   }
 
   chooseNewProfileImage() {
@@ -29,5 +39,9 @@ export class UserProfileDetailsComponent implements OnInit {
     const fileInput = this.profileImageUpload.nativeElement;
     fileInput.click();
     console.log('Promena slike');
+  }
+
+  changeUserRole() {
+    this.store.dispatch(usersActions.changeUserRole({userId: this.user.id, newRole: this.selectedRole}))
   }
 }

@@ -68,5 +68,14 @@ export const usersReducer = createReducer(
     }),
     on(usersActions.clearLoadedUsers, (state)=>{
         return usersAdapter.removeAll(state);
+    }),
+    on(usersActions.changeUserRoleSuccess, (state, action) => {
+        return {
+            ...state,
+            chosenUserProfile: {
+                ...state.chosenUserProfile!,
+                role: action.newRole
+            }
+        }
     })
 )

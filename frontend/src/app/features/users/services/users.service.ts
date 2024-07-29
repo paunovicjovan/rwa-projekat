@@ -25,4 +25,8 @@ export class UsersService {
 
     return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users`, {params: httpParams});
   }
+
+  changeUserRole(userId: number, newRole: UserRoles): Observable<User> {
+    return this.http.put<User>(`${environment.apiUrl}/users/role/${userId}`, { role: newRole });
+  }
 }

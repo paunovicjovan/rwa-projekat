@@ -3,11 +3,11 @@
     <span class="example-spacer"></span>
 
     <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-        <button mat-mini-fab class="btn" routerLink="/users">
+        <button mat-mini-fab class="btn" color="primary" routerLink="/users">
             <mat-icon fontIcon="people"></mat-icon>
         </button>
 
-        <button mat-mini-fab class="btn" (click)="logout()">
+        <button mat-mini-fab class="btn" color="primary" (click)="logout()">
             <mat-icon fontIcon="logout"></mat-icon>
         </button>
 

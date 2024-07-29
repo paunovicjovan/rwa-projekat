@@ -45,3 +45,23 @@ export const filterUsers$ = createEffect(
     },
     {functional: true}
 )
+
+export const changeUserRole$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.changeUserRole),
+            exhaustMap(({ userId, newRole }) =>
+                usersService.changeUserRole(userId, newRole).pipe(
+                    map((user: User) => {
+                        return usersActions.changeUserRoleSuccess({ newRole: user.role })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.changeUserRoleFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
