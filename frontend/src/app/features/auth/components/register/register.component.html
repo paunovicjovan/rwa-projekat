@@ -1,48 +1,52 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
-    <div class="wrapper">
-        <h3>Registracija</h3>
-        <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
-            <div class="container">
-                <p class="error-message" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
-                <mat-form-field>
-                    <input matInput placeholder="Ime" formControlName="firstName">
-                    <mat-hint *ngIf="registerForm.controls['firstName'].touched && registerForm.controls['firstName'].errors">Ime je obavezno</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Prezime" formControlName="lastName">
-                    <mat-hint *ngIf="registerForm.controls['lastName'].touched && registerForm.controls['lastName'].errors">Prezime je obavezno</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="Korisničko ime" formControlName="username">
-                    <mat-hint *ngIf="registerForm.controls['username'].touched && registerForm.controls['username'].errors">Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput placeholder="E-mail" formControlName="email">
-                    <mat-hint *ngIf="registerForm.controls['email'].touched && registerForm.controls['email'].errors">E-mail je obavezan</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput type="password" placeholder="Lozinka" formControlName="password">
-                    <mat-hint *ngIf="registerForm.controls['password'].touched && registerForm.controls['password'].errors">
-                        Lozinka mora da ima bar 5 karaktera, cifru, veliko i malo slovo
-                    </mat-hint>
-                </mat-form-field>
-
-                <mat-form-field>
-                    <input matInput type="password" placeholder="Potvrdi lozinku" formControlName="passwordConfirm">
-                    <mat-hint *ngIf="registerForm.controls['passwordConfirm'].touched && (registerForm.controls['passwordConfirm'].errors || registerForm.hasError('passwordsNotMatching'))">
-                        Potvrda lozinke je obavezna i mora se slagati sa unetom lozinkom
-                    </mat-hint>
-                </mat-form-field>
-                
-                <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting"></mat-spinner>
-                <br>
-                <span class="login-span">Imate nalog? <a routerLink="/login">Prijavite se</a></span>
-                <button mat-flat-button color="primary" [disabled]="registerForm.invalid || dataFromStore.isSubmitting" type="submit">Registruj Se</button>
+    <div class="container d-flex justify-content-center align-items-center p-4">
+        <div class="row justify-content-center w-100">
+            <div class="col-sm-9 col-md-7 col-lg-5">
+                <div class="py-4 px-5 border rounded shadow-sm bg-light">
+                    <h3 class="text-center mb-4">Registracija</h3>
+                    <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
+                        <div class="mb-3">
+                            <p class="text-danger" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
+                        </div>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>Ime</mat-label>
+                            <input matInput placeholder="Ime" formControlName="firstName">
+                            <mat-hint *ngIf="registerForm.controls['firstName'].touched && registerForm.controls['firstName'].errors">Ime je obavezno</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>Prezime</mat-label>
+                            <input matInput placeholder="Prezime" formControlName="lastName">
+                            <mat-hint *ngIf="registerForm.controls['lastName'].touched && registerForm.controls['lastName'].errors">Prezime je obavezno</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>Korisničko ime</mat-label>
+                            <input matInput placeholder="Korisničko ime" formControlName="username">
+                            <mat-hint *ngIf="registerForm.controls['username'].touched && registerForm.controls['username'].errors">Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>E-mail</mat-label>
+                            <input matInput placeholder="E-mail" formControlName="email">
+                            <mat-hint *ngIf="registerForm.controls['email'].touched && registerForm.controls['email'].errors">E-mail je obavezan</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>Lozinka</mat-label>
+                            <input matInput type="password" placeholder="Lozinka" formControlName="password">
+                            <mat-hint *ngIf="registerForm.controls['password'].touched && registerForm.controls['password'].errors">Lozinka mora da ima bar 5 karaktera, cifru, veliko i malo slovo</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="w-100 mb-3">
+                            <mat-label>Potvrdi lozinku</mat-label>
+                            <input matInput type="password" placeholder="Potvrdi lozinku" formControlName="passwordConfirm">
+                            <mat-hint *ngIf="registerForm.controls['passwordConfirm'].touched && (registerForm.controls['passwordConfirm'].errors || registerForm.hasError('passwordsNotMatching'))">Potvrda lozinke je obavezna i mora se slagati sa unetom lozinkom</mat-hint>
+                        </mat-form-field>
+                        <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting" class="d-block mx-auto"></mat-spinner>
+                        <br>
+                        <div class="text-center mb-3">
+                            <span>Imate nalog? <a routerLink="/login" class="login-link">Prijavite se</a></span>
+                        </div>
+                        <button mat-flat-button color="primary" [disabled]="registerForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100">Registruj Se</button>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </ng-container>
