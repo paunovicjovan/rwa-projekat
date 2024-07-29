@@ -2,9 +2,10 @@ import { inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UsersService } from "../services/users.service";
 import * as usersActions from '../state/users.actions'
-import { catchError, exhaustMap, map, of, switchMap } from "rxjs";
+import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
+import { Router } from "@angular/router";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -65,3 +66,35 @@ export const changeUserRole$ = createEffect(
     },
     {functional: true}
 )
+
+export const deleteUserAccount$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.deleteUserAccount),
+            exhaustMap(({ userId }) =>
+                usersService.deleteOne(userId).pipe(
+                    map(() => {
+                        return usersActions.deleteUserAccountSuccess({ userId })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.deleteUserAccountFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const redirectAfterDeleteSuccess$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(usersActions.deleteUserAccountSuccess),
+        tap(() => {
+            router.navigateByUrl('/users')
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
+})

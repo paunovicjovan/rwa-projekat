@@ -44,4 +44,8 @@ export class UserProfileDetailsComponent implements OnInit {
   changeUserRole() {
     this.store.dispatch(usersActions.changeUserRole({userId: this.user.id, newRole: this.selectedRole}))
   }
+
+  deleteUserAccount() {
+    this.store.dispatch(usersActions.deleteUserAccount({userId: this.user.id}))
+  }
 }

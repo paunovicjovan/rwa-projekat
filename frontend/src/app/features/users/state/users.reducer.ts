@@ -77,5 +77,24 @@ export const usersReducer = createReducer(
                 role: action.newRole
             }
         }
+    }),
+    on(usersActions.deleteUserAccount, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.deleteUserAccountSuccess, (state, action)=>{
+        return usersAdapter.removeOne(action.userId, {
+            ...state,
+            chosenUserProfile: null,
+            isLoading: false
+        });
+    }),
+    on(usersActions.deleteUserAccountFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
     })
 )
