@@ -11,8 +11,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
-import { FormatDatePipe } from './pipes/format-date.pipe';
+import { FormatDatePipe } from './pipes/format-date/format-date.pipe';
 import { ImageCropperComponent } from 'ngx-image-cropper';
+import { TranslateRolePipe } from './pipes/translate-role/translate-role.pipe';
 
 const modules = [
   CommonModule,
@@ -33,14 +34,16 @@ const modules = [
 
 @NgModule({
   declarations: [
-    FormatDatePipe
+    FormatDatePipe,
+    TranslateRolePipe
   ],
   imports: [
     ...modules
   ],
   exports: [
     ...modules,
-    FormatDatePipe
+    FormatDatePipe,
+    TranslateRolePipe
   ]
 })
 export class SharedModule { }

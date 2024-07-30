@@ -35,7 +35,7 @@
             <mat-form-field>
                 <mat-label>Uloga</mat-label>
                 <mat-select [(value)]="selectedRole">
-                    <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+                    <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -51,7 +51,7 @@
         </ng-container>
 
         <ng-template #nonAdminView>
-            <span>Uloga: {{user.role}}</span>
+            <span>Uloga: {{user.role | translateRole }}</span>
         </ng-template>
 
         
