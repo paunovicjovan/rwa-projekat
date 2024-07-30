@@ -1,73 +1,37 @@
-<!-- <mat-toolbar>
-    <span routerLink="/" class="logo">RWA projekat</span>
-    <span class="example-spacer"></span>
-
-    <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-        <button mat-mini-fab class="btn" color="primary" routerLink="/users">
-            <mat-icon fontIcon="people"></mat-icon>
-        </button>
-
-        <button mat-mini-fab class="btn" color="primary" (click)="logout()">
-            <mat-icon fontIcon="logout"></mat-icon>
-        </button>
-
-        <span>{{currentUser.firstName}} {{currentUser.lastName}}</span>
-        
-        <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+currentUser.profileImage" alt="">
-        <ng-template #defaultProfileImage>
-            <img src="assets/default-profile-image.jpg" alt="">
-        </ng-template>
-    </ng-container>
-
-    <ng-template #notLoggedIn>
-        <button mat-stroked-button class="btn" routerLink="/login">
-            Prijava
-        </button>
-        <button mat-flat-button color="primary" routerLink="/register">
-            Registracija
-        </button>
-    </ng-template>
-    
-
-</mat-toolbar> -->
-<!-- 
-<nav class="navbar navbar-expand-sm bg-light">
-    <div class="container d-flex justify-content-between">
-        <span routerLink="/" class="logo">RWA projekat</span>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
-            <mat-icon fontIcon="menu"></mat-icon>
-        </button>
-        <div class="collapse navbar-collapse pb-4 pb-xxl-0 d-xl-flex justify-content-xl-end" id="navbarResponsive">
-            <ul class="navbar-nav">
-                <li class="my-2 text-end">
-                    Prijava
-                </li>
-                <li class="my-2 text-end">
-                    Registracija
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav> -->
-
 <nav class="navbar navbar-expand-md">
     <div class="container d-flex justify-content-between">
         <a class="navbar-brand" routerLink="/">
-            <img src="https://placehold.co/80x80" alt="logo" class="logo-img logo"/>
+            <img src="https://placehold.co/80x80" alt="logo" class="logo-img logo" />
         </a>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n_bar">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n-bar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse pb-4 pb-md-0 d-md-flex justify-content-md-end" id="n_bar">
-            <ul class="navbar-nav">
+
+        <div class="collapse navbar-collapse py-4 py-md-0 d-md-flex justify-content-end" id="n-bar">
+            <ul class="navbar-nav d-flex align-items-md-center justify-content-end">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-                    <li class="nav-item text-end"><a class="nav-link" routerLink="users">Korisnici</a></li>
-                    <li class="nav-item text-end"><a class="nav-link cursor-pointer" (click)="logout()">Odjava</a></li>
+                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
+
+                    <li class="nav-item dropdown text-end cursor-pointer">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <span class="me-2 username">{{currentUser.username | uppercase}}</span>
+                            <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + currentUser.profileImage" alt="">
+                            <ng-template #defaultProfileImage>
+                                <img src="assets/default-profile-image.jpg" alt="">
+                            </ng-template>
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <a [routerLink]="'/users/'+ currentUser.username" class="dropdown-item">MOJ PROFIL</a>
+                            <div class="dropdown-divider"></div>
+                            <a (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</a>
+                        </div>
+                    </li>
                 </ng-container>
 
                 <ng-template #notLoggedIn>
-                    <li class="nav-item text-end"><a class="nav-link" routerLink="login">Prijava</a></li>
-                    <li class="nav-item text-end"><a class="nav-link" routerLink="register">Registracija</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" routerLink="login">PRIJAVA</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" routerLink="register">REGISTRACIJA</a></li>
                 </ng-template>
             </ul>
         </div>

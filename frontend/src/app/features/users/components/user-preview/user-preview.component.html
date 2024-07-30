@@ -1,7 +1,8 @@
-<mat-card class="user-preview-card d-flex flex-row justify-content-between align-items-center m-2" appearance="outlined">
+<mat-card class="mx-auto d-flex flex-row justify-content-between align-items-center m-2 col-12 col-md-12 col-lg-9 col-xl-8"
+    appearance="outlined">
     <mat-card-header>
         <div mat-card-avatar class="profile-image">
-            <img [src]="profileImageUrl"/>
+            <img [src]="profileImageUrl" />
         </div>
         <mat-card-title>{{user.username}}</mat-card-title>
         <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>

@@ -1,11 +1,15 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="container d-flex flex-column align-items-center">
         <h3 class="text-center">Pretraga korisnika</h3>
-        <app-users-search-filters class="mb-3" (onFilterChange)="onFilterChange($event)"></app-users-search-filters>
+        <div class="row">
+            <app-users-search-filters class="mb-3 mx-auto col-12 col-md-12 col-lg-12" (onFilterChange)="onFilterChange($event)"></app-users-search-filters>
+        </div>
         <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading"></mat-spinner>
 
         <ng-container *ngIf="!dataFromStore.isLoading">
-            <app-user-preview  *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
+            <div class="row">
+                <app-user-preview *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
+            </div>
         </ng-container>
 
         <mat-paginator 
