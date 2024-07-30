@@ -33,4 +33,8 @@ export class UsersService {
   deleteOne(userId: number) : Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/users/${userId}`);
   }
+
+  changeUserProfileImage(formData: FormData): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/upload-profile-image`, formData)
+  }
 }

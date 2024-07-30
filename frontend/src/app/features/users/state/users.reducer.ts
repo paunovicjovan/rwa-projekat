@@ -96,5 +96,24 @@ export const usersReducer = createReducer(
             ...state,
             isLoading: false
         }
-    })
+    }),
+    on(usersActions.changeUserProfileImage, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.changeUserProfileImageSuccess, (state, action)=>{
+        return usersAdapter.updateOne({id: action.user.id, changes: action.user } , {
+            ...state,
+            chosenUserProfile: action.user,
+            isLoading: false
+        });
+    }),
+    on(usersActions.changeUserProfileImageFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

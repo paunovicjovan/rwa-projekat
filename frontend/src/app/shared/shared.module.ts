@@ -12,6 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { FormatDatePipe } from './pipes/format-date.pipe';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 const modules = [
   CommonModule,
@@ -26,7 +27,8 @@ const modules = [
   MatIconModule,
   MatPaginatorModule,
   MatBadgeModule,
-  MatSelectModule
+  MatSelectModule,
+  ImageCropperComponent
 ]
 
 @NgModule({

@@ -98,3 +98,23 @@ export const redirectAfterDeleteSuccess$ = createEffect((actions$ = inject(Actio
     functional:true,
     dispatch: false
 })
+
+export const changeUserProfilePicture$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.changeUserProfileImage),
+            exhaustMap(({ formData }) =>
+                usersService.changeUserProfileImage(formData).pipe(
+                    map((user: User) => {
+                        return usersActions.changeUserProfileImageSuccess({ user })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.changeUserProfileImageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)

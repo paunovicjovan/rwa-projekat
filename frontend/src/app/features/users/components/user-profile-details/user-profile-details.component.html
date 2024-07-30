@@ -1,18 +1,35 @@
 <mat-card appearance="outlined">
     <mat-card-header>
-        <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="chooseNewProfileImage()">
+        <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="openFileExplorerDialog()">
             <img *ngIf="user.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+user.profileImage"/>
         </div>
         <ng-template #defaultProfileImage>
             <img src="assets/default-profile-image.jpg" alt="">
         </ng-template>
         
-        <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" class="file-input" hidden/> 
+        <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" (change)="selectedFileChanged($event)" class="file-input" hidden/> 
         <mat-card-title>{{user.username}}</mat-card-title>
         <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
     </mat-card-header>
     
     <mat-card-content>
+        <ng-container *ngIf="profileImageUpload.value">
+            <image-cropper 
+                [imageChangedEvent]="imageChangedEvent" 
+                [roundCropper]="true"
+                format="png"
+                (imageCropped)="imageCropped($event)"> 
+            </image-cropper>
+            <div class="d-flex justify-content-end">
+                <button mat-mini-fab class="m-2 bg-danger" (click)="cancelImageChange()">
+                    <mat-icon fontIcon="cancel"></mat-icon>
+                </button>
+                <button mat-mini-fab class="m-2 bg-success" (click)="changeProfileImage()">
+                    <mat-icon fontIcon="check"></mat-icon>
+                </button>
+            </div>
+        </ng-container>
+        
         <p>Korisnik aplikacije od: {{user.dateCreated | formatDate}}</p>
         <ng-container *ngIf="loggedInUser?.role === 'admin' && !isOwnProfile; else nonAdminView">
             <mat-form-field>

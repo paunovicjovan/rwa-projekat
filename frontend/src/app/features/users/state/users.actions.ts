@@ -63,3 +63,17 @@ export const deleteUserAccountSuccess = createAction(
 export const deleteUserAccountFailure = createAction(
   '[Users] Delete User Account Failure',
 )
+
+export const changeUserProfileImage = createAction(
+  '[Users] Change User Profile Image',
+  props<{formData: FormData}>()
+)
+
+export const changeUserProfileImageSuccess = createAction(
+  '[Users] Change User Profile Image Success',
+  props<{ user: User }>()
+)
+
+export const changeUserProfileImageFailure = createAction(
+  '[Users] Change User Profile Image Failure',
+)

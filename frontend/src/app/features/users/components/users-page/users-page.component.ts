@@ -59,6 +59,6 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch(usersActions.clearLoadedUsers());
+    // this.store.dispatch(usersActions.clearLoadedUsers());
   }
 }
