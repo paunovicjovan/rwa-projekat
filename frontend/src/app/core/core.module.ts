@@ -9,11 +9,13 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HomeComponent } from './components/home/home.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    HomeComponent
+    HomeComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { jwtInterceptor } from './interceptors/jwt.interceptor';
     {provide:JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],
   exports: [
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ]
 })
 export class CoreModule {
