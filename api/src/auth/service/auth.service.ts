@@ -51,18 +51,19 @@ export class AuthService {
     }
 
     private makeUserEntity(user: CreateUserDto) : UserEntity {
-        const userEntity = new UserEntity();
-        userEntity.firstName = user.firstName;
-        userEntity.lastName = user.lastName;
-        userEntity.username = user.username;
-        userEntity.email = user.email;
-        userEntity.password = user.password;
-        userEntity.role = UserRoles.USER;
-        userEntity.dateCreated = new Date();
+        const userEntity : UserEntity = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            role: UserRoles.USER,
+            dateCreated: new Date()
+        } as UserEntity;
         
         return userEntity;
     }
-
+        
     login(credentials: LoginRequestDto) : Observable<AuthResponseDto> {
         return this.validateUser(credentials.email, credentials.password).pipe(
             switchMap((user: UserDto) => {

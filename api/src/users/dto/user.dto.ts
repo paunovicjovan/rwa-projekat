@@ -1,3 +1,4 @@
+import { ReviewDto } from "src/reviews/dto/review.dto";
 import { UserRoles } from "../enums/user-roles.enum";
 
 export class UserDto {
@@ -10,4 +11,6 @@ export class UserDto {
     role: UserRoles;
     profileImage: string | null;
     dateCreated: Date;
+    writtenReviews: ReviewDto[];
+    receivedReviews: ReviewDto[];
 }

@@ -39,7 +39,7 @@ export class UsersService {
         ))
     }
 
-    findOneById(id: number): Observable<ReturnUserDto> {
+    findOneById(id: number): Observable<UserDto> {
         return from(this.usersRepository.findOne({where:{id}}));
     }
 

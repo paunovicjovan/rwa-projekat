@@ -1,1 +1,5 @@
-export class CreateReviewDto {}
+
+export class CreateReviewDto {
+    rating: number;
+    content: string;
+}

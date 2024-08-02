@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRoles } from "../enums/user-roles.enum";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 
 
 @Entity()
@@ -31,4 +32,10 @@ export class UserEntity {
 
     @Column({type:"date", default: () => 'CURRENT_DATE'})
     dateCreated: Date;
+
+    @OneToMany(type => ReviewEntity, review => review.author)
+    writtenReviews: ReviewEntity[];
+
+    @OneToMany(type => ReviewEntity, review => review.reviewee)
+    receivedReviews: ReviewEntity[];
 }
