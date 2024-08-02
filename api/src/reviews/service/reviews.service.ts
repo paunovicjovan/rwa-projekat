@@ -9,6 +9,7 @@ import { ReviewDto } from '../dto/review.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UserDto } from 'src/users/dto/user.dto';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class ReviewsService {
@@ -42,16 +43,25 @@ export class ReviewsService {
     return reviewEntity;
   }
 
-  findAll() {
-    return `This action returns all reviews`;
-  }
+  findManyPaginated(options: IPaginationOptions, revieweeId: number) : Observable<Pagination<ReviewDto>> {
+    return from(paginate<ReviewDto>(
+        this.reviewsRepository, 
+        options, 
+        {
+            where: { reviewee: { id: revieweeId } },
+            order: { createdAt: 'DESC' }
+        }
+    ))
+}
 
   findOneById(id: number) : Observable<ReviewDto> {
     return from(this.reviewsRepository.findOne({where: {id}, relations: ['author']}));
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+  update(id: number, reviewData: UpdateReviewDto) {
+    return from(this.reviewsRepository.update(id, reviewData)).pipe(
+      switchMap(() => this.findOneById(id))
+    );
   }
 
   deleteOne(id: number) {

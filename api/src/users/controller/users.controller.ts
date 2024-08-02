@@ -43,6 +43,7 @@ export class UsersController {
         return this.usersService.findManyPaginated(paginateOptions, usersFilters);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get(':username')
     findOneByUsername(@Param('username') username: string) : Observable<ReturnUserDto> {
         return this.usersService.findOneByUsername(username);
