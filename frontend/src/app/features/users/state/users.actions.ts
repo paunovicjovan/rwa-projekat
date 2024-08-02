@@ -43,7 +43,7 @@ export const changeUserRole = createAction(
 
 export const changeUserRoleSuccess = createAction(
   '[Users] Change User Role Success',
-  props<{ newRole: UserRoles }>()
+  props<{ user: User }>()
 )
 
 export const changeUserRoleFailure = createAction(

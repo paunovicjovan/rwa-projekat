@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { AuthState } from "../models/auth-state.interface";
-import * as authActions from './auth.actions'
+import * as authActions from './auth.actions';
+import * as usersActions from '../../users/state/users.actions';
 
 export const initialState: AuthState = {
     isSubmitting: false,
@@ -60,6 +61,12 @@ export const authReducer = createReducer(
             ...state,
             currentLoggedInUser: null,
             token: null
+        }
+    }),
+    on(usersActions.changeUserProfileImageSuccess, (state, action) => {
+        return {
+            ...state,
+            currentLoggedInUser: action.user
         }
     })
 )

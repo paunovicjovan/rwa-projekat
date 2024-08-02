@@ -54,7 +54,7 @@ export const changeUserRole$ = createEffect(
             exhaustMap(({ userId, newRole }) =>
                 usersService.changeUserRole(userId, newRole).pipe(
                     map((user: User) => {
-                        return usersActions.changeUserRoleSuccess({ newRole: user.role })
+                        return usersActions.changeUserRoleSuccess({ user })
                     }),
                     catchError(() => {
                         return of(usersActions.changeUserRoleFailure())

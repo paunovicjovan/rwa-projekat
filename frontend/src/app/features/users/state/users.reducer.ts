@@ -70,13 +70,10 @@ export const usersReducer = createReducer(
         return usersAdapter.removeAll(state);
     }),
     on(usersActions.changeUserRoleSuccess, (state, action) => {
-        return {
+        return usersAdapter.updateOne({id: action.user.id, changes: action.user } , {
             ...state,
-            chosenUserProfile: {
-                ...state.chosenUserProfile!,
-                role: action.newRole
-            }
-        }
+            chosenUserProfile: action.user,
+        });
     }),
     on(usersActions.deleteUserAccount, (state)=>{
         return {
