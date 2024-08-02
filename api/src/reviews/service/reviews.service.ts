@@ -38,7 +38,7 @@ export class ReviewsService {
       author: author,
       reviewee: reviewee
     } as ReviewEntity;
-    
+
     return reviewEntity;
   }
 
@@ -46,15 +46,15 @@ export class ReviewsService {
     return `This action returns all reviews`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
+  findOneById(id: number) : Observable<ReviewDto> {
+    return from(this.reviewsRepository.findOne({where: {id}, relations: ['author']}));
   }
 
   update(id: number, updateReviewDto: UpdateReviewDto) {
     return `This action updates a #${id} review`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  deleteOne(id: number) {
+    return from(this.reviewsRepository.delete(id));
   }
 }

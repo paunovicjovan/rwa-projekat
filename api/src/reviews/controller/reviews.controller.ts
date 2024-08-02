@@ -5,6 +5,7 @@ import { UpdateReviewDto } from '../dto/update-review.dto';
 import { Observable } from 'rxjs';
 import { ReviewDto } from '../dto/review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ReviewAuthorOrAdminGuard } from '../guards/review-author-or-admin/review-author-or-admin.guard';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -24,7 +25,7 @@ export class ReviewsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.reviewsService.findOne(+id);
+    return this.reviewsService.findOneById(+id);
   }
 
   @Patch(':id')
@@ -32,8 +33,9 @@ export class ReviewsController {
     return this.reviewsService.update(+id, updateReviewDto);
   }
 
+  @UseGuards(JwtAuthGuard, ReviewAuthorOrAdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reviewsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.reviewsService.deleteOne(+id);
   }
 }
