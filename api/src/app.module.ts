@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import {TypeOrmModule} from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -28,7 +29,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
                 autoLoadEntities:true,
                 synchronize:true
               })
-            })
+            }),
+            ReviewsModule
           ],
   controllers: [AppController],
   providers: [AppService],

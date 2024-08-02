@@ -1,6 +1,6 @@
 import { UserRoles } from "../enums/user-roles.enum";
 
-export interface UpdateUserDto {
+export class UpdateUserDto {
     firstName?: string;
     lastName?: string;
     username?: string;

@@ -1,7 +1,7 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="container d-flex justify-content-center align-items-center p-4">
         <div class="row justify-content-center w-100">
-            <div class="col-sm-9 col-md-7 col-lg-5">
+            <div class="col-sm-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
                 <div class="py-4 px-5 border rounded shadow-sm bg-light">
                     <h3 class="text-center mb-4">Registracija</h3>
                     <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
