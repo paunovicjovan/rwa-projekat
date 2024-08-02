@@ -7,7 +7,7 @@ import { ReviewDto } from '../dto/review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReviewAuthorOrAdminGuard } from '../guards/review-author-or-admin/review-author-or-admin.guard';
 import { UserIsReviewAuthorGuard } from '../guards/user-is-review-author/user-is-review-author.guard';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -37,19 +37,19 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string) : Observable<ReviewDto> {
     return this.reviewsService.findOneById(+id);
   }
 
   @UseGuards(JwtAuthGuard, UserIsReviewAuthorGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) {
+  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Observable<ReviewDto> {
     return this.reviewsService.update(+id, reviewData);
   }
 
   @UseGuards(JwtAuthGuard, ReviewAuthorOrAdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: number) : Observable<any> {
     return this.reviewsService.deleteOne(+id);
   }
 }

@@ -58,13 +58,13 @@ export class ReviewsService {
     return from(this.reviewsRepository.findOne({where: {id}, relations: ['author']}));
   }
 
-  update(id: number, reviewData: UpdateReviewDto) {
+  update(id: number, reviewData: UpdateReviewDto) : Observable<ReviewDto> {
     return from(this.reviewsRepository.update(id, reviewData)).pipe(
       switchMap(() => this.findOneById(id))
     );
   }
 
-  deleteOne(id: number) {
+  deleteOne(id: number) : Observable<any> {
     return from(this.reviewsRepository.delete(id));
   }
 }
