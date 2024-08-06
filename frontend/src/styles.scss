@@ -31,3 +31,57 @@ body {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.text-bold {
+    font-weight: bold;
+}
+
+.bg-purple {
+    background-color: #756AB6;
+    transition: .4s;
+}
+
+.bg-green {
+    background-color: #325A50;
+    transition: .4s;
+}
+
+.bg-blue {
+    background-color: #96D2C8;
+    transition: .4s;
+}
+
+.bg-brown {
+    background-color: #9B7850;
+    transition: .4s;
+}
+
+.bg-beige {
+    background-color: #FEFAF6;
+    transition: .4s;
+}
+
+.text-purple {
+    color: #756AB6;
+    transition: .4s;
+}
+
+.text-green {
+    color: #325A50;
+    transition: .4s;
+}
+
+.text-blue {
+    color: #96D2C8;
+    transition: .4s;
+}
+
+.text-brown {
+    color: #9B7850;
+    transition: .4s;
+}
+
+.text-beige {
+    color: #FEFAF6;
+    transition: .4s;
+}
