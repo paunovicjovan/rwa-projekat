@@ -1,0 +1,49 @@
+import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
+import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
+import { ReviewsState } from "../models/reviews-state.interface";
+import { Review } from "../models/review.interface";
+import { createReducer, on } from "@ngrx/store";
+import * as reviewsActions from './reviews.actions'
+
+
+const initialPaginationMetadataState : PaginationMetadata = {
+    totalItems: 0,
+    itemCount: 10,
+    itemsPerPage: 3,
+    totalPages: 1,
+    currentPage: 1    
+}
+
+export const initialState: ReviewsState = {
+    ids: [],
+    entities: {},
+    isLoading: false,
+    paginationMetadata: initialPaginationMetadataState
+}
+
+export const reviewsAdapter: EntityAdapter<Review> = createEntityAdapter<Review>();
+
+export const reviewsReducer = createReducer(
+    initialState,
+    on(reviewsActions.loadReviewsOfUser, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(reviewsActions.loadReviewsOfUserSuccess, (state, action) => {
+        return reviewsAdapter.setAll(action.paginatedReviews.items, {
+            ...state, 
+            isLoading: false, 
+            paginationMetadata: {
+                ...action.paginatedReviews.meta
+            }
+        })
+    }),
+    on(reviewsActions.loadReviewsOfUserFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    })
+)

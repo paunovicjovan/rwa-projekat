@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="w-100 h-100">
+<mat-card *ngIf="user" appearance="outlined" class="w-100 h-100">
     <mat-card-header>
         <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="openFileExplorerDialog()">
             <img *ngIf="user.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+user.profileImage"/>
@@ -8,8 +8,8 @@
         </ng-template>
         
         <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" (change)="selectedFileChanged($event)" class="file-input" hidden/> 
-        <mat-card-title>{{user.username}}</mat-card-title>
-        <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
+        <mat-card-title><h6>{{user.username}}</h6></mat-card-title>
+        <mat-card-subtitle><p>{{user.firstName}} {{user.lastName}}</p></mat-card-subtitle>
     </mat-card-header>
     
     <mat-card-content>

@@ -7,13 +7,8 @@ import { environment } from '../../../../../environments/environment.development
   templateUrl: './review-display.component.html',
   styleUrl: './review-display.component.scss'
 })
-export class ReviewDisplayComponent implements OnInit {
+export class ReviewDisplayComponent {
 
   @Input({required: true}) review!: Review;
   apiUrl: string = environment.apiUrl;
-
-  ngOnInit(): void {
-    console.log(this.review);
-    
-  }
 }

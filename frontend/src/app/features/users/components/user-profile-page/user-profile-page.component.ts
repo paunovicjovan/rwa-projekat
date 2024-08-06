@@ -14,7 +14,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class UserProfilePageComponent implements OnInit, OnDestroy {
 
   routeParamsSubscription?: Subscription;
-  dataFromStore$!: Observable<any>;
+  // dataFromStore$!: Observable<any>;
+  username!: string;
 
   constructor(private store: Store<AppState>,
               private activatedRoute: ActivatedRoute
@@ -22,25 +23,25 @@ export class UserProfilePageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.observeRouteChanges();
-    this.selectDataFromStore();
+    // this.selectDataFromStore();
   }
 
   observeRouteChanges() {
     this.routeParamsSubscription = this.activatedRoute.params
     .pipe(map((params: Params) => params['username']))
-    .subscribe(username => this.loadUserProfile(username));
+    .subscribe(username => this.username = username);
   }
 
-  loadUserProfile(username: string) {
-    this.store.dispatch(usersActions.loadUserProfile({ username }));
-  }
+  // loadUserProfile(username: string) {
+  //   this.store.dispatch(usersActions.loadUserProfile({ username }));
+  // }
 
-  selectDataFromStore() {
-    this.dataFromStore$ = combineLatest({
-      isLoading: this.store.select(usersSelectors.selectIsLoading),
-      chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile)
-    });
-  }
+  // selectDataFromStore() {
+  //   this.dataFromStore$ = combineLatest({
+  //     isLoading: this.store.select(usersSelectors.selectIsLoading),
+  //     chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile)
+  //   });
+  // }
 
   ngOnDestroy(): void {
     this.routeParamsSubscription?.unsubscribe();

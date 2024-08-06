@@ -4,10 +4,11 @@ import { environment } from '../../../../../environments/environment.development
 import { AppState } from '../../../../state/app-state.interface';
 import { select, Store } from '@ngrx/store';
 import * as authSelectors from '../../../auth/state/auth.selectors';
+import * as usersSelectors from '../../state/users.selectors';
 import * as usersActions from '../../state/users.actions';
 import { UserRoles } from '../../models/user-roles.enum';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -17,25 +18,38 @@ import { Subscription } from 'rxjs';
 export class UserProfileDetailsComponent implements OnInit, OnDestroy {
   
   
-  @Input({required: true}) user!: User;
+  @Input({required: true}) username!: string;
   @ViewChild("profileImageUpload", {static:false}) profileImageUpload!:ElementRef;
+
   loggedInUser!: User | null | undefined;
+  user: User | null = null;
   isOwnProfile: boolean = false;
   apiUrl: string = environment.apiUrl;
   roles: string[] = Object.values(UserRoles);
   selectedRole!: UserRoles;
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
-  storeSubscription?: Subscription;
+
+  loggedInUserSubscription?: Subscription;
+  chosenUserSubscription?: Subscription;
   
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.storeSubscription = this.store.select(authSelectors.selectCurrentLoggedInUser).subscribe((currentLoggedInUser)=>{
+    this.store.dispatch(usersActions.loadUserProfile({ username: this.username }));
+
+    this.loggedInUserSubscription = this.store.select(authSelectors.selectCurrentLoggedInUser).subscribe((currentLoggedInUser)=>{
       this.loggedInUser = currentLoggedInUser;
-      this.isOwnProfile = this.loggedInUser?.id === this.user.id;
+      this.isOwnProfile = this.loggedInUser?.username === this.username;
     });
-    this.selectedRole = this.user.role;
+
+    this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
+      filter((user: User | null) => user !== null)
+    )
+    .subscribe((user: User) => {
+      this.user = user;
+      this.selectedRole = user.role;
+    })
   }
 
   selectedFileChanged(event: Event) {
@@ -70,14 +84,15 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   changeUserRole() {
-    this.store.dispatch(usersActions.changeUserRole({userId: this.user.id, newRole: this.selectedRole}))
+    this.store.dispatch(usersActions.changeUserRole({userId: this.user!.id, newRole: this.selectedRole}))
   }
 
   deleteUserAccount() {
-    this.store.dispatch(usersActions.deleteUserAccount({userId: this.user.id}))
+    this.store.dispatch(usersActions.deleteUserAccount({userId: this.user!.id}))
   }
 
   ngOnDestroy(): void {
-    this.storeSubscription?.unsubscribe();
+    this.loggedInUserSubscription?.unsubscribe();
+    this.chosenUserSubscription?.unsubscribe();
   }
 }

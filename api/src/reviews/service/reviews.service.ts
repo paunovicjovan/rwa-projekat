@@ -43,12 +43,12 @@ export class ReviewsService {
     return reviewEntity;
   }
 
-  findManyPaginated(options: IPaginationOptions, revieweeId: number) : Observable<Pagination<ReviewDto>> {
+  findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Observable<Pagination<ReviewDto>> {
     return from(paginate<ReviewDto>(
         this.reviewsRepository, 
         options, 
         {
-            where: { reviewee: { id: revieweeId } },
+            where: { reviewee: { username: revieweeUsername } },
             order: { createdAt: 'DESC' },
             relations: ['author']
         }

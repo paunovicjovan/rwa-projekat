@@ -1,18 +1,17 @@
-<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+<!-- <ng-container *ngIf="dataFromStore$ | async as dataFromStore"> -->
     <div class="container">
-        <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading; else loadedData" class="mx-auto"></mat-spinner>
+        <!-- <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading; else loadedData" class="mx-auto"></mat-spinner> -->
 
-        <ng-template #loadedData>
+        <!-- <ng-template #loadedData> -->
             <div class="row gap-md-0 gap-3">
                 <div class="col-md-4">
-                    <app-user-profile-details *ngIf="dataFromStore.chosenUserProfile"
-                        [user]="dataFromStore.chosenUserProfile"></app-user-profile-details>
+                    <app-user-profile-details [username]="username"></app-user-profile-details>
                 </div>
                 <div class="col-md-8">
-                    <app-reviews-list></app-reviews-list>
+                    <app-reviews-list [username]="username"></app-reviews-list>
                 </div>
             </div>
-        </ng-template>
+        <!-- </ng-template> -->
         
     </div>
-</ng-container>
+<!-- </ng-container> -->

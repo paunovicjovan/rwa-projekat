@@ -1,3 +1,4 @@
+import { Review } from "../../reviews/models/review.interface";
 import { UserRoles } from "./user-roles.enum";
 
 export interface User {
@@ -9,4 +10,5 @@ export interface User {
     role: UserRoles;
     dateCreated: Date;
     profileImage: string | null;
+    reviews: Review[]
 }
