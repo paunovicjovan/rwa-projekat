@@ -1,5 +1,5 @@
 <mat-card *ngIf="user" appearance="outlined" class="w-100 h-100">
-    <mat-card-header>
+    <mat-card-header class="d-flex justify-content-center">
         <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="openFileExplorerDialog()">
             <img *ngIf="user.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+user.profileImage"/>
         </div>
@@ -8,11 +8,11 @@
         </ng-template>
         
         <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" (change)="selectedFileChanged($event)" class="file-input" hidden/> 
-        <mat-card-title><h6>{{user.username}}</h6></mat-card-title>
-        <mat-card-subtitle><p>{{user.firstName}} {{user.lastName}}</p></mat-card-subtitle>
     </mat-card-header>
     
     <mat-card-content>
+        <mat-card-title><h6 class="text-center">{{user.username}}</h6></mat-card-title>
+        <mat-card-subtitle><p class="text-center text-bold lead">{{user.firstName}} {{user.lastName}}</p></mat-card-subtitle>
         <ng-container *ngIf="profileImageUpload.value">
             <image-cropper 
                 [imageChangedEvent]="imageChangedEvent" 
@@ -29,8 +29,8 @@
                 </button>
             </div>
         </ng-container>
-        
-        <p>Korisnik aplikacije od: {{user.dateCreated | formatDate}}</p>
+        <hr>
+        <p>Korisnik aplikacije od: <span class="text-bold">{{user.dateCreated | formatDate}}</span></p>
         <ng-container *ngIf="loggedInUser?.role === 'admin' && !isOwnProfile; else nonAdminView">
             <mat-form-field>
                 <mat-label>Uloga</mat-label>
@@ -51,7 +51,7 @@
         </ng-container>
 
         <ng-template #nonAdminView>
-            <span>Uloga: {{user.role | translateRole }}</span>
+            <p>Uloga: <span class="text-bold">{{user.role | translateRole }}</span></p>
         </ng-template>        
 
     </mat-card-content>

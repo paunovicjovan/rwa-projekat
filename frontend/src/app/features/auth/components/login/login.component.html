@@ -1,9 +1,9 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
-    <div class="container flex-grow-1 d-flex justify-content-center align-items-center p-4">
+    <div class="container flex-grow-1 d-flex justify-content-center align-items-center py-5">
         <div class="row justify-content-center w-100">
-            <div class="col-sm-9 col-md-7 col-lg-5">
+            <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
                 <div class="p-4 border rounded shadow-sm bg-light">
-                    <h3 class="text-center mb-4">Prijava</h3>
+                    <h3 class="text-center mb-4 text-green">Prijava</h3>
                     <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
                         <div class="mb-3">
                             <p class="text-danger" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
@@ -23,9 +23,9 @@
                         <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting" class="d-block mx-auto"></mat-spinner>
                         <br>
                         <div class="text-center mb-3">
-                            <span>Nemate nalog? <a routerLink="/register" class="register-link">Registrujte se</a></span>
+                            <span>Nemate nalog? <a routerLink="/register" class="text-purple text-decoration-none">Registrujte se</a></span>
                         </div>
-                        <button mat-flat-button color="primary" [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100">Prijavi Se</button>
+                        <button [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100 btn bg-purple text-beige border-0">Prijavi Se</button>
                     </form>
                 </div>
             </div>

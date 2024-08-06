@@ -24,7 +24,12 @@ body {
 .mat-typography h3,
 .mat-typography h4,
 .mat-typography h5,
-.mat-typography h6 {
+.mat-typography h6,
+.mat-typography p,
+.mat-typography span,
+.mat-typography button,
+.mat-typography input,
+.mat-typography input::placeholder {
   font-family: 'Manrope' !important;
 }
 
@@ -41,10 +46,31 @@ body {
     transition: .4s;
 }
 
+.bg-purple:hover {
+    background-color: #9082df;
+    transition: .4s;
+}
+
+.bg-purple:disabled {
+    background-color: #988ece;
+    transition: .4s;
+}
+
 .bg-green {
     background-color: #325A50;
     transition: .4s;
 }
+
+.bg-green:hover {
+    background-color: #3f7466;
+    transition: .4s;
+}
+
+.bg-green:disabled {
+    background-color: #42685e;
+    transition: .4s;
+}
+
 
 .bg-blue {
     background-color: #96D2C8;
@@ -83,5 +109,15 @@ body {
 
 .text-beige {
     color: #FEFAF6;
+    transition: .4s;
+}
+
+.text-beige:hover {
+    color: #FEFAF6;
+    transition: .4s;
+}
+
+.text-beige:disabled {
+    color: #e2d9d0;
     transition: .4s;
 }

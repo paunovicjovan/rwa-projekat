@@ -3,7 +3,7 @@
         <div class="row justify-content-center w-100">
             <div class="col-sm-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
                 <div class="py-4 px-5 border rounded shadow-sm bg-light">
-                    <h3 class="text-center mb-4">Registracija</h3>
+                    <h3 class="text-center mb-4 text-green">Registracija</h3>
                     <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
                         <div class="mb-3">
                             <p class="text-danger" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
@@ -47,9 +47,9 @@
                         <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting" class="d-block mx-auto"></mat-spinner>
                         <br>
                         <div class="text-center mb-3">
-                            <span>Imate nalog? <a routerLink="/login" class="login-link">Prijavite se</a></span>
+                            <span>Imate nalog? <a routerLink="/login" class="text-purple text-decoration-none">Prijavite se</a></span>
                         </div>
-                        <button mat-flat-button color="primary" [disabled]="registerForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100">Registruj Se</button>
+                        <button [disabled]="registerForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100 btn bg-purple text-beige border-0">Registruj Se</button>
                     </form>
                 </div>
             </div>
