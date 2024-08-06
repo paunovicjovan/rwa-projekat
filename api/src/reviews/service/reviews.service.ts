@@ -49,7 +49,8 @@ export class ReviewsService {
         options, 
         {
             where: { reviewee: { id: revieweeId } },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'DESC' },
+            relations: ['author']
         }
     ))
 }

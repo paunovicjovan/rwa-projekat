@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="w-100 h-100">
     <mat-card-header>
         <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="openFileExplorerDialog()">
             <img *ngIf="user.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+user.profileImage"/>
@@ -52,9 +52,7 @@
 
         <ng-template #nonAdminView>
             <span>Uloga: {{user.role | translateRole }}</span>
-        </ng-template>
-
-        
+        </ng-template>        
 
     </mat-card-content>
 

@@ -1,0 +1,4 @@
+<mat-card appearance="outlined" class="p-3">
+    <h6 class="mb-3">Ocene korisnika</h6>
+    <app-review-display *ngFor="let review of reviews" [review]="review"></app-review-display>
+</mat-card>

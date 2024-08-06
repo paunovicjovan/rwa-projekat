@@ -10,6 +10,7 @@ import * as usersEffects from './state/users.effects';
 import { UsersPageComponent } from './components/users-page/users-page.component';
 import { UsersSearchFiltersComponent } from './components/users-search-filters/users-search-filters.component';
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
+import { ReviewsModule } from '../reviews/reviews.module';
 
 
 
@@ -23,6 +24,7 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
   ],
   imports: [
     SharedModule,
+    ReviewsModule,
     StoreModule.forFeature(Features.Users, usersReducer),
     EffectsModule.forFeature(usersEffects)
   ]

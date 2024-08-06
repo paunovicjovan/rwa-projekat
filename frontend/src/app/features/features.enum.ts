@@ -1,5 +1,6 @@
 
 export enum Features {
     Auth = 'auth',
-    Users = 'users'
+    Users = 'users',
+    Reviews = 'reviews'
 }
