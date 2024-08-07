@@ -14,10 +14,10 @@ export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post(':revieweeId')
-  create(@Param('revieweeId') revieweeId: number, @Body() review: CreateReviewDto, @Request() req) : Observable<ReviewDto> {
+  @Post(':revieweeUsername')
+  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Observable<ReviewDto> {
     const authorId = req.user.id;
-    return this.reviewsService.create(review, +authorId, +revieweeId);
+    return this.reviewsService.create(review, +authorId, revieweeUsername);
   }
 
   @UseGuards(JwtAuthGuard)

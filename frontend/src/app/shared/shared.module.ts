@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormatDatePipe } from './pipes/format-date/format-date.pipe';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { TranslateRolePipe } from './pipes/translate-role/translate-role.pipe';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const modules = [
   CommonModule,
@@ -29,7 +30,8 @@ const modules = [
   MatPaginatorModule,
   MatBadgeModule,
   MatSelectModule,
-  ImageCropperComponent
+  ImageCropperComponent,
+  MatDialogModule
 ]
 
 @NgModule({

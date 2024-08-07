@@ -9,12 +9,14 @@ import { Features } from '../features.enum';
 import { EffectsModule } from '@ngrx/effects';
 import * as reviewsEffects from './state/reviews.effects';
 import { reviewsReducer } from './state/reviews.reducer';
+import { ReviewFormComponent } from './components/review-form/review-form.component';
 
 
 @NgModule({
   declarations: [
     ReviewDisplayComponent,
     ReviewsListComponent,
+    ReviewFormComponent,
   ],
   imports: [
     SharedModule,

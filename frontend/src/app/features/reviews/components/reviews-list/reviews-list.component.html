@@ -1,32 +1,35 @@
-<mat-card appearance="outlined" class="p-3">
-    <h5 class="mb-3">Ocene korisnika</h5>
-
-    <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <mat-card appearance="outlined" class="p-3">
+        <div class="d-flex justify-content-between flex-column flex-sm-row">
+            <h5 class="mb-3">Ocene korisnika</h5>
+            <button *ngIf="dataFromStore.loggedInUser.username !== revieweeUsername"
+                class="btn bg-green text-beige h-50 mb-3 mb-sm-0" (click)="showNewReviewForm()">
+                Dodaj ocenu
+            </button>
+        </div>
+            
         <div class="container d-flex flex-column align-items-center">
             <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading"></mat-spinner>
-    
+
             <ng-container *ngIf="!dataFromStore.isLoading">
-                <div class="row">
-                    <app-review-display *ngFor="let review of dataFromStore.reviews" [review]="review"></app-review-display>
+                <div class="row w-100">
+                    <app-review-display class="w-100" *ngFor="let review of dataFromStore.reviews"
+                        [review]="review"></app-review-display>
                 </div>
             </ng-container>
-            
-            <ng-container *ngIf="dataFromStore.reviews.length === 0; else paginator" >
+
+            <ng-container *ngIf="dataFromStore.reviews.length === 0; else paginator">
                 <img src="assets/no-content.png" class="img img-fluid" alt="Nema sadrzaja">
                 <p class="lead">Korisnik nema nijednu ocenu</p>
             </ng-container>
-            
+
             <ng-template #paginator>
-                <mat-paginator 
-                    class="mt-3"
-                    [length]="dataFromStore.paginationMetadata.totalItems" 
-                    [pageSize]="dataFromStore.paginationMetadata.itemsPerPage" 
-                    [pageSizeOptions]="[3, 5, 10]" 
-                    [showFirstLastButtons]="true"
-                    (page)="onPaginateChange($event)">
+                <mat-paginator class="mt-3" [length]="dataFromStore.paginationMetadata.totalItems"
+                    [pageSize]="dataFromStore.paginationMetadata.itemsPerPage" [pageSizeOptions]="[3, 5, 10]"
+                    [showFirstLastButtons]="true" (page)="onPaginateChange($event)">
                 </mat-paginator>
             </ng-template>
         </div>
-    </ng-container>
 
-</mat-card>
+    </mat-card>
+</ng-container>

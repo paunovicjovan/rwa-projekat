@@ -6,5 +6,5 @@ export interface Review {
     content: string;
     createdAt: Date;
     author: User;
-    //reviewee: User;
+    reviewee: User;
 }

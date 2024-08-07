@@ -1,4 +1,4 @@
-<mat-card class="mx-auto mb-3 p-1 col-12" appearance="outlined">
+<mat-card class="mx-auto mb-3 p-1 col-12 w-100" appearance="outlined">
     <mat-card-header class="d-flex flex-row align-items-center">
         <div class="profile-image d-flex align-items-center">
             <img *ngIf="review.author.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + review.author.profileImage" alt="" />

@@ -19,10 +19,10 @@ export class ReviewsService {
       private usersService: UsersService
     ) {}
 
-  create(review: CreateReviewDto, authorId: number, revieweeId: number) : Observable<ReviewDto> {
+  create(review: CreateReviewDto, authorId: number, revieweeUsername: string) : Observable<ReviewDto> {
     return forkJoin([
       this.usersService.findOneById(authorId),
-      this.usersService.findOneById(revieweeId)
+      this.usersService.findOneByUsername(revieweeUsername)
     ]).pipe(
       switchMap(([author, reviewee]) => {
         const reviewEntity = this.createReviewEntity(review, author, reviewee);

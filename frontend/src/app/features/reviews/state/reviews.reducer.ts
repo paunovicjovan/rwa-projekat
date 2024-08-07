@@ -45,5 +45,24 @@ export const reviewsReducer = createReducer(
             ...state,
             isLoading: false
         }
+    }),
+    on(reviewsActions.createReview, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(reviewsActions.createReviewSuccess, (state, action) => {
+        reviewsAdapter.removeOne(Number(state.ids[state.ids.length-1]), state);
+        return reviewsAdapter.addOne(action.review, {
+            ...state, 
+            isLoading: false
+        })
+    }),
+    on(reviewsActions.createReviewFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
     })
 )
