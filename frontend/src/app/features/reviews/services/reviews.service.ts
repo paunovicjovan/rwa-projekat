@@ -5,6 +5,7 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.int
 import { Review } from '../models/review.interface';
 import { environment } from '../../../../environments/environment.development';
 import { CreateReviewDto } from '../models/create-review-dto.interface';
+import { UpdateReviewDto } from '../models/update-review-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,19 @@ export class ReviewsService {
     return this.http.get<PaginatedResponse<Review>>(`${environment.apiUrl}/reviews/${username}`, { params: httpParams });
   }
 
-  create(reviewDto: CreateReviewDto, revieweeUsername: string): Observable<Review> {
-    return this.http.post<Review>(`${environment.apiUrl}/reviews/${revieweeUsername}`, reviewDto);
+  create(reviewDto: CreateReviewDto): Observable<Review> {
+    const requestBody = {
+      rating: reviewDto.rating,
+      content: reviewDto.content
+    }
+    return this.http.post<Review>(`${environment.apiUrl}/reviews/${reviewDto.revieweeUsername}`, requestBody);
+  }
+
+  update(reviewDto: UpdateReviewDto): Observable<Review> {
+    const requestBody = {
+      rating: reviewDto.rating,
+      content: reviewDto.content
+    }
+    return this.http.put<Review>(`${environment.apiUrl}/reviews/${reviewDto.id}`, requestBody);
   }
 }

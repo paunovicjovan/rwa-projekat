@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Review } from '../../models/review.interface';
 import { environment } from '../../../../../environments/environment.development';
 
@@ -10,5 +10,12 @@ import { environment } from '../../../../../environments/environment.development
 export class ReviewDisplayComponent {
 
   @Input({required: true}) review!: Review;
+  @Input() canUpdate: boolean = false;
+  @Input() canDelete: boolean = false;
+  @Output() updateReview: EventEmitter<Review> = new EventEmitter();
   apiUrl: string = environment.apiUrl;
+
+  handleReviewUpdate() {
+    this.updateReview.emit(this.review);
+  }
 }

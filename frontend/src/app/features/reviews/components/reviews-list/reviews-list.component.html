@@ -14,7 +14,14 @@
             <ng-container *ngIf="!dataFromStore.isLoading">
                 <div class="row w-100">
                     <app-review-display class="w-100" *ngFor="let review of dataFromStore.reviews"
-                        [review]="review"></app-review-display>
+                        [review]="review" 
+                        [canUpdate]="dataFromStore.loggedInUser.id === review.author.id"
+                        [canDelete]="dataFromStore.loggedInUser.role === 'admin' || 
+                                     dataFromStore.loggedInUser.role === 'moderator' || 
+                                     dataFromStore.loggedInUser.id === review.author.id"
+                        (updateReview)="showUpdateReviewForm($event)"
+                                     >
+                    </app-review-display>
                 </div>
             </ng-container>
 

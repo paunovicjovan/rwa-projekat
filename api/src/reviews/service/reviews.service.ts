@@ -50,13 +50,13 @@ export class ReviewsService {
         {
             where: { reviewee: { username: revieweeUsername } },
             order: { createdAt: 'DESC' },
-            relations: ['author']
+            relations: ['author', 'reviewee']
         }
     ))
 }
 
   findOneById(id: number) : Observable<ReviewDto> {
-    return from(this.reviewsRepository.findOne({where: {id}, relations: ['author']}));
+    return from(this.reviewsRepository.findOne({where: {id}, relations: ['author', 'reviewee']}));
   }
 
   update(id: number, reviewData: UpdateReviewDto) : Observable<ReviewDto> {

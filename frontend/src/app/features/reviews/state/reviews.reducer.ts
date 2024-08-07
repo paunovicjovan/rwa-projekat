@@ -54,7 +54,32 @@ export const reviewsReducer = createReducer(
     }),
     on(reviewsActions.createReviewSuccess, (state, action) => {
         reviewsAdapter.removeOne(Number(state.ids[state.ids.length-1]), state);
+
         return reviewsAdapter.addOne(action.review, {
+            ...state, 
+            isLoading: false,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems + 1,
+                itemCount: state.paginationMetadata.itemCount + 1,
+                itemsPerPage: state.paginationMetadata.itemsPerPage + 1
+            }
+        })
+    }),
+    on(reviewsActions.createReviewFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(reviewsActions.updateReview, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(reviewsActions.updateReviewSuccess, (state, action) => {
+        return reviewsAdapter.updateOne( {id: action.review.id, changes: action.review }, {
             ...state, 
             isLoading: false
         })

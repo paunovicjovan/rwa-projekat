@@ -41,10 +41,10 @@ export const openReviewDialog$ = createEffect(
                     concatMap((dialogResult: ReviewDialogData) => {
                         if (dialogResult !== undefined) {
                             if(dialogResult.id === undefined) {
-                                return of(reviewsActions.createReview({reviewDto: {content: dialogResult.content!, rating: dialogResult.rating!}, revieweeUsername: dialogResult.revieweeUsername}))
+                                return of(reviewsActions.createReview({reviewDto: {content: dialogResult.content!, rating: dialogResult.rating!, revieweeUsername: dialogResult.revieweeUsername}}))
                             }
                             else 
-                                return of(NoOperation());
+                                return of(reviewsActions.updateReview({reviewDto: {id: dialogResult.id, content: dialogResult.content!, rating: dialogResult.rating!}}));
                         }
                         else {
                             return of(NoOperation())
@@ -62,13 +62,33 @@ export const createReview$ = createEffect(
     (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
         return action$.pipe(
             ofType(reviewsActions.createReview),
-            exhaustMap(({ reviewDto, revieweeUsername }) =>
-                reviewsService.create(reviewDto, revieweeUsername).pipe(
+            concatMap(({ reviewDto }) =>
+                reviewsService.create(reviewDto).pipe(
                     map(( review: Review ) => {
                         return reviewsActions.createReviewSuccess({ review })
                     }),
                     catchError(() => {
                         return of(reviewsActions.createReviewFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const updateReview$ = createEffect(
+    (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
+        return action$.pipe(
+            ofType(reviewsActions.updateReview),
+            concatMap(({ reviewDto }) =>
+                reviewsService.update(reviewDto).pipe(
+                    map(( review: Review ) => {
+                        return reviewsActions.updateReviewSuccess({ review })
+                    }),
+                    catchError(() => {
+                        return of(reviewsActions.updateReviewFailure())
                     }
                     )
                 )

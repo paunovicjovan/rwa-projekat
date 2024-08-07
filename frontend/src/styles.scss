@@ -87,6 +87,16 @@ body {
     transition: .4s;
 }
 
+.bg-red {
+    background-color: #FF4C4C;
+    transition: .4s;
+}
+
+.bg-red:hover {
+    background-color: #f05a5a;
+    transition: .4s;
+}
+
 .text-purple {
     color: #756AB6;
     transition: .4s;

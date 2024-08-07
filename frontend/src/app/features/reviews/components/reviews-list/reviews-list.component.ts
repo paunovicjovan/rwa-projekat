@@ -47,4 +47,14 @@ export class ReviewsListComponent implements OnInit {
     }
     this.store.dispatch(reviewsActions.openReviewDialog({dialogData}))
   }
+
+  showUpdateReviewForm(review: Review) {
+    const dialogData: ReviewDialogData = {
+      id: review.id,
+      rating: review.rating,
+      content: review.content,
+      revieweeUsername: review.reviewee.username
+    }
+    this.store.dispatch(reviewsActions.openReviewDialog({dialogData}));
+  }
 }
