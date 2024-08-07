@@ -15,6 +15,10 @@ import { FormatDatePipe } from './pipes/format-date/format-date.pipe';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 import { TranslateRolePipe } from './pipes/translate-role/translate-role.pipe';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import * as sharedEffects from './state/shared.effects';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 const modules = [
   CommonModule,
@@ -37,15 +41,18 @@ const modules = [
 @NgModule({
   declarations: [
     FormatDatePipe,
-    TranslateRolePipe
+    TranslateRolePipe,
+    ConfirmDialogComponent
   ],
   imports: [
-    ...modules
+    ...modules,
+    EffectsModule.forFeature(sharedEffects)
   ],
   exports: [
     ...modules,
     FormatDatePipe,
-    TranslateRolePipe
+    TranslateRolePipe,
+    ConfirmDialogComponent
   ]
 })
 export class SharedModule { }

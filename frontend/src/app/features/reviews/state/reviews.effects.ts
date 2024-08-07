@@ -7,7 +7,7 @@ import { PaginatedResponse } from "../../../shared/models/paginated-response.int
 import { Review } from "../models/review.interface";
 import { MatDialog } from "@angular/material/dialog";
 import { ReviewFormComponent } from "../components/review-form/review-form.component";
-import { NoOperation } from "../../../shared/state/shared.actions";
+import { noOperation } from "../../../shared/state/shared.actions";
 import { ReviewDialogData } from "../models/review-dialog-data.interface";
 
 
@@ -36,7 +36,7 @@ export const openReviewDialog$ = createEffect(
         return action$.pipe(
             ofType(reviewsActions.openReviewDialog),
             exhaustMap(({ dialogData }) => {
-                const dialogRef = dialog.open(ReviewFormComponent, { data: dialogData });
+                const dialogRef = dialog.open(ReviewFormComponent, { width: '600px', data: dialogData });
                 return dialogRef.afterClosed().pipe(
                     concatMap((dialogResult: ReviewDialogData) => {
                         if (dialogResult !== undefined) {
@@ -47,7 +47,7 @@ export const openReviewDialog$ = createEffect(
                                 return of(reviewsActions.updateReview({reviewDto: {id: dialogResult.id, content: dialogResult.content!, rating: dialogResult.rating!}}));
                         }
                         else {
-                            return of(NoOperation())
+                            return of(noOperation())
                         }
                     })
                 );
@@ -89,6 +89,26 @@ export const updateReview$ = createEffect(
                     }),
                     catchError(() => {
                         return of(reviewsActions.updateReviewFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const deleteReview$ = createEffect(
+    (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
+        return action$.pipe(
+            ofType(reviewsActions.deleteReview),
+            concatMap(({ reviewId }) =>
+                reviewsService.delete(reviewId).pipe(
+                    map(() => {
+                        return reviewsActions.deleteReviewSuccess({ deletedReviewId: reviewId })
+                    }),
+                    catchError(() => {
+                        return of(reviewsActions.deleteReviewFailure())
                     }
                     )
                 )

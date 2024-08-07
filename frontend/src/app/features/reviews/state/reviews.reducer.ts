@@ -89,5 +89,29 @@ export const reviewsReducer = createReducer(
             ...state,
             isLoading: false
         }
+    }),
+    on(reviewsActions.deleteReview, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(reviewsActions.deleteReviewSuccess, (state, action) => {
+        return reviewsAdapter.removeOne(action.deletedReviewId, {
+            ...state, 
+            isLoading: false,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems - 1,
+                itemCount: state.paginationMetadata.itemCount - 1,
+                itemsPerPage: state.paginationMetadata.itemsPerPage - 1
+            }
+        })
+    }),
+    on(reviewsActions.deleteReviewFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
     })
 )

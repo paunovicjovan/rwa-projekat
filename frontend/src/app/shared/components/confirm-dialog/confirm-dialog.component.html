@@ -1,0 +1,13 @@
+
+<mat-dialog-content>
+    <h6>Potvrda akcije</h6>
+    <hr>
+    <p>{{data.message}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn bg-brown text-beige me-3" (click)="handleNoClick()" cdkFocusInitial>Ne</button>
+        <button class="btn bg-green text-beige" (click)="handleYesClick()">Da</button>
+    </div>
+</mat-dialog-actions>

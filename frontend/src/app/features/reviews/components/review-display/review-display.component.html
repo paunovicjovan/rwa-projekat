@@ -21,7 +21,7 @@
                 <button *ngIf="canUpdate" class="btn bg-brown text-beige btn-sm me-2" (click)="handleReviewUpdate()">
                     <mat-icon fontIcon="edit"></mat-icon>
                 </button>
-                <button *ngIf="canDelete" class="btn bg-red text-beige btn-sm">
+                <button *ngIf="canDelete" class="btn bg-red text-beige btn-sm" (click)="handleReviewDelete()">
                     <mat-icon fontIcon="delete"></mat-icon>
                 </button>
             </div>

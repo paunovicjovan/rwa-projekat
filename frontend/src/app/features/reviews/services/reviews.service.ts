@@ -37,4 +37,8 @@ export class ReviewsService {
     }
     return this.http.put<Review>(`${environment.apiUrl}/reviews/${reviewDto.id}`, requestBody);
   }
+  
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/reviews/${id}`);
+  }
 }

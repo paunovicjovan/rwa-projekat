@@ -9,6 +9,7 @@ import * as usersActions from '../../state/users.actions';
 import { UserRoles } from '../../models/user-roles.enum';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { filter, Subscription } from 'rxjs';
+import * as sharedActions from '../../../../shared/state/shared.actions';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -88,7 +89,10 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteUserAccount() {
-    this.store.dispatch(usersActions.deleteUserAccount({userId: this.user!.id}))
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: "Da li sigurno želite da obrišete ovaj nalog?",
+      actionToDispatch: usersActions.deleteUserAccount({userId: this.user!.id})
+    }))
   }
 
   ngOnDestroy(): void {

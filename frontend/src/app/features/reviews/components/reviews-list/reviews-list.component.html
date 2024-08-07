@@ -20,7 +20,7 @@
                                      dataFromStore.loggedInUser.role === 'moderator' || 
                                      dataFromStore.loggedInUser.id === review.author.id"
                         (updateReview)="showUpdateReviewForm($event)"
-                                     >
+                        (deleteReview)="deleteReview($event)">
                     </app-review-display>
                 </div>
             </ng-container>

@@ -18,7 +18,6 @@ export class ReviewFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    //this.patchValuesToForm();
   }
 
   initializeForm() {
@@ -34,13 +33,6 @@ export class ReviewFormComponent implements OnInit {
       ]]
     });
   }
-
-  // patchValuesToForm() {
-  //   this.reviewForm.patchValue({
-  //     rating: this.dialogData.rating,
-  //     content: this.dialogData.content
-  //   });
-  // }
 
   handleCancelForm() {
     this.dialogRef.close(undefined);

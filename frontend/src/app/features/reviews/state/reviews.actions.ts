@@ -51,3 +51,17 @@ export const updateReviewSuccess = createAction(
 export const updateReviewFailure = createAction(
     '[Reviews] Update Review Failure'
 )
+
+export const deleteReview = createAction(
+    '[Reviews] Delete Review',
+    props<{ reviewId: number }>()
+);
+
+export const deleteReviewSuccess = createAction(
+    '[Reviews] Delete Review Success',
+    props<{ deletedReviewId : number }>()
+);
+
+export const deleteReviewFailure = createAction(
+    '[Reviews] Delete Review Failure'
+)

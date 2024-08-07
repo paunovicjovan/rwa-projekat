@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Review } from '../../models/review.interface';
-import { UserRoles } from '../../../users/models/user-roles.enum';
 import { AppState } from '../../../../state/app-state.interface';
 import { Store } from '@ngrx/store';
 import * as reviewsActions from '../../state/reviews.actions'
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, filter, Observable, tap } from 'rxjs';
 import * as reviewsSelectors from '../../state/reviews.selectors';
 import * as authSelectors from '../../../auth/state/auth.selectors';
 import { PageEvent } from '@angular/material/paginator';
 import { ReviewDialogData } from '../../models/review-dialog-data.interface';
+import * as sharedActions from '../../../../shared/state/shared.actions';
 
 @Component({
   selector: 'app-reviews-list',
@@ -56,5 +56,12 @@ export class ReviewsListComponent implements OnInit {
       revieweeUsername: review.reviewee.username
     }
     this.store.dispatch(reviewsActions.openReviewDialog({dialogData}));
+  }
+
+  deleteReview(reviewId: number) {
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: "Da li sigurno želite da obrišete izabranu ocenu?",
+      actionToDispatch: reviewsActions.deleteReview({reviewId})
+    }))    
   }
 }
