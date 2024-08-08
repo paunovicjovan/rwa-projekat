@@ -11,6 +11,9 @@ export class TranslateRolePipe implements PipeTransform {
       case UserRoles.ADMIN:
       case 'admin':
         return 'Administrator';
+      case UserRoles.MODERATOR:
+      case 'moderator':
+        return 'Moderator';
       case UserRoles.USER:
       case 'user':
         return 'Korisnik';

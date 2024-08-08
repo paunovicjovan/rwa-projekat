@@ -16,9 +16,10 @@
                     <app-review-display class="w-100" *ngFor="let review of dataFromStore.reviews"
                         [review]="review" 
                         [canUpdate]="dataFromStore.loggedInUser.id === review.author.id"
-                        [canDelete]="dataFromStore.loggedInUser.role === 'admin' || 
+                        [canDelete]="(dataFromStore.loggedInUser.role === 'admin' || 
                                      dataFromStore.loggedInUser.role === 'moderator' || 
-                                     dataFromStore.loggedInUser.id === review.author.id"
+                                     dataFromStore.loggedInUser.id === review.author.id) &&
+                                     dataFromStore.loggedInUser.id !== review.reviewee.id"
                         (updateReview)="showUpdateReviewForm($event)"
                         (deleteReview)="deleteReview($event)">
                     </app-review-display>

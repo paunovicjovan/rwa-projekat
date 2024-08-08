@@ -1,6 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRoles } from "../enums/user-roles.enum";
 import { ReviewEntity } from "src/reviews/entities/review.entity";
+import { TagEntity } from "src/tags/entities/tag.entity";
+import { ProjectEntity } from "src/projects/entities/project.entity";
 
 
 @Entity()
@@ -30,12 +32,24 @@ export class UserEntity {
     @Column({default: null, nullable: true})
     profileImage: string | null;
 
-    @Column({type:"date", default: () => 'CURRENT_DATE'})
+    @CreateDateColumn()
     createdAt: Date;
 
-    @OneToMany(type => ReviewEntity, review => review.author)
+    @OneToMany(() => ReviewEntity, review => review.author)
     writtenReviews: ReviewEntity[];
 
-    @OneToMany(type => ReviewEntity, review => review.reviewee)
+    @OneToMany(() => ReviewEntity, review => review.reviewee)
     receivedReviews: ReviewEntity[];
+
+    @ManyToMany(() => TagEntity, tag => tag.users)
+    tags: TagEntity[]
+
+    @OneToMany(() => ProjectEntity, project => project.createdBy)
+    createdProjects: ProjectEntity[]
+
+    @ManyToMany(() => ProjectEntity, project => project.appliedBy)
+    appliedTo: ProjectEntity[]
+
+    @ManyToMany(() => ProjectEntity, project => project.acceptedUsers)
+    acceptedIn: ProjectEntity[]
 }

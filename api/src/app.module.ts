@@ -7,6 +7,8 @@ import { PassportModule } from '@nestjs/passport';
 import {TypeOrmModule} from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ReviewsModule } from './reviews/reviews.module';
+import { TagsModule } from './tags/tags.module';
+import { ProjectsModule } from './projects/projects.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -30,7 +32,9 @@ import { ReviewsModule } from './reviews/reviews.module';
                 synchronize:true
               })
             }),
-            ReviewsModule
+            ReviewsModule,
+            TagsModule,
+            ProjectsModule
           ],
   controllers: [AppController],
   providers: [AppService],

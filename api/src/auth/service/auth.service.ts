@@ -58,7 +58,7 @@ export class AuthService {
             email: user.email,
             password: user.password,
             role: UserRoles.USER,
-            dateCreated: new Date()
+            createdAt: new Date()
         } as UserEntity;
         
         return userEntity;
