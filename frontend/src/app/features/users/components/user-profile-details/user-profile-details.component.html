@@ -1,59 +1,75 @@
-<mat-card *ngIf="user" appearance="outlined" class="w-100 h-100">
-    <mat-card-header class="d-flex justify-content-center">
-        <div mat-card-avatar matBadge="+" matBadgePosition="below" matBadgeSize="large" [matBadgeHidden]="!isOwnProfile" class="profile-image" (click)="openFileExplorerDialog()">
-            <img *ngIf="user.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+user.profileImage"/>
-        </div>
-        <ng-template #defaultProfileImage>
-            <img src="assets/default-profile-image.jpg" alt="">
-        </ng-template>
-        
-        <input type="file" #profileImageUpload id="fileUpload" name="fileUpload" accept="image/*" (change)="selectedFileChanged($event)" class="file-input" hidden/> 
-    </mat-card-header>
-    
-    <mat-card-content>
-        <mat-card-title><h6 class="text-center">{{user.username}}</h6></mat-card-title>
-        <mat-card-subtitle><p class="text-center text-bold lead">{{user.firstName}} {{user.lastName}}</p></mat-card-subtitle>
-        <ng-container *ngIf="profileImageUpload.value">
-            <image-cropper 
-                [imageChangedEvent]="imageChangedEvent" 
-                [roundCropper]="true"
-                format="png"
-                (imageCropped)="imageCropped($event)"> 
-            </image-cropper>
-            <div class="d-flex justify-content-end">
-                <button mat-mini-fab class="m-2 bg-danger" (click)="cancelImageChange()">
-                    <mat-icon fontIcon="cancel"></mat-icon>
-                </button>
-                <button mat-mini-fab class="m-2 bg-success" (click)="changeProfileImage()">
-                    <mat-icon fontIcon="check"></mat-icon>
-                </button>
-            </div>
-        </ng-container>
-        <hr>
-        <p>Korisnik aplikacije od: <span class="text-bold">{{user.dateCreated | formatDate}}</span></p>
-        <ng-container *ngIf="loggedInUser?.role === 'admin' && !isOwnProfile; else nonAdminView">
-            <mat-form-field>
-                <mat-label>Uloga</mat-label>
-                <mat-select [(value)]="selectedRole">
-                    <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
-                </mat-select>
-            </mat-form-field>
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading; else loadedProfile"></mat-spinner>
 
-            <button mat-mini-fab color="primary" (click)="changeUserRole()" [disabled]="user.role === selectedRole" class="ms-2">
-                <mat-icon fontIcon="check"></mat-icon>
-            </button>
+    <ng-template #loadedProfile>
+        <mat-card *ngIf="dataFromStore.chosenUserProfile" appearance="outlined" class="w-100 h-100">
+            <mat-card-header class="d-flex justify-content-center">
+                <div class="profile-image position-relative mb-3">
+                    <img *ngIf="dataFromStore.chosenUserProfile.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+dataFromStore.chosenUserProfile.profileImage" />
+                    <button class="btn btn-sm bg-green text-beige rounded-circle btn-change-image" 
+                        *ngIf="dataFromStore.chosenUserProfile.id === dataFromStore.loggedInUser.id"
+                        (click)="openFileExplorerDialog()">
+                        <mat-icon fontIcon="camera_enhance"></mat-icon>
+                    </button>
+                </div>
+                <ng-template #defaultProfileImage>
+                    <img src="assets/default-profile-image.jpg" alt="">
+                </ng-template>
 
-            <br>
+                <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
+                    (change)="selectedFileChanged($event)" class="file-input" hidden #profileImageUpload />
+            </mat-card-header>
 
-            <button class="btn btn-danger" (click)="deleteUserAccount()">
-                <mat-icon fontIcon="delete"></mat-icon>
-            </button>
-        </ng-container>
+            <mat-card-content>
+                <input type="text" id="userId" name="userId" value="dataFromStore.chosenUserProfile.id" hidden #userId/>
+                <mat-card-title>
+                    <h6 class="text-center">{{dataFromStore.chosenUserProfile.username}}</h6>
+                </mat-card-title>
+                <mat-card-subtitle>
+                    <p class="text-center text-bold lead">{{dataFromStore.chosenUserProfile.firstName}} {{dataFromStore.chosenUserProfile.lastName}}</p>
+                </mat-card-subtitle>
+                <ng-container *ngIf="profileImageUpload.value">
+                    <image-cropper [imageChangedEvent]="imageChangedEvent" [roundCropper]="true" format="png"
+                        (imageCropped)="imageCropped($event)">
+                    </image-cropper>
+                    <div class="d-flex justify-content-end">
+                        <button mat-mini-fab class="m-2 bg-danger" (click)="cancelImageChange()">
+                            <mat-icon fontIcon="cancel"></mat-icon>
+                        </button>
+                        <button mat-mini-fab class="m-2 bg-success" (click)="changeProfileImage()">
+                            <mat-icon fontIcon="check"></mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+                <hr>
+                <p>Korisnik aplikacije od: <span class="text-bold">{{dataFromStore.chosenUserProfile.dateCreated | formatDate}}</span></p>
+                <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && dataFromStore.chosenUserProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
+                    <div class="d-flex align-items-center">
+                        <mat-form-field class="d-flex align-items-center">
+                            <mat-label>Uloga</mat-label>
+                            <mat-select [(value)]="selectedRole">
+                                <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <button (click)="changeUserRole()"
+                            [disabled]="dataFromStore.chosenUserProfile.role === selectedRole" class="ms-3 btn bg-green text-beige mb-3">
+                            <mat-icon fontIcon="check"></mat-icon>
+                        </button>
+                    </div>
 
-        <ng-template #nonAdminView>
-            <p>Uloga: <span class="text-bold">{{user.role | translateRole }}</span></p>
-        </ng-template>        
+                    <button class="btn bg-red text-beige" (click)="deleteUserAccount()">
+                        <mat-icon fontIcon="delete"></mat-icon>
+                    </button>
+                </ng-container>
 
-    </mat-card-content>
+                <ng-template #nonAdminView>
+                    <p>Uloga: <span class="text-bold">{{dataFromStore.chosenUserProfile.role | translateRole }}</span></p>
+                </ng-template>
 
-</mat-card>
+            </mat-card-content>
+
+        </mat-card>
+    </ng-template>
+
+</ng-container>

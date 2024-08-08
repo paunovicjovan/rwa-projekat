@@ -8,7 +8,7 @@ import * as usersSelectors from '../../state/users.selectors';
 import * as usersActions from '../../state/users.actions';
 import { UserRoles } from '../../models/user-roles.enum';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { filter, Subscription } from 'rxjs';
+import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import * as sharedActions from '../../../../shared/state/shared.actions';
 
 @Component({
@@ -16,41 +16,52 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
   templateUrl: './user-profile-details.component.html',
   styleUrl: './user-profile-details.component.scss'
 })
-export class UserProfileDetailsComponent implements OnInit, OnDestroy {
+export class UserProfileDetailsComponent implements OnInit {
   
   
   @Input({required: true}) username!: string;
   @ViewChild("profileImageUpload", {static:false}) profileImageUpload!:ElementRef;
+  @ViewChild("userId", {static:false}) userIdControl!:ElementRef;
 
-  loggedInUser!: User | null | undefined;
-  user: User | null = null;
-  isOwnProfile: boolean = false;
+  dataFromStore$!: Observable<any>;
   apiUrl: string = environment.apiUrl;
   roles: string[] = Object.values(UserRoles);
   selectedRole!: UserRoles;
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
-
-  loggedInUserSubscription?: Subscription;
-  chosenUserSubscription?: Subscription;
   
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    // this.store.dispatch(usersActions.loadUserProfile({ username: this.username }));
+    this.loadUserProfile();
+
+    // this.loggedInUserSubscription = this.store.select(authSelectors.selectCurrentLoggedInUser).subscribe((currentLoggedInUser)=>{
+    //   this.loggedInUser = currentLoggedInUser;
+    //   this.isOwnProfile = this.loggedInUser?.username === this.username;
+    // });
+
+    // this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
+    //   filter((user: User | null) => user !== null)
+    // )
+    // .subscribe((user: User) => {
+    //   this.user = user;
+    //   this.selectedRole = user.role;
+    // })
+    this.selectDataFromStore();
+
+  }
+
+  loadUserProfile() {
     this.store.dispatch(usersActions.loadUserProfile({ username: this.username }));
+  }
 
-    this.loggedInUserSubscription = this.store.select(authSelectors.selectCurrentLoggedInUser).subscribe((currentLoggedInUser)=>{
-      this.loggedInUser = currentLoggedInUser;
-      this.isOwnProfile = this.loggedInUser?.username === this.username;
+  selectDataFromStore() {
+    this.dataFromStore$ = combineLatest({
+      isLoading: this.store.select(usersSelectors.selectIsLoading),
+      chosenUserProfile: this.store.select(usersSelectors.selectChosenUserProfile),
+      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
     });
-
-    this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
-      filter((user: User | null) => user !== null)
-    )
-    .subscribe((user: User) => {
-      this.user = user;
-      this.selectedRole = user.role;
-    })
   }
 
   selectedFileChanged(event: Event) {
@@ -62,8 +73,8 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   openFileExplorerDialog() {
-    if(!this.isOwnProfile)
-      return;
+    // if(!this.isOwnProfile)
+    //   return;
 
     const fileInput = this.profileImageUpload.nativeElement;
     fileInput.click();
@@ -85,18 +96,15 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy {
   }
 
   changeUserRole() {
-    this.store.dispatch(usersActions.changeUserRole({userId: this.user!.id, newRole: this.selectedRole}))
+    const userId = this.userIdControl.nativeElement.value;
+    this.store.dispatch(usersActions.changeUserRole({userId, newRole: this.selectedRole}))
   }
 
   deleteUserAccount() {
+    const userId = this.userIdControl.nativeElement.value;
     this.store.dispatch(sharedActions.openConfirmationDialog({
       message: "Da li sigurno želite da obrišete ovaj nalog?",
-      actionToDispatch: usersActions.deleteUserAccount({userId: this.user!.id})
+      actionToDispatch: usersActions.deleteUserAccount({userId})
     }))
-  }
-
-  ngOnDestroy(): void {
-    this.loggedInUserSubscription?.unsubscribe();
-    this.chosenUserSubscription?.unsubscribe();
   }
 }

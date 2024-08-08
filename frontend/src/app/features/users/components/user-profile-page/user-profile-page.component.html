@@ -1,17 +1,10 @@
-<!-- <ng-container *ngIf="dataFromStore$ | async as dataFromStore"> -->
-    <div class="container py-3">
-        <!-- <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading; else loadedData" class="mx-auto"></mat-spinner> -->
-
-        <!-- <ng-template #loadedData> -->
-            <div class="row gap-md-0 gap-3">
-                <div class="col-md-4">
-                    <app-user-profile-details [username]="username"></app-user-profile-details>
-                </div>
-                <div class="col-md-8">
-                    <app-reviews-list [revieweeUsername]="username"></app-reviews-list>
-                </div>
-            </div>
-        <!-- </ng-template> -->
-        
+<div class="container py-3">
+    <div class="row gap-md-0 gap-3">
+        <div class="col-md-4">
+            <app-user-profile-details [username]="username"></app-user-profile-details>
+        </div>
+        <div class="col-md-8">
+            <app-reviews-list [revieweeUsername]="username"></app-reviews-list>
+        </div>
     </div>
-<!-- </ng-container> -->
+</div>
