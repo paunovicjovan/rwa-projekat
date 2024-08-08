@@ -2,12 +2,12 @@
     <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading; else loadedProfile"></mat-spinner>
 
     <ng-template #loadedProfile>
-        <mat-card *ngIf="dataFromStore.chosenUserProfile" appearance="outlined" class="w-100 h-100">
+        <mat-card *ngIf="userProfile" appearance="outlined" class="w-100 h-100">
             <mat-card-header class="d-flex justify-content-center">
                 <div class="profile-image position-relative mb-3">
-                    <img *ngIf="dataFromStore.chosenUserProfile.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+dataFromStore.chosenUserProfile.profileImage" />
+                    <img *ngIf="userProfile.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+userProfile.profileImage" />
                     <button class="btn btn-sm bg-green text-beige rounded-circle btn-change-image" 
-                        *ngIf="dataFromStore.chosenUserProfile.id === dataFromStore.loggedInUser.id"
+                        *ngIf="userProfile.id === dataFromStore.loggedInUser.id"
                         (click)="openFileExplorerDialog()">
                         <mat-icon fontIcon="camera_enhance"></mat-icon>
                     </button>
@@ -17,33 +17,32 @@
                 </ng-template>
 
                 <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
-                    (change)="selectedFileChanged($event)" class="file-input" hidden #profileImageUpload />
+                    (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
             </mat-card-header>
 
             <mat-card-content>
-                <input type="text" id="userId" name="userId" value="dataFromStore.chosenUserProfile.id" hidden #userId/>
                 <mat-card-title>
-                    <h6 class="text-center">{{dataFromStore.chosenUserProfile.username}}</h6>
+                    <h6 class="text-center">{{userProfile.username}}</h6>
                 </mat-card-title>
                 <mat-card-subtitle>
-                    <p class="text-center text-bold lead">{{dataFromStore.chosenUserProfile.firstName}} {{dataFromStore.chosenUserProfile.lastName}}</p>
+                    <p class="text-center text-bold lead">{{userProfile.firstName}} {{userProfile.lastName}}</p>
                 </mat-card-subtitle>
-                <ng-container *ngIf="profileImageUpload.value">
+                <ng-container *ngIf="imageUploadControl.value">
                     <image-cropper [imageChangedEvent]="imageChangedEvent" [roundCropper]="true" format="png"
-                        (imageCropped)="imageCropped($event)">
+                        (imageCropped)="onImageCropped($event)">
                     </image-cropper>
-                    <div class="d-flex justify-content-end">
-                        <button mat-mini-fab class="m-2 bg-danger" (click)="cancelImageChange()">
+                    <div class="d-flex justify-content-center">
+                        <button class="m-2 btn bg-red text-beige" (click)="cancelImageChange()">
                             <mat-icon fontIcon="cancel"></mat-icon>
                         </button>
-                        <button mat-mini-fab class="m-2 bg-success" (click)="changeProfileImage()">
+                        <button class="m-2 btn bg-green text-beige" (click)="submitImageChange()">
                             <mat-icon fontIcon="check"></mat-icon>
                         </button>
                     </div>
                 </ng-container>
                 <hr>
-                <p>Korisnik aplikacije od: <span class="text-bold">{{dataFromStore.chosenUserProfile.dateCreated | formatDate}}</span></p>
-                <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && dataFromStore.chosenUserProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
+                <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.dateCreated | formatDate}}</span></p>
+                <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
                     <div class="d-flex align-items-center">
                         <mat-form-field class="d-flex align-items-center">
                             <mat-label>Uloga</mat-label>
@@ -53,7 +52,7 @@
                         </mat-form-field>
                         
                         <button (click)="changeUserRole()"
-                            [disabled]="dataFromStore.chosenUserProfile.role === selectedRole" class="ms-3 btn bg-green text-beige mb-3">
+                            [disabled]="userProfile.role === selectedRole" class="ms-3 btn bg-green text-beige mb-3">
                             <mat-icon fontIcon="check"></mat-icon>
                         </button>
                     </div>
@@ -64,7 +63,7 @@
                 </ng-container>
 
                 <ng-template #nonAdminView>
-                    <p>Uloga: <span class="text-bold">{{dataFromStore.chosenUserProfile.role | translateRole }}</span></p>
+                    <p>Uloga: <span class="text-bold">{{userProfile.role | translateRole }}</span></p>
                 </ng-template>
 
             </mat-card-content>

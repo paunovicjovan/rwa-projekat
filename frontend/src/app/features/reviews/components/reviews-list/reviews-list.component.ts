@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Review } from '../../models/review.interface';
 import { AppState } from '../../../../state/app-state.interface';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import * as reviewsActions from '../../state/reviews.actions'
 import { combineLatest, filter, Observable, tap } from 'rxjs';
 import * as reviewsSelectors from '../../state/reviews.selectors';
@@ -15,7 +15,7 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
   templateUrl: './reviews-list.component.html',
   styleUrl: './reviews-list.component.scss'
 })
-export class ReviewsListComponent implements OnInit {
+export class ReviewsListComponent implements OnInit, OnChanges {
 
   @Input({required: true}) revieweeUsername!: string;
   dataFromStore$!: Observable<any>;
@@ -23,13 +23,24 @@ export class ReviewsListComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(reviewsActions.loadReviewsOfUser({username: this.revieweeUsername, page: 1, limit: 3}));
+    this.selectDataFromStore();
+  }
+
+  selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(reviewsSelectors.selectIsLoading),
       reviews: this.store.select(reviewsSelectors.selectReviewsOfUser),
       paginationMetadata: this.store.select(reviewsSelectors.selectPaginationMetadata),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser)
     });
+  }
+
+  ngOnChanges(): void {
+    this.loadReviewsOfUser();
+  }
+
+  loadReviewsOfUser() {
+    this.store.dispatch(reviewsActions.loadReviewsOfUser({username: this.revieweeUsername, page: 1, limit: 3}));
   }
 
   onPaginateChange(event: PageEvent) {
