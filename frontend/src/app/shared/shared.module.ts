@@ -19,6 +19,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import * as sharedEffects from './state/shared.effects';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { AvatarImageComponent } from './components/avatar-image/avatar-image.component';
 
 const modules = [
   CommonModule,
@@ -42,7 +43,8 @@ const modules = [
   declarations: [
     FormatDatePipe,
     TranslateRolePipe,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AvatarImageComponent
   ],
   imports: [
     ...modules,
@@ -52,7 +54,8 @@ const modules = [
     ...modules,
     FormatDatePipe,
     TranslateRolePipe,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AvatarImageComponent
   ]
 })
 export class SharedModule { }

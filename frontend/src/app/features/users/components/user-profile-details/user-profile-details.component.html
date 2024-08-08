@@ -5,16 +5,13 @@
         <mat-card *ngIf="userProfile" appearance="outlined" class="w-100 h-100">
             <mat-card-header class="d-flex justify-content-center">
                 <div class="profile-image position-relative mb-3">
-                    <img *ngIf="userProfile.profileImage; else defaultProfileImage" [src]="apiUrl+'/users/profile-image/'+userProfile.profileImage" />
+                    <app-avatar-image [rounded]="true" [imageUrl]="userProfile.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
                     <button class="btn btn-sm bg-green text-beige rounded-circle btn-change-image" 
                         *ngIf="userProfile.id === dataFromStore.loggedInUser.id"
                         (click)="openFileExplorerDialog()">
                         <mat-icon fontIcon="camera_enhance"></mat-icon>
                     </button>
                 </div>
-                <ng-template #defaultProfileImage>
-                    <img src="assets/default-profile-image.jpg" alt="">
-                </ng-template>
 
                 <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
                     (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />

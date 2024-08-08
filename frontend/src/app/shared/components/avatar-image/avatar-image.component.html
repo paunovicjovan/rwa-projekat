@@ -1,0 +1,6 @@
+<div class="w-100 h-100">
+    <img *ngIf="imageUrl; else defaultImage" [src]="apiUrl + '/' + route + '/' + imageUrl" alt="" class="img-fluid" [ngClass]="imageClass">
+    <ng-template #defaultImage>
+        <img [src]="defaultImageUrl" alt="" class="img-fluid" [ngClass]="imageClass">
+    </ng-template>
+</div>

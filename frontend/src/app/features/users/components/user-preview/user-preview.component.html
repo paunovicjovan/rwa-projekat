@@ -2,10 +2,10 @@
     appearance="outlined">
     <mat-card-header>
         <div mat-card-avatar class="profile-image">
-            <img [src]="profileImageUrl" />
+            <app-avatar-image [rounded]="true" [imageUrl]="user.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
         </div>
-        <mat-card-title>{{user.username}}</mat-card-title>
-        <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
+        <mat-card-title><span>{{user.username}}</span></mat-card-title>
+        <mat-card-subtitle><span>{{user.firstName}} {{user.lastName}}</span></mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions>
         <button mat-button (click)="visitUserProfile()">

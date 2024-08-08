@@ -11,16 +11,8 @@ import { Router } from '@angular/router';
 export class UserPreviewComponent {
 
   @Input({required: true}) user!: User; 
-
-  profileImageUrl!: string;
-
+  
   constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    this.profileImageUrl = this.user.profileImage ?
-                           `${environment.apiUrl}/users/profile-image/${this.user.profileImage}` :
-                           'assets/default-profile-image.jpg';
-  }
 
   visitUserProfile() {
     this.router.navigateByUrl(`users/${this.user.username}`);

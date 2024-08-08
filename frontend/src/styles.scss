@@ -29,7 +29,9 @@ body {
 .mat-typography span,
 .mat-typography button,
 .mat-typography input,
-.mat-typography input::placeholder {
+.mat-typography input::placeholder,
+.mat-typography a
+ {
   font-family: 'Manrope' !important;
 }
 
