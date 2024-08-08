@@ -8,7 +8,7 @@ export interface User {
     email: string;
     username: string;
     role: UserRoles;
-    dateCreated: Date;
+    createdAt: Date;
     profileImage: string | null;
     reviews: Review[]
 }

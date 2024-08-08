@@ -31,7 +31,7 @@ export class UserEntity {
     profileImage: string | null;
 
     @Column({type:"date", default: () => 'CURRENT_DATE'})
-    dateCreated: Date;
+    createdAt: Date;
 
     @OneToMany(type => ReviewEntity, review => review.author)
     writtenReviews: ReviewEntity[];

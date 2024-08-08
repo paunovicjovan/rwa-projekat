@@ -7,7 +7,7 @@
         <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading"></mat-spinner>
 
         <ng-container *ngIf="!dataFromStore.isLoading">
-            <div class="row">
+            <div class="row w-100">
                 <app-user-preview *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
             </div>
         </ng-container>

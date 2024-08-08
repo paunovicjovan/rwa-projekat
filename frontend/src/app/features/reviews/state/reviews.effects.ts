@@ -9,6 +9,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { ReviewFormComponent } from "../components/review-form/review-form.component";
 import { noOperation } from "../../../shared/state/shared.actions";
 import { ReviewDialogData } from "../models/review-dialog-data.interface";
+import { CreateReviewDto } from "../models/create-review-dto.interface";
+import { UpdateReviewDto } from "../models/update-review-dto.interface";
 
 
 export const loadReviewsOfUser$ = createEffect(
@@ -39,16 +41,27 @@ export const openReviewDialog$ = createEffect(
                 const dialogRef = dialog.open(ReviewFormComponent, { width: '600px', data: dialogData });
                 return dialogRef.afterClosed().pipe(
                     concatMap((dialogResult: ReviewDialogData) => {
-                        if (dialogResult !== undefined) {
-                            if(dialogResult.id === undefined) {
-                                return of(reviewsActions.createReview({reviewDto: {content: dialogResult.content!, rating: dialogResult.rating!, revieweeUsername: dialogResult.revieweeUsername}}))
+                        if (dialogResult === undefined) 
+                            return of(noOperation());
+
+                        if(dialogResult.id === undefined)
+                        {
+                            const createReviewDto : CreateReviewDto = {
+                                content: dialogResult.content!,
+                                rating: dialogResult.rating!,
+                                revieweeUsername: dialogResult.revieweeUsername
                             }
-                            else 
-                                return of(reviewsActions.updateReview({reviewDto: {id: dialogResult.id, content: dialogResult.content!, rating: dialogResult.rating!}}));
+                            return of(reviewsActions.createReview({ createReviewDto }))
                         }
                         else {
-                            return of(noOperation())
+                            const updateReviewDto: UpdateReviewDto = {
+                                id: dialogResult.id,
+                                content: dialogResult.content!,
+                                rating: dialogResult.rating!
+                            }
+                            return of(reviewsActions.updateReview({updateReviewDto}));
                         }
+                      
                     })
                 );
             }
@@ -62,8 +75,8 @@ export const createReview$ = createEffect(
     (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
         return action$.pipe(
             ofType(reviewsActions.createReview),
-            concatMap(({ reviewDto }) =>
-                reviewsService.create(reviewDto).pipe(
+            concatMap(({ createReviewDto }) =>
+                reviewsService.create(createReviewDto).pipe(
                     map(( review: Review ) => {
                         return reviewsActions.createReviewSuccess({ review })
                     }),
@@ -82,8 +95,8 @@ export const updateReview$ = createEffect(
     (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
         return action$.pipe(
             ofType(reviewsActions.updateReview),
-            concatMap(({ reviewDto }) =>
-                reviewsService.update(reviewDto).pipe(
+            concatMap(({ updateReviewDto }) =>
+                reviewsService.update(updateReviewDto).pipe(
                     map(( review: Review ) => {
                         return reviewsActions.updateReviewSuccess({ review })
                     }),

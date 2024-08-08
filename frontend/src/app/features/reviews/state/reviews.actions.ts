@@ -26,7 +26,7 @@ export const openReviewDialog = createAction(
 
 export const createReview = createAction(
     '[Reviews] Create Review',
-    props<{ reviewDto : CreateReviewDto }>()
+    props<{ createReviewDto : CreateReviewDto }>()
 );
 
 export const createReviewSuccess = createAction(
@@ -40,7 +40,7 @@ export const createReviewFailure = createAction(
 
 export const updateReview = createAction(
     '[Reviews] Update Review',
-    props<{ reviewDto: UpdateReviewDto }>()
+    props<{ updateReviewDto: UpdateReviewDto }>()
 );
 
 export const updateReviewSuccess = createAction(

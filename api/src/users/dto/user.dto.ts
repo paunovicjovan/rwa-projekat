@@ -10,7 +10,7 @@ export class UserDto {
     password: string;
     role: UserRoles;
     profileImage: string | null;
-    dateCreated: Date;
+    createdAt: Date;
     writtenReviews: ReviewDto[];
     receivedReviews: ReviewDto[];
 }

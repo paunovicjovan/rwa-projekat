@@ -9,7 +9,7 @@ export class ReturnUserDto {
     username: string;
     role: UserRoles;
     profileImage: string | null;
-    dateCreated: Date;
+    createdAt: Date;
     writtenReviews: ReviewDto[];
     receivedReviews: ReviewDto[];
 }

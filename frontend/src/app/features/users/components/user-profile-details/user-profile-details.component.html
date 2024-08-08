@@ -38,7 +38,7 @@
                     </div>
                 </ng-container>
                 <hr>
-                <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.dateCreated | formatDate}}</span></p>
+                <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.createdAt | formatDate}}</span></p>
                 <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
                     <div class="d-flex align-items-center">
                         <mat-form-field class="d-flex align-items-center">

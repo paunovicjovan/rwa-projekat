@@ -1,15 +1,13 @@
-import { Body, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
-import { catchError, filter, from, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { from, Observable, switchMap, tap } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
-import { AuthService } from 'src/auth/service/auth.service';
 import * as fs from 'fs';
-import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 
@@ -34,7 +32,7 @@ export class UsersService {
                     firstName: Like(`%${filters.firstName}%`),
                     lastName: Like(`%${filters.lastName}%`)
                 },
-                order: { dateCreated: 'DESC' }
+                order: { createdAt: 'DESC' }
             }
         ))
     }
@@ -48,7 +46,7 @@ export class UsersService {
     }
 
     findOneByEmailWithPassword(email: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage', 'dateCreated']}));
+        return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage', 'createdAt']}));
     }
 
     findOneByUsername(username: string) : Observable<UserDto> {
