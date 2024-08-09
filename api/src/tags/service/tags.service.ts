@@ -3,8 +3,8 @@ import { CreateTagDto } from '../dto/create-tag.dto';
 import { UpdateTagDto } from '../dto/update-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagEntity } from '../entities/tag.entity';
-import { Repository } from 'typeorm';
-import { from, Observable, switchMap } from 'rxjs';
+import { Like, Raw, Repository } from 'typeorm';
+import { from, Observable, of, switchMap } from 'rxjs';
 import { TagDto } from '../dto/tag.dto';
 
 @Injectable()
@@ -16,8 +16,16 @@ export class TagsService {
     return from(this.tagsRepository.save(createTagDto));
   }
 
-  findAll(): Observable<TagDto[]> {
-    return from(this.tagsRepository.find());
+  filterByName(name: string): Observable<TagDto[]> {
+    if(name === '')
+        return of([]);
+      
+    return from(this.tagsRepository.find({
+      where: {
+        name: Raw(tagInDb => `LOWER(${tagInDb}) LIKE '%${name.toLowerCase()}%'`)
+      },
+      take: 6
+    }));
   }
 
   findOne(id: number): Observable<TagDto> {

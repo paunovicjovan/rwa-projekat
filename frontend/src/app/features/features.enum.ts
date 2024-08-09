@@ -2,5 +2,6 @@
 export enum Features {
     Auth = 'auth',
     Users = 'users',
-    Reviews = 'reviews'
+    Reviews = 'reviews',
+    Tags = 'tags'
 }

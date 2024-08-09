@@ -1,0 +1,25 @@
+<div class="my-2">
+    <ng-container *ngIf="!readonly">
+        <div class="d-flex align-items-center my-2">
+            <mat-form-field subscriptSizing="dynamic">
+                <input matInput placeholder="Pretraži tagove" [matAutocomplete]="auto" [formControl]="searchTag">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayTag" (optionSelected)="setSelectedTag($event.option.value)">
+                    <mat-option *ngFor="let tag of filteredTags$ | async" [value]="tag">
+                        <span>{{tag.name}}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+
+            <button mat-icon-button type="button" [disabled]="!selectedTag" (click)="handleAddTag()" class="ms-2">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </ng-container>
+
+    <mat-chip-listbox *ngIf="tags">
+        <mat-chip *ngFor="let tag of tags" (removed)="handleRemoveTag(tag)">
+            {{tag.name}}
+            <mat-icon matChipRemove *ngIf="!readonly">cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-listbox>
+</div>

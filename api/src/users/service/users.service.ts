@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Like, Repository } from 'typeorm';
+import { Like, Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
 import { from, Observable, switchMap, tap } from 'rxjs';
@@ -19,6 +19,8 @@ export class UsersService {
     ) {}
 
     create(user: CreateUserDto) : Observable<ReturnUserDto> {
+        user.email = user.email.toLowerCase();
+        user.username = user.username.toLowerCase();
         return from(this.usersRepository.save(user));
     }
 
@@ -28,9 +30,9 @@ export class UsersService {
             options, 
             {
                 where: {
-                    username: Like(`%${filters.username}%`),
-                    firstName: Like(`%${filters.firstName}%`),
-                    lastName: Like(`%${filters.lastName}%`)
+                    username: Raw(usernameInDb => `LOWER(${usernameInDb}) LIKE '%${filters.username.toLowerCase()}%'`),
+                    firstName: Raw(firstNameInDb => `LOWER(${firstNameInDb}) LIKE '%${filters.firstName.toLowerCase()}%'`),
+                    lastName: Raw(lastNameInDb => `LOWER(${lastNameInDb}) LIKE '%${filters.lastName.toLowerCase()}%'`)
                 },
                 order: { createdAt: 'DESC' }
             }

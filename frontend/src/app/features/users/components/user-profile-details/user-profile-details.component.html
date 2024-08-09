@@ -39,9 +39,12 @@
                 </ng-container>
                 <hr>
                 <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.createdAt | formatDate}}</span></p>
+
+                <app-tag-viewer></app-tag-viewer>
+                
                 <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
-                    <div class="d-flex align-items-center">
-                        <mat-form-field class="d-flex align-items-center">
+                    <div class="d-flex align-items-center my-3">
+                        <mat-form-field class="d-flex align-items-center" subscriptSizing="dynamic">
                             <mat-label>Uloga</mat-label>
                             <mat-select [(value)]="selectedRole">
                                 <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
@@ -49,7 +52,7 @@
                         </mat-form-field>
                         
                         <button (click)="changeUserRole()"
-                            [disabled]="userProfile.role === selectedRole" class="ms-3 btn bg-green text-beige mb-3">
+                            [disabled]="userProfile.role === selectedRole" mat-icon-button class="ms-2">
                             <mat-icon fontIcon="check"></mat-icon>
                         </button>
                     </div>

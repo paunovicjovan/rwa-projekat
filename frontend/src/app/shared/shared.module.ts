@@ -17,9 +17,10 @@ import { TranslateRolePipe } from './pipes/translate-role/translate-role.pipe';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import * as sharedEffects from './state/shared.effects';
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AvatarImageComponent } from './components/avatar-image/avatar-image.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 const modules = [
   CommonModule,
@@ -36,7 +37,9 @@ const modules = [
   MatBadgeModule,
   MatSelectModule,
   ImageCropperComponent,
-  MatDialogModule
+  MatDialogModule,
+  MatChipsModule,
+  MatAutocompleteModule
 ]
 
 @NgModule({

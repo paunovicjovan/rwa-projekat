@@ -10,8 +10,6 @@ import {
   Subscription,
 } from 'rxjs';
 import { AppState } from '../../../../state/app-state.interface';
-import * as usersActions from '../../state/users.actions'
-import { FilterUsersRequest } from '../../models/filter-users-request.interface';
 import { UsersFilters } from '../../models/users-filters.interface';
 
 @Component({

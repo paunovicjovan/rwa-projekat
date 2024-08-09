@@ -1,5 +1,5 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
-    <div class="container d-flex flex-column align-items-center">
+    <div class="container d-flex flex-column align-items-center py-5">
         <h3 class="text-center">Pretraga korisnika</h3>
         <div class="row">
             <app-users-search-filters class="mb-3 mx-auto col-12 col-md-12 col-lg-12" (onFilterChange)="onFilterChange($event)"></app-users-search-filters>

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { TagsService } from '../service/tags.service';
 import { CreateTagDto } from '../dto/create-tag.dto';
 import { UpdateTagDto } from '../dto/update-tag.dto';
@@ -15,8 +15,8 @@ export class TagsController {
   }
 
   @Get()
-  findAll(): Observable<TagDto[]> {
-    return this.tagsService.findAll();
+  filterByName(@Query('name') name: string = ''): Observable<TagDto[]> {
+    return this.tagsService.filterByName(name);
   }
 
   @Get(':id')

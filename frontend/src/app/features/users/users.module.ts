@@ -11,6 +11,7 @@ import { UsersPageComponent } from './components/users-page/users-page.component
 import { UsersSearchFiltersComponent } from './components/users-search-filters/users-search-filters.component';
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
 import { ReviewsModule } from '../reviews/reviews.module';
+import { TagsModule } from "../tags/tags.module";
 
 
 
@@ -26,7 +27,8 @@ import { ReviewsModule } from '../reviews/reviews.module';
     SharedModule,
     ReviewsModule,
     StoreModule.forFeature(Features.Users, usersReducer),
-    EffectsModule.forFeature(usersEffects)
-  ]
+    EffectsModule.forFeature(usersEffects),
+    TagsModule
+]
 })
 export class UsersModule { }
