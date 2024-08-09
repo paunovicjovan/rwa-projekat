@@ -1,7 +1,6 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseIntPipe, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -13,6 +12,7 @@ import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
+import { TagDto } from 'src/tags/dto/tag.dto';
 
 @Controller('users')
 export class UsersController {

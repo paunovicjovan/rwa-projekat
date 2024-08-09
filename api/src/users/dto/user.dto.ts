@@ -1,5 +1,7 @@
 import { ReviewDto } from "src/reviews/dto/review.dto";
 import { UserRoles } from "../enums/user-roles.enum";
+import { TagDto } from "src/tags/dto/tag.dto";
+import { ProjectDto } from "src/projects/dto/project.dto";
 
 export class UserDto {
     id: number;
@@ -13,4 +15,8 @@ export class UserDto {
     createdAt: Date;
     writtenReviews: ReviewDto[];
     receivedReviews: ReviewDto[];
+    tags: TagDto[];
+    createdProjects: ProjectDto[]
+    appliedTo: ProjectDto[]
+    acceptedIn: ProjectDto[]
 }

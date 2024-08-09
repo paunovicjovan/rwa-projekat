@@ -23,7 +23,6 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
   dataFromStore$!: Observable<any>;
   userProfile: User | null = null;
   chosenUserSubscription?: Subscription;
-  apiUrl: string = environment.apiUrl;
 
   roles: string[] = Object.values(UserRoles);
   selectedRole!: UserRoles;

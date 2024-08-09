@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserRoles } from "../enums/user-roles.enum";
 import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { TagEntity } from "src/tags/entities/tag.entity";
@@ -48,8 +48,10 @@ export class UserEntity {
     createdProjects: ProjectEntity[]
 
     @ManyToMany(() => ProjectEntity, project => project.appliedBy)
+    @JoinTable()
     appliedTo: ProjectEntity[]
 
     @ManyToMany(() => ProjectEntity, project => project.acceptedUsers)
+    @JoinTable()
     acceptedIn: ProjectEntity[]
 }

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProjectStatus } from "../enums/project-status.enum";
 import { TagEntity } from "src/tags/entities/tag.entity";
 import { UserEntity } from "src/users/entities/user.entity";
@@ -41,14 +41,17 @@ export class ProjectEntity {
     repositoryLink: string;
 
     @ManyToMany(() => TagEntity, tag => tag.projects)
+    @JoinTable({name: 'projects_tags'})
     tags: TagEntity[]
 
     @ManyToOne(() => UserEntity, user => user.createdProjects)
     createdBy: UserEntity
 
     @ManyToMany(() => UserEntity, user => user.appliedTo)
+    @JoinTable({name: 'users_applied_projects'})
     appliedBy: UserEntity[]
 
     @ManyToMany(() => UserEntity, user => user.acceptedIn)
+    @JoinTable({name: 'users_accepted_projects'})
     acceptedUsers: UserEntity[]
 }

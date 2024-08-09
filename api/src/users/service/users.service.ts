@@ -10,6 +10,8 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import * as fs from 'fs';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
+import { TagDto } from 'src/tags/dto/tag.dto';
+import { TagsService } from 'src/tags/service/tags.service';
 
 @Injectable()
 export class UsersService {
@@ -85,6 +87,4 @@ export class UsersService {
             })
         );
     }
-
-
 }

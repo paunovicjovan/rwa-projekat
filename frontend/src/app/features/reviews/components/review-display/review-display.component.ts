@@ -14,7 +14,6 @@ export class ReviewDisplayComponent {
   @Input() canDelete: boolean = false;
   @Output() updateReview: EventEmitter<Review> = new EventEmitter();
   @Output() deleteReview: EventEmitter<number> = new EventEmitter();
-  apiUrl: string = environment.apiUrl;
 
   handleReviewUpdate() {
     this.updateReview.emit(this.review);
