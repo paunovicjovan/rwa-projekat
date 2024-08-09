@@ -10,6 +10,8 @@ import { UserRoles } from '../../models/user-roles.enum';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import * as sharedActions from '../../../../shared/state/shared.actions';
+import * as tagsSelectors from '../../../tags/state/tags.selectors';
+import * as tagsActions from '../../../tags/state/tags.actions';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -39,6 +41,7 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
+      tags: this.store.select(tagsSelectors.selectLoadedTags)
     });
 
     this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
@@ -96,6 +99,14 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
       message: "Da li sigurno želite da obrišete ovaj nalog?",
       actionToDispatch: usersActions.deleteUserAccount({userId: this.userProfile!.id})
     }))
+  }
+
+  addTag(tagId: number) {
+    this.store.dispatch(tagsActions.addTagToUser({ tagId }));
+  }
+
+  removeTag(tagId: number) {
+    this.store.dispatch(tagsActions.removeTagFromUser({ tagId }));
   }
 
   ngOnDestroy(): void {

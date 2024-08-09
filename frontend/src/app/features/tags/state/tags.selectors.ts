@@ -14,3 +14,8 @@ export const selectFilteredTags = createSelector(
     tagsFeature,
     (state: TagsState) => state.filteredTags
 );
+
+export const selectLoadedTags= createSelector(
+    tagsFeature,
+    (state: TagsState) => state.ids.map(id => state.entities[id])
+)

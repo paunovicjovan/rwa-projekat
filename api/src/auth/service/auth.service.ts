@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { catchError, from, map, Observable, of, switchMap, throwError } from 'rxjs';
-import { ReturnUserDto } from 'src/users/dto/return-user.dto';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { LoginRequestDto } from '../dto/login-request.dto';
@@ -21,13 +21,13 @@ export class AuthService {
 
     register(user: CreateUserDto) : Observable<AuthResponseDto> {
         return this.usersService.findOneByEmail(user.email).pipe(
-            switchMap((existingUserByEmail: ReturnUserDto) => {
+            switchMap((existingUserByEmail: UserResponseDto) => {
                 if(existingUserByEmail)
                     return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'));
                 return this.usersService.findOneByUsername(user.username);
             }),
 
-            switchMap((existingUserByUsername: ReturnUserDto) => {
+            switchMap((existingUserByUsername: UserResponseDto) => {
                 if(existingUserByUsername)
                     return throwError(() => new Error('Već postoji korisnik sa zadatim korisničkim imenom.'));
                 return this.hashPassword(user.password);

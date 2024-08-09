@@ -4,7 +4,7 @@ import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { ReturnUserDto } from 'src/users/dto/return-user.dto';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 
 @Controller('auth')
 export class AuthController {

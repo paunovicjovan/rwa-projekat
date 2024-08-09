@@ -40,7 +40,9 @@
                 <hr>
                 <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.createdAt | formatDate}}</span></p>
 
-                <app-tag-viewer></app-tag-viewer>
+                <app-tag-viewer [readonly]="dataFromStore.loggedInUser.id !== userProfile.id" [tags]="dataFromStore.tags"
+                                (addTag)="addTag($event)" (removeTag)="removeTag($event)">
+                </app-tag-viewer>
                 
                 <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
                     <div class="d-flex align-items-center my-3">

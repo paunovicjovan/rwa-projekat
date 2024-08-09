@@ -14,3 +14,40 @@ export const searchTagsSuccess = createAction(
 export const searchTagsFailure = createAction(
     '[Tags] Search Tags Failure',
 );
+
+// export const loadTagsSuccess = createAction(
+//     '[Tags] Load Tags Success',
+//     props<{tags: Tag[]}>()
+// );
+
+// export const loadTagsFailure = createAction(
+//     '[Tags] Load Tags Failure'
+// );
+
+export const addTagToUser = createAction(
+    '[Tags] Add Tag To User',
+    props<{ tagId: number }>()
+);
+
+export const addTagToUserSuccess = createAction(
+    '[Tags] Add Tag To User Success',
+    props<{ tag: Tag }>()
+);
+
+export const addTagToUserFailure = createAction(
+    '[Tags] Add Tag To User Failure',
+);
+
+export const removeTagFromUser = createAction(
+    '[Tags] Remove Tag From User',
+    props<{ tagId: number }>()
+);
+
+export const removeTagFromUserSuccess = createAction(
+    '[Tags] Remove Tag From User Success',
+    props<{ tag: Tag }>()
+);
+
+export const removeTagFromUserFailure = createAction(
+    '[Tags] Remove Tag From User Failure',
+);

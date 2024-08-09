@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { Observable, of } from 'rxjs';
-import { ReturnUserDto } from '../dto/return-user.dto';
+import { UserResponseDto } from '../dto/user-response.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -46,19 +46,19 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':username')
-    findOneByUsername(@Param('username') username: string) : Observable<ReturnUserDto> {
+    findOneByUsername(@Param('username') username: string) : Observable<UserResponseDto> {
         return this.usersService.findOneByUsername(username);
     }
 
     @Put(':id')
-    updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<ReturnUserDto> {
+    updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<UserResponseDto> {
         return this.usersService.updateOne(id, userData);
     }
 
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('/role/:id')
-    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<ReturnUserDto> {
+    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<UserResponseDto> {
         return this.usersService.updateOne(id, userData);
     }
 
@@ -72,7 +72,7 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
     @Post('upload-profile-image')
-    uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<ReturnUserDto> {
+    uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<UserResponseDto> {
         const user = req.user;
         return this.usersService.updateProfileImage(user.id, file.filename);
     }

@@ -14,15 +14,9 @@ import * as tagsSelectors from '../../state/tags.selectors';
 })
 export class TagViewerComponent {
 
-  @Input() tags: Tag[] = [
-    {
-      id:1,
-      description:'test',
-      name: 'test'
-    }
-  ];
+  @Input({required: true}) tags!: Tag[];
   @Input() readonly: boolean = false;
-  @Output() addTag: EventEmitter<Tag> = new EventEmitter();
+  @Output() addTag: EventEmitter<number> = new EventEmitter();
   @Output() removeTag: EventEmitter<number> = new EventEmitter();
 
   searchTag = new FormControl();
@@ -49,7 +43,7 @@ export class TagViewerComponent {
   }
 
   handleAddTag() {
-    this.addTag.emit(this.selectedTag!);
+    this.addTag.emit(this.selectedTag!.id);
     this.selectedTag = null;
     this.searchTag.setValue(null);
   }

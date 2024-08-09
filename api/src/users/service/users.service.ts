@@ -5,7 +5,7 @@ import { Like, Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
 import { from, map, Observable, of, pluck, switchMap, tap } from 'rxjs';
-import { ReturnUserDto } from '../dto/return-user.dto';
+import { UserResponseDto } from '../dto/user-response.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import * as fs from 'fs';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
@@ -21,14 +21,14 @@ export class UsersService {
         private usersRepository: Repository<UserEntity>
     ) {}
 
-    create(user: CreateUserDto) : Observable<ReturnUserDto> {
+    create(user: CreateUserDto) : Observable<UserResponseDto> {
         user.email = user.email.toLowerCase();
         user.username = user.username.toLowerCase();
         return from(this.usersRepository.save(user));
     }
 
-    findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Observable<Pagination<ReturnUserDto>> {
-        return from(paginate<ReturnUserDto>(
+    findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Observable<Pagination<UserResponseDto>> {
+        return from(paginate<UserResponseDto>(
             this.usersRepository, 
             options, 
             {
@@ -46,7 +46,7 @@ export class UsersService {
         return from(this.usersRepository.findOne({where:{id}}));
     }
 
-    findOneByEmail(email: string) : Observable<ReturnUserDto> {
+    findOneByEmail(email: string) : Observable<UserResponseDto> {
         return from(this.usersRepository.findOne({where:{email}}));
     }
 
@@ -55,16 +55,16 @@ export class UsersService {
     }
 
     findOneByUsername(username: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{username}}));
+        return from(this.usersRepository.findOne({where:{username}, relations: ['tags']}));
     }
 
-    updateProfileImage(userId: number, imageName: string | null) : Observable<ReturnUserDto> {
+    updateProfileImage(userId: number, imageName: string | null) : Observable<UserResponseDto> {
         return this.deleteProfileImageFromFileSystem(userId).pipe(
             switchMap(() => this.updateOne(userId, {profileImage: imageName})),
         );
     }
 
-    updateOne(id: number, userData: UpdateUserDto) : Observable<ReturnUserDto> {
+    updateOne(id: number, userData: UpdateUserDto) : Observable<UserResponseDto> {
         return from(this.usersRepository.update(id, userData)).pipe(
             switchMap(() => this.findOneById(id))
         );
@@ -78,9 +78,9 @@ export class UsersService {
         )
     }
 
-    private deleteProfileImageFromFileSystem(userId: number): Observable<ReturnUserDto> {
+    private deleteProfileImageFromFileSystem(userId: number): Observable<UserResponseDto> {
         return this.findOneById(userId).pipe(
-            tap((user: ReturnUserDto) => {
+            tap((user: UserResponseDto) => {
                 if(user.profileImage !== null) {
                     const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
                     fs.unlinkSync(userProfileImagePath);

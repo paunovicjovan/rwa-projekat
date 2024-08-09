@@ -14,4 +14,12 @@ export class TagsService {
   searchTags(name: string): Observable<Tag[]> {
     return this.http.get<Tag[]>(`${environment.apiUrl}/tags?name=${name}`);
   }
+
+  addTagToUser(tagId: number): Observable<Tag> {
+    return this.http.post<Tag>(`${environment.apiUrl}/tags/add-tag-to-user/${tagId}`, {});
+  }
+
+  removeTagFromUser(tagId: number): Observable<Tag> {
+    return this.http.delete<Tag>(`${environment.apiUrl}/tags/remove-tag-from-user/${tagId}`);
+  }
 }

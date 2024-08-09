@@ -3,6 +3,7 @@ import { TagsState } from "../models/tags-state.interface";
 import { Tag } from "../models/tag.interface";
 import { createReducer, on } from "@ngrx/store";
 import * as tagsActions from './tags.actions';
+import * as usersActions from '../../users/state/users.actions';
 
 
 export const initialState: TagsState = {
@@ -34,5 +35,14 @@ export const tagsReducer = createReducer(
             ...state,
             isLoading: false
         }
-    })
+    }),
+    on(usersActions.loadUserProfileSuccess, (state, action) => {
+        return tagsAdapter.setAll(action.loadedUser.tags, state);
+    }),
+    on(tagsActions.addTagToUserSuccess, (state, action) => {
+        return tagsAdapter.addOne(action.tag, state);
+    }),
+    on(tagsActions.removeTagFromUserSuccess, (state, action) => {
+        return tagsAdapter.removeOne(action.tag.id, state);
+    }),
 )
