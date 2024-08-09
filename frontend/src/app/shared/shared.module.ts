@@ -21,6 +21,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AvatarImageComponent } from './components/avatar-image/avatar-image.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const modules = [
   CommonModule,
@@ -39,7 +40,8 @@ const modules = [
   ImageCropperComponent,
   MatDialogModule,
   MatChipsModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatTooltipModule
 ]
 
 @NgModule({

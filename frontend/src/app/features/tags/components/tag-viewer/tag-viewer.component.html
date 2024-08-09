@@ -17,7 +17,7 @@
     </ng-container>
 
     <mat-chip-listbox *ngIf="tags">
-        <mat-chip *ngFor="let tag of tags" (removed)="handleRemoveTag(tag)">
+        <mat-chip *ngFor="let tag of tags" (removed)="handleRemoveTag(tag)" [matTooltip]="tag.description ?? ''" [matTooltipShowDelay]="500">
             {{tag.name}}
             <mat-icon matChipRemove *ngIf="!readonly">cancel</mat-icon>
         </mat-chip>
