@@ -4,7 +4,7 @@ import { UserEntity } from '../entities/user.entity';
 import { Like, Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
-import { from, Observable, switchMap, tap } from 'rxjs';
+import { from, map, Observable, of, pluck, switchMap, tap } from 'rxjs';
 import { ReturnUserDto } from '../dto/return-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import * as fs from 'fs';
@@ -12,6 +12,7 @@ import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginat
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 import { TagDto } from 'src/tags/dto/tag.dto';
 import { TagsService } from 'src/tags/service/tags.service';
+import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 
 @Injectable()
 export class UsersService {
@@ -86,5 +87,17 @@ export class UsersService {
                 }
             })
         );
+    }
+
+    findTagsForUser(username: string): Observable<TagResponseDto[]> {
+        if(username === '')
+            return of([]);
+
+        return from(this.usersRepository.findOne({
+            where: {username},
+            relations: ['tags']
+        })).pipe(
+            map((user: UserDto) => user.tags)
+        )
     }
 }

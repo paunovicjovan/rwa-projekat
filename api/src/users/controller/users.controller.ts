@@ -13,6 +13,7 @@ import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 import { TagDto } from 'src/tags/dto/tag.dto';
+import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 
 @Controller('users')
 export class UsersController {
@@ -81,5 +82,11 @@ export class UsersController {
         const relativeFilePath = `uploads/profile-images/${imageName}`;
         const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
         return of(res.sendFile(absoluteFilePath));
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get(':username/tags')
+    findTagsForUser(@Param('username') username: string): Observable<TagResponseDto[]> {
+        return this.usersService.findTagsForUser(username);
     }
 }

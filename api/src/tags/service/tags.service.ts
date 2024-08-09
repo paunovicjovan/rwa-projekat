@@ -8,7 +8,7 @@ import { filter, forkJoin, from, NotFoundError, Observable, of, switchMap } from
 import { TagDto } from '../dto/tag.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { UserDto } from 'src/users/dto/user.dto';
-import { TagResponse } from '../dto/tag-response.dto';
+import { TagResponseDto } from '../dto/tag-response.dto';
 
 @Injectable()
 export class TagsService {
@@ -17,11 +17,11 @@ export class TagsService {
               private usersService: UsersService
               ) {}
 
-  create(createTagDto: CreateTagDto): Observable<TagResponse> {
+  create(createTagDto: CreateTagDto): Observable<TagResponseDto> {
     return from(this.tagsRepository.save(createTagDto));
   }
 
-  filterByName(name: string): Observable<TagResponse[]> {
+  filterByName(name: string): Observable<TagResponseDto[]> {
     if(name === '')
         return of([]);
       
@@ -33,11 +33,11 @@ export class TagsService {
     }));
   }
 
-  findOne(id: number): Observable<TagResponse> {
+  findOne(id: number): Observable<TagResponseDto> {
     return from(this.tagsRepository.findOne({where: {id}}));
   }
 
-  update(id: number, updateTagDto: UpdateTagDto): Observable<TagResponse> {
+  update(id: number, updateTagDto: UpdateTagDto): Observable<TagResponseDto> {
     return from(this.tagsRepository.update(id, updateTagDto)).pipe(
       switchMap(() => this.findOne(id))
     );
@@ -47,7 +47,7 @@ export class TagsService {
     return from(this.tagsRepository.delete(id));
   }
 
-  addTagToUser(userId: number, tagId: number): Observable<TagResponse> {
+  addTagToUser(userId: number, tagId: number): Observable<TagResponseDto> {
     return forkJoin([
       this.usersService.findOneById(userId),
       this.tagsRepository.findOne({
@@ -62,7 +62,7 @@ export class TagsService {
     )
   } 
 
-  removeTagFromUser(userId: number, tagId: number): Observable<TagResponse> {
+  removeTagFromUser(userId: number, tagId: number): Observable<TagResponseDto> {
     return from(this.tagsRepository.findOne({
       where: {id: tagId}, 
       relations: ['users']
