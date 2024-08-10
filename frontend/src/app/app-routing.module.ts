@@ -6,6 +6,8 @@ import { HomeComponent } from './core/components/home/home.component';
 import { UserProfilePageComponent } from './features/users/components/user-profile-page/user-profile-page.component';
 import { UsersPageComponent } from './features/users/components/users-page/users-page.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ProjectsPageComponent } from './features/projects/components/projects-page/projects-page.component';
+import { NewProjectComponent } from './features/projects/components/new-project/new-project.component';
 
 const routes: Routes = [
   {
@@ -34,16 +36,20 @@ const routes: Routes = [
     ],
     canActivate: [authGuard]
   },
-  // {
-  //   path: 'user-profile/:username',
-  //   component: UserProfilePageComponent,
-  //   canActivate: [authGuard]
-  // },
-  // {
-  //   path: 'search-users',
-  //   component: UsersPageComponent,
-  //   canActivate: [authGuard]
-  // }
+  {
+    path: 'projects',
+    children: [
+      {
+        path: '',
+        component: ProjectsPageComponent
+      },
+      {
+        path: 'new-project',
+        component: NewProjectComponent
+      }
+    ],
+    canActivate: [authGuard]
+  }
 ];
 
 @NgModule({

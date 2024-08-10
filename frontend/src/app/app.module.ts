@@ -10,6 +10,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { UsersModule } from './features/users/users.module';
 import { metaReducers } from './state/local-storage.metareducer';
+import { ProjectsModule } from './features/projects/projects.module';
+import { ReviewsModule } from './features/reviews/reviews.module';
+import { TagsModule } from './features/tags/tags.module';
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import { metaReducers } from './state/local-storage.metareducer';
     CoreModule,
     AuthModule,
     UsersModule,
+    ReviewsModule, 
+    TagsModule,
+    ProjectsModule,
     StoreModule.forRoot({}, {
       metaReducers
     }),

@@ -21,8 +21,8 @@ import { FooterComponent } from './components/footer/footer.component';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    RouterLink,
-    MatButtonModule
+    MatButtonModule,
+    RouterLink
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),

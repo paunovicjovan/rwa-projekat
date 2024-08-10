@@ -1,0 +1,86 @@
+<div class="container py-3">
+    <mat-card appearance="outlined" class="p-3">
+        <mat-card-title>
+            <h5>Kreiraj projekat</h5>
+        </mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="projectForm" (ngSubmit)="createProject()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
+                            (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
+
+                        <button (click)="openFileExplorerDialog()" type="button"
+                            class="btn bg-green text-beige mb-3">Izaberi sliku projekta</button>
+                        <button mat-icon-button type="button" matTooltip="Ukoliko ne odaberete sliku, biće primenjena podrazumevana slika prikazana ispod. Kasnije je možete promeniti.">
+                            <mat-icon class="text-green">info</mat-icon>
+                        </button>
+
+                        <img [src]="croppedImageUrl" *ngIf="croppedImage; else defaultImage"
+                            class="img-fluid border border-secondary border-2 mb-3" alt="">
+                        <ng-template #defaultImage>
+                            <img src="assets/default-project-image.jpg" class="img-fluid border border-secondary border-2 mb-3" alt="">
+                        </ng-template>
+
+                        <ng-container *ngIf="imageUploadControl.value">
+                            <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" format="png"
+                                (imageCropped)="onImageCropped($event)" [aspectRatio]="2">
+                            </image-cropper>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex flex-column">
+                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                <mat-label>Naziv</mat-label>
+                                <input matInput placeholder="Naziv" formControlName="title">
+                                <mat-error
+                                    *ngIf="projectForm.controls['title'].touched && projectForm.controls['title'].errors">Naziv
+                                    projekta je obavezan (minimalno 2 karaktera)</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                <mat-label>Opis</mat-label>
+                                <textarea matInput placeholder="Opis" formControlName="description" rows="5"></textarea>
+                                <mat-error
+                                    *ngIf="projectForm.controls['description'].touched && projectForm.controls['description'].errors">
+                                    Unesite opis projekta (od 5 do 500 karaktera)
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                <mat-label>Zahtevi</mat-label>
+                                <textarea matInput placeholder="Zahtevi" formControlName="requirements"
+                                    rows="5"></textarea>
+                                <mat-error
+                                    *ngIf="projectForm.controls['requirements'].touched && projectForm.controls['requirements'].errors">
+                                    Zahtevi projekta mogu imati do 500 karaktera
+                                </mat-error>
+                            </mat-form-field>
+
+                            <div *ngIf="projectForm.controls['tags'].errors" class="d-flex align-items-center">
+                                <mat-hint>
+                                    Projekat mora da ima barem 1 tag
+                                </mat-hint>
+                                <button mat-icon-button type="button"
+                                    matTooltip="Izaberite tehnologije koje se koriste u projektu">
+                                    <mat-icon class="text-green">info</mat-icon>
+                                </button>
+                            </div>
+
+
+                            <app-tag-viewer [tags]="projectForm.get('tags')!.value" (addTag)="addTagToForm($event)"
+                                (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
+
+
+                        </div>
+
+                        <button class="btn bg-purple text-beige" type="submit" [disabled]="projectForm.invalid">Kreiraj
+                            projekat</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

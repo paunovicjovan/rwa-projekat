@@ -12,6 +12,7 @@ import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import * as sharedActions from '../../../../shared/state/shared.actions';
 import * as tagsSelectors from '../../../tags/state/tags.selectors';
 import * as tagsActions from '../../../tags/state/tags.actions';
+import { Tag } from '../../../tags/models/tag.interface';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -101,8 +102,8 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     }))
   }
 
-  addTag(tagId: number) {
-    this.store.dispatch(tagsActions.addTagToUser({ tagId }));
+  addTag(tag: Tag) {
+    this.store.dispatch(tagsActions.addTagToUser({ tagId:tag.id }));
   }
 
   removeTag(tagId: number) {
