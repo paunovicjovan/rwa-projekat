@@ -10,7 +10,6 @@ export class ProjectDto {
     requirements: string | null;
     createdAt: Date;
     updatedAt: Date;
-    dueDate: Date | null;
     status: ProjectStatus;
     applicationLink: string | null;
     repositoryLink: string | null;

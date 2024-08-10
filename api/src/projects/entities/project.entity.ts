@@ -28,9 +28,6 @@ export class ProjectEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @Column({nullable: true, default: null})
-    dueDate: Date;
-
     @Column({type:'enum', enum: ProjectStatus, default:ProjectStatus.OPENED})
     status: ProjectStatus;
 
@@ -41,17 +38,14 @@ export class ProjectEntity {
     repositoryLink: string;
 
     @ManyToMany(() => TagEntity, tag => tag.projects)
-    @JoinTable({name: 'projects_tags'})
     tags: TagEntity[]
 
     @ManyToOne(() => UserEntity, user => user.createdProjects)
     createdBy: UserEntity
 
     @ManyToMany(() => UserEntity, user => user.appliedTo)
-    @JoinTable({name: 'users_applied_projects'})
     appliedBy: UserEntity[]
 
     @ManyToMany(() => UserEntity, user => user.acceptedIn)
-    @JoinTable({name: 'users_accepted_projects'})
     acceptedUsers: UserEntity[]
 }

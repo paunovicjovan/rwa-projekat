@@ -1,15 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request } from '@nestjs/common';
 import { ProjectsService } from '../service/projects.service';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
+import { Observable } from 'rxjs';
+import { ProjectDto } from '../dto/project.dto';
+import { ProjectFormData } from '../dto/project-form-data.dto';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post()
-  create(@Body() createProjectDto: CreateProjectDto) {
-    return this.projectsService.create(createProjectDto);
+  create(@UploadedFile() file, @Body() projectData: ProjectFormData, @Request() req): Observable<ProjectDto> {
+    const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
+    return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
   }
 
   @Get()

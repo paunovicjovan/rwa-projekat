@@ -99,7 +99,7 @@ export const redirectAfterDeleteSuccess$ = createEffect((actions$ = inject(Actio
     dispatch: false
 })
 
-export const changeUserProfilePicture$ = createEffect(
+export const changeUserProfileImage$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.changeUserProfileImage),
