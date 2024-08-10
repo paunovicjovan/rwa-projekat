@@ -4,6 +4,8 @@ import { Tag } from '../../../tags/models/tag.interface';
 import { AppState } from '../../../../state/app-state.interface';
 import { Store } from '@ngrx/store';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import * as projectsActions from '../../state/projects.actions';
+import { CreateProjectDto } from '../../models/create-project-dto.interface';
 
 @Component({
   selector: 'app-new-project',
@@ -43,7 +45,12 @@ export class NewProjectComponent implements OnInit {
   }
 
   createProject() {
-    console.log(this.projectForm.getRawValue());
+    let croppedImageFile = undefined;
+    if(this.croppedImage)
+       croppedImageFile = new File([this.croppedImage], 'project-image.png', { type: 'image/png' });
+
+    const createProjectDto: CreateProjectDto = this.projectForm.getRawValue();
+    this.store.dispatch(projectsActions.createProject({image: croppedImageFile, createProjectDto }));
   }
 
   addTagToForm(tag: Tag) {
