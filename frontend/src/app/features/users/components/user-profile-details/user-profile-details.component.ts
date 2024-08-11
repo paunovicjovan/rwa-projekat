@@ -71,11 +71,6 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     this.croppedImage = event.blob;
   }
 
-  openFileExplorerDialog() {
-    const fileInput = this.imageUploadControl.nativeElement;
-    fileInput.click();
-  }
-
   cancelImageChange() {
     this.imageChangedEvent = null;
     this.imageUploadControl.nativeElement.value = null;

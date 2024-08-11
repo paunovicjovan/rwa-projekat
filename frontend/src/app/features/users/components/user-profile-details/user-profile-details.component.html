@@ -8,12 +8,12 @@
                     <app-avatar-image [rounded]="true" [imageUrl]="userProfile.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
                     <button class="btn btn-sm bg-green text-beige rounded-circle btn-change-image" 
                         *ngIf="userProfile.id === dataFromStore.loggedInUser.id"
-                        (click)="openFileExplorerDialog()">
+                        (click)="imageUploadControl.click()">
                         <mat-icon fontIcon="camera_enhance"></mat-icon>
                     </button>
                 </div>
 
-                <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
+                <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
                     (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
             </mat-card-header>
 

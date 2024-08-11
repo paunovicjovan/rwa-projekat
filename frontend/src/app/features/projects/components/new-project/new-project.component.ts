@@ -83,9 +83,4 @@ export class NewProjectComponent implements OnInit {
     this.croppedImage = event.blob;
     this.croppedImageUrl = URL.createObjectURL(event.blob!);
   }
-
-  openFileExplorerDialog() {
-    const fileInput = this.imageUploadControl.nativeElement;
-    fileInput.click();
-  }
 }

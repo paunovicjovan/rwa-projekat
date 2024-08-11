@@ -2,8 +2,9 @@ import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
 import { ProjectsService } from "../services/projects.service"
 import * as projectsActions from './projects.actions'
-import { catchError, concatMap, map, of } from "rxjs"
+import { catchError, concatMap, map, of, tap } from "rxjs"
 import { Project } from "../models/project.interface"
+import { Router } from "@angular/router"
 
 
 export const createProject$ = createEffect(
@@ -25,3 +26,16 @@ export const createProject$ = createEffect(
     },
     {functional: true}
 )
+
+export const redirectAfterProjectCreation$ = createEffect(
+    (actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(projectsActions.createProjectSuccess),
+        tap(() => {
+            router.navigateByUrl('/projects');
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
+})

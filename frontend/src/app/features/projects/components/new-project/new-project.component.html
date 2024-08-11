@@ -7,27 +7,30 @@
             <form [formGroup]="projectForm" (ngSubmit)="createProject()">
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="file" id="fileUpload" name="fileUpload" accept="image/*"
+                        <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
                             (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
 
-                        <button (click)="openFileExplorerDialog()" type="button"
-                            class="btn bg-green text-beige mb-3">Izaberi sliku projekta</button>
-                        <button mat-icon-button type="button" matTooltip="Ukoliko ne odaberete sliku, biće primenjena podrazumevana slika prikazana ispod. Kasnije je možete promeniti.">
-                            <mat-icon class="text-green">info</mat-icon>
-                        </button>
-
                         <img [src]="croppedImageUrl" *ngIf="croppedImage; else defaultImage"
-                            class="img-fluid border border-secondary border-2 mb-3" alt="">
+                            class="img-fluid border border-secondary rounded-3 border-2 mb-3" alt="">
                         <ng-template #defaultImage>
-                            <img src="assets/default-project-image.jpg" class="img-fluid border border-secondary border-2 mb-3" alt="">
+                            <img src="assets/default-project-image.jpg" class="img-fluid border rounded-3 border-secondary border-2 mb-3" alt="">
                         </ng-template>
+
+                        <div class="d-flex justify-content-end">
+                            <button mat-icon-button type="button" matTooltip="Ukoliko ne odaberete sliku, biće primenjena podrazumevana slika. Kasnije je možete promeniti.">
+                                <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                            </button>
+                            <button (click)="imageUploadControl.click()" type="button"
+                            class="btn bg-green text-beige mb-3">Izaberi sliku projekta</button>
+                        </div>
 
                         <ng-container *ngIf="imageUploadControl.value">
                             <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" format="png"
-                                (imageCropped)="onImageCropped($event)" [aspectRatio]="2">
+                                (imageCropped)="onImageCropped($event)" [aspectRatio]="3/2">
                             </image-cropper>
                         </ng-container>
                     </div>
+
                     <div class="col-md-6">
                         <div class="d-flex flex-column">
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
@@ -67,15 +70,13 @@
                                 </button>
                             </div>
 
-
-                            <app-tag-viewer [tags]="projectForm.get('tags')!.value" (addTag)="addTagToForm($event)"
-                                (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
-
+                            <app-tag-viewer [tags]="projectForm.get('tags')!.value" (addTag)="addTagToForm($event)" (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
 
                         </div>
 
-                        <button class="btn bg-purple text-beige" type="submit" [disabled]="projectForm.invalid">Kreiraj
-                            projekat</button>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-lg bg-purple text-beige" type="submit" [disabled]="projectForm.invalid">Kreiraj projekat</button>
+                        </div>
 
                     </div>
                 </div>
