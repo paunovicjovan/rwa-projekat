@@ -57,8 +57,15 @@ export class ProjectsService {
   }
 
   findManyPaginated(options: IPaginationOptions, filters: SearchProjectsFilters): Observable<Pagination<ProjectResponseDto>> {
+    if(!filters.title)
+      filters.title = '';
+
+    if(!filters.minDate)
+      filters.minDate = new Date(0);
+
     let queryBuilder = this.projectsRepository
                         .createQueryBuilder('project')
+                        .innerJoinAndSelect('project.createdBy', 'createdBy')
                         .where('LOWER(project.title) LIKE :title', { title: `%${filters.title.toLowerCase()}%` })
                         .andWhere('(project.createdAt >= :minDate OR project.updatedAt >= :minDate)', { minDate: filters.minDate })
 

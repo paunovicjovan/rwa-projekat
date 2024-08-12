@@ -1,4 +1,4 @@
-<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+
     <div class="container py-3">
         <div class="row gap-3 gap-lg-0">
             <div class="col-lg-4">
@@ -31,11 +31,13 @@
 
             <div class="col-lg-8">
                 <mat-card class="p-3" appearance="outlined">
-                    <h6>Predloženi projekti</h6>
-                    <mat-spinner *ngIf="dataFromStore.isLoading" diameter="50"></mat-spinner>
+                    <h6 class="text-center mb-3">{{hasSearched ? 'Rezultati pretrage' : 'Predloženi projekti'}}</h6>
+                    <div class="d-flex justify-content-center">
+                            <app-projects-list (onPaginateChange)="onPaginateChange($event)" [isSuggestedMode]="!hasSearched"></app-projects-list>
+                    </div>
+
                 </mat-card>
             </div>
         </div>
 
     </div>
-</ng-container>

@@ -28,7 +28,8 @@ export class NewProjectComponent implements OnInit {
     this.projectForm = this.formBuilder.group({
       title: [null, [
         Validators.required,
-        Validators.minLength(2)]
+        Validators.minLength(2),
+        Validators.maxLength(30)]
       ],
       description: [null, [
         Validators.required,

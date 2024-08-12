@@ -38,7 +38,7 @@
                                 <input matInput placeholder="Naziv" formControlName="title">
                                 <mat-error
                                     *ngIf="projectForm.controls['title'].touched && projectForm.controls['title'].errors">Naziv
-                                    projekta je obavezan (minimalno 2 karaktera)</mat-error>
+                                    projekta je obavezan (od 2 do 30 karaktera)</mat-error>
                             </mat-form-field>
 
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">

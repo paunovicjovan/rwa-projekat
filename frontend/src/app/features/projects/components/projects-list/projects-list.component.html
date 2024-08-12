@@ -1,0 +1,20 @@
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <mat-spinner *ngIf="dataFromStore.isLoading" diameter="50"></mat-spinner>
+    <ng-container *ngIf="!dataFromStore.isLoading">
+        <div *ngIf="dataFromStore.projects.length > 0; else noResults" class="d-flex flex-wrap gap-3 justify-content-center">
+            <app-project-preview *ngFor="let project of dataFromStore.projects" [project]="project"></app-project-preview>
+        </div>
+        <ng-template #noResults>
+            <div class="d-flex flex-column align-items-center">
+                <img src="assets/no-projects.png" class="img w-50" alt="Nema sadrzaja">
+                <p class="lead text-center">{{isSuggestedMode ? 'Nema predloženih projekata, probajte da promenite tagove na svom profilu' : 'Nema rezultata pretrage'}}</p>
+            </div>
+        </ng-template>
+    </ng-container>
+    <mat-paginator *ngIf="!isSuggestedMode" [length]="dataFromStore.paginationMetadata.totalItems"
+        [pageSize]="dataFromStore.paginationMetadata.itemsPerPage"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        [showFirstLastButtons]="true"
+        (page)="handlePaginateChange($event)">
+    </mat-paginator>
+</ng-container>

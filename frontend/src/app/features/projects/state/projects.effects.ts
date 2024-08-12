@@ -5,6 +5,7 @@ import * as projectsActions from './projects.actions'
 import { catchError, concatMap, map, of, tap } from "rxjs"
 import { Project } from "../models/project.interface"
 import { Router } from "@angular/router"
+import { PaginatedResponse } from "../../../shared/models/paginated-response.interface"
 
 
 export const createProject$ = createEffect(
@@ -51,6 +52,26 @@ export const loadSuggestedProjects$ = createEffect(
                     }),
                     catchError(() => {
                         return of(projectsActions.loadSuggestedProjectsFailure())
+                        }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);
+
+export const filterProjects$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.filterProjects),
+            concatMap(({filterProjectsRequest}) =>
+                projectsService.filterProjects(filterProjectsRequest).pipe(
+                    map((response: PaginatedResponse<Project>) => {
+                        return projectsActions.filterProjectsSuccess({projects: response.items, paginationMetadata: response.meta})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.filterProjectsFailure())
                         }
                     )
                 )

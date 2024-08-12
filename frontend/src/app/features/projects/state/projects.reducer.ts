@@ -42,4 +42,24 @@ export const projectsReducer = createReducer(
             isLoading: false
         })
     }),
+    on(projectsActions.filterProjects, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.filterProjectsSuccess, (state, action) => {
+        return projectsAdapter.setAll(action.projects, {
+            ...state,
+            isLoading: false, 
+            paginationMetadata: action.paginationMetadata
+        })
+    }),
+    on(projectsActions.filterProjectsFailure, (state) => {
+        return projectsAdapter.removeAll({
+            ...state,
+            isLoading: false,
+            paginationMetadata: initialPaginationMetadataState
+        })
+    }),
 )

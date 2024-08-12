@@ -6,6 +6,9 @@ import { Tag } from '../../../tags/models/tag.interface';
 import { combineLatest, Observable } from 'rxjs';
 import * as projectsSelectors from '../../state/projects.selectors';
 import * as projectsActions from '../../state/projects.actions';
+import { FilterProjectsRequest } from '../../models/filter-projects-request.interface';
+import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-projects-page',
@@ -15,7 +18,9 @@ import * as projectsActions from '../../state/projects.actions';
 export class ProjectsPageComponent implements OnInit {
 
   filtersForm!: FormGroup;
-  dataFromStore$!: Observable<any>;
+  // dataFromStore$!: Observable<any>;
+  hasSearched: boolean = false;
+  pageEvent!: PageEvent;
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>
@@ -23,7 +28,7 @@ export class ProjectsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeFiltersForm();
-    this.selectDataFromStore();
+    this.initializePaginator();
     this.store.dispatch(projectsActions.loadSuggestedProjects());
   }
 
@@ -35,16 +40,30 @@ export class ProjectsPageComponent implements OnInit {
     });
   }
 
-  selectDataFromStore() {
-    this.dataFromStore$ = combineLatest({
-      isLoading: this.store.select(projectsSelectors.selectIsLoading),
-      projects: this.store.select(projectsSelectors.selectProjects),
-      paginationMetadata: this.store.select(projectsSelectors.selectPaginationMetadata)
-    })
+  initializePaginator() {
+    this.pageEvent = {
+      length: 10,
+      pageIndex: 0,
+      pageSize: 10
+    }
+  }
+
+  onPaginateChange(pageEvent: PageEvent) {
+    this.pageEvent = pageEvent;
+    this.filterProjects(); 
   }
 
   filterProjects() {
-    console.log(this.filtersForm.getRawValue());
+    const tagsIds = this.formTags.value.map((tag: Tag) => tag.id);
+    const filters: FilterProjectsRequest = {
+      page: this.pageEvent.pageIndex + 1,
+      limit: this.pageEvent.pageSize,
+      title: this.title.value,
+      minDate: this.minDate.value,
+      tagsIds: tagsIds
+    }
+    this.store.dispatch(projectsActions.filterProjects({filterProjectsRequest: filters}));
+    this.hasSearched = true;
   }
 
   addTagToForm(tag: Tag) {
@@ -63,6 +82,14 @@ export class ProjectsPageComponent implements OnInit {
   findTagIndexInForm(tagId: number): number {
     const tagIndex = this.formTags.value.findIndex((tag: Tag) => tag.id === tagId);
     return tagIndex;
+  }
+
+  get title() {
+    return this.filtersForm.get('title') as FormArray;
+  }
+
+  get minDate() {
+    return this.filtersForm.get('minDate') as FormArray;
   }
 
   get formTags() {

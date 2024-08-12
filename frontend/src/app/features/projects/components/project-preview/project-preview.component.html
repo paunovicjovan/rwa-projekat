@@ -1,0 +1,21 @@
+<mat-card appearance="outlined" class="project-card">
+    <app-avatar-image [imageUrl]="project.image" route="projects/project-image" defaultImageUrl="assets/default-project-image.jpg"></app-avatar-image>
+
+    <mat-card-header>
+        <mat-card-title><p class="text-bold">{{project.title}}</p> </mat-card-title>
+        <mat-card-subtitle>
+            <p>Autor: 
+                <a class="text-decoration-none text-bold text-green" [routerLink]="'../users/' + project.createdBy.username">
+                    {{project.createdBy.username}}
+                </a>
+            </p>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <p>Ažurirano: <span class="text-bold text-green">{{project.updatedAt | formatDate}}</span></p>
+        <p>Kreirano: <span class="text-bold text-green">{{project.createdAt | formatDate}}</span></p>
+    </mat-card-content>
+    <mat-card-actions class="mt-2">
+        <a class="btn w-100 bg-green text-beige" [routerLink]="'/' + project.id">Pogledaj detalje</a>
+    </mat-card-actions>
+</mat-card>

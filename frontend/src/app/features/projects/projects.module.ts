@@ -8,11 +8,15 @@ import * as projectsEffects from '../projects/state/projects.effects';
 import { StoreModule } from '@ngrx/store';
 import { Features } from '../features.enum';
 import { projectsReducer } from './state/projects.reducer';
+import { ProjectsListComponent } from './components/projects-list/projects-list.component';
+import { ProjectPreviewComponent } from './components/project-preview/project-preview.component';
 
 @NgModule({
   declarations: [
     ProjectsPageComponent,
-    NewProjectComponent
+    NewProjectComponent,
+    ProjectsListComponent,
+    ProjectPreviewComponent
   ],
   imports: [
     SharedModule,
