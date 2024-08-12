@@ -7,7 +7,7 @@
                     <form [formGroup]="filtersForm" (ngSubmit)="filterProjects()">
                         <div class="d-flex flex-column">
 
-                            <app-tag-viewer [tags]="filtersForm.get('tags')!.value" (addTag)="addTagToForm($event)"
+                            <app-tag-viewer [tags]="formTags!.value" (addTag)="addTagToForm($event)"
                                 (removeTag)="removeTagFromForm($event)" class="mb-3"></app-tag-viewer>
 
                             <mat-form-field>
@@ -15,14 +15,25 @@
                                 <input matInput formControlName="title">
                             </mat-form-field>
 
-                            <mat-form-field>
-                                <mat-label>Datum</mat-label>
-                                <input matInput [matDatepicker]="picker" formControlName="minDate">
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker #picker></mat-datepicker>
-                            </mat-form-field>
+                            <div class="d-flex align-items-center mb-3">
+                                <mat-form-field subscriptSizing="dynamic" class="d-flex flex-grow-1">
+                                    <mat-label>Datum</mat-label>
+                                    <input matInput [matDatepicker]="picker" formControlName="minDate">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
 
-                            <button type=" submit" class="btn bg-purple text-beige">Pretraži</button>
+                                <button mat-icon-button type="button" class="ms-2" (click)="clearChosenDate()">
+                                    <mat-icon class="text-red" fontIcon="cancel"></mat-icon>
+                                </button>
+
+                                <button mat-icon-button type="button" matTooltip="Odabirom datuma prikazuju se samo projekti koji su kreirani ili ažurirani nakon odabranog datuma.">
+                                    <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                                </button>
+
+                            </div>
+
+                            <button type=" submit" class="btn bg-purple text-beige" [disabled]="filtersForm.invalid">Pretraži</button>
                         </div>
 
                     </form>

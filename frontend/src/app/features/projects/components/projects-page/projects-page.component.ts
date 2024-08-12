@@ -84,12 +84,16 @@ export class ProjectsPageComponent implements OnInit {
     return tagIndex;
   }
 
+  clearChosenDate() {
+    this.minDate.setValue(null);
+  }
+
   get title() {
-    return this.filtersForm.get('title') as FormArray;
+    return this.filtersForm.get('title') as FormControl;
   }
 
   get minDate() {
-    return this.filtersForm.get('minDate') as FormArray;
+    return this.filtersForm.get('minDate') as FormControl;
   }
 
   get formTags() {

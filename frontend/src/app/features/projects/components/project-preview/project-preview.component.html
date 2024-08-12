@@ -16,6 +16,6 @@
         <p>Kreirano: <span class="text-bold text-green">{{project.createdAt | formatDate}}</span></p>
     </mat-card-content>
     <mat-card-actions class="mt-2">
-        <a class="btn w-100 bg-green text-beige" [routerLink]="'/' + project.id">Pogledaj detalje</a>
+        <a class="btn w-100 bg-green text-beige" [routerLink]="'/projects/' + project.id">Pogledaj detalje</a>
     </mat-card-actions>
 </mat-card>
