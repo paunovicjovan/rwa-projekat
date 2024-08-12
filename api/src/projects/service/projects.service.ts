@@ -5,9 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from '../entities/project.entity';
 import { Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
-import { from, Observable, switchMap } from 'rxjs';
+import { defaultIfEmpty, filter, from, Observable, switchMap } from 'rxjs';
 import { UserDto } from 'src/users/dto/user.dto';
 import { ProjectDto } from '../dto/project.dto';
+import { ProjectResponseDto } from '../dto/project-response.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -34,6 +35,23 @@ export class ProjectsService {
     projectEntity.requirements = createProjectDto.requirements;
     projectEntity.tags = createProjectDto.tags;
     return projectEntity;
+  }
+
+  findSuggestedProjectsForUser(userId: number): Observable<ProjectResponseDto[]> {
+    return this.usersService.findTagsIdsForUser(userId).pipe(
+      filter((tagsIds: number[]) => tagsIds.length > 0),
+      switchMap((tagsIds: number[]) => {
+        return this.projectsRepository
+          .createQueryBuilder('project')
+          .innerJoinAndSelect('project.tags', 'tag')
+          .innerJoinAndSelect('project.createdBy', 'createdBy')
+          .where("tag.id IN (:...tagsIds) AND createdBy.id != :userId AND project.status = 'opened'", { tagsIds, userId })
+          .orderBy('project.createdAt', 'DESC')
+          .take(8)
+          .getMany();
+      }),
+      defaultIfEmpty([])
+    )
   }
 
   findAll() {

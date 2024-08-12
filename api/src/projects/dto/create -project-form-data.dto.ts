@@ -1,6 +1,6 @@
 import { CreateProjectDto } from "./create-project.dto";
 
-export class ProjectFormData {
+export class CreateProjectFormData {
     file?: File;
     projectDtoStringified: string;
 }

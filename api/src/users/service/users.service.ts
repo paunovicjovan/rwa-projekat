@@ -100,4 +100,15 @@ export class UsersService {
             map((user: UserDto) => user.tags)
         )
     }
+
+    findTagsIdsForUser(userId: number): Observable<number[]> {
+        return from(this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['tags']
+        })).pipe(
+            map((user: UserDto) => {
+                return user.tags.map(tag => tag.id)
+            })
+        )
+    }
 }

@@ -7,7 +7,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { Observable } from 'rxjs';
 import { ProjectDto } from '../dto/project.dto';
-import { ProjectFormData } from '../dto/project-form-data.dto';
+import { CreateProjectFormData } from '../dto/create -project-form-data.dto';
+import { ProjectResponseDto } from '../dto/project-response.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -16,9 +17,16 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post()
-  create(@UploadedFile() file, @Body() projectData: ProjectFormData, @Request() req): Observable<ProjectDto> {
+  create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Observable<ProjectDto> {
     const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
     return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('suggested-projects')
+  findSuggestedProjectsForUser(@Request() req): Observable<ProjectResponseDto[]> {
+    const userId = req.user.id;
+    return this.projectsService.findSuggestedProjectsForUser(userId);
   }
 
   @Get()

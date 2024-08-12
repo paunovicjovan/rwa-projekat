@@ -3,7 +3,7 @@ import { Tag } from '../../models/tag.interface';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
-import { combineLatest, debounceTime, distinctUntilChanged, Observable, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, Observable, tap } from 'rxjs';
 import * as tagsActions from '../../state/tags.actions';
 import * as tagsSelectors from '../../state/tags.selectors';
 
@@ -34,6 +34,7 @@ export class TagViewerComponent {
     this.searchTag.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
+      filter((tagName: string) => tagName !== ''),
       tap((tagName: string) => this.store.dispatch(tagsActions.searchTags({tagName})))
     ).subscribe();
   }
