@@ -6,6 +6,8 @@ import { TagsModule } from "../tags/tags.module";
 import { EffectsModule } from '@ngrx/effects';
 import * as projectsEffects from '../projects/state/projects.effects';
 import { StoreModule } from '@ngrx/store';
+import { Features } from '../features.enum';
+import { projectsReducer } from './state/projects.reducer';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,7 @@ import { StoreModule } from '@ngrx/store';
     SharedModule,
     TagsModule,
     EffectsModule.forFeature(projectsEffects),
-    // StoreModule
+    StoreModule.forFeature(Features.Projects, projectsReducer)
 ]
 })
 export class ProjectsModule { }

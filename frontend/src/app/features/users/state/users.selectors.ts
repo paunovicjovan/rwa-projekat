@@ -20,7 +20,7 @@ export const selectChosenUserProfile = createSelector(
 
 export const selectFilteredUsers = createSelector(
     usersFeature,
-    (state: UsersState) => state.ids.map(id=>state.entities[id]) //selectEntities nece da radi
+    (state: UsersState) => state.ids.map(id => state.entities[id]) //selectEntities nece da radi
 )
 
 export const selectUsersPaginationMetadata = createSelector(

@@ -22,6 +22,7 @@ import { AvatarImageComponent } from './components/avatar-image/avatar-image.com
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const modules = [
   CommonModule,
@@ -42,7 +43,8 @@ const modules = [
   MatDialogModule,
   MatChipsModule,
   MatAutocompleteModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatDatepickerModule
 ]
 
 @NgModule({

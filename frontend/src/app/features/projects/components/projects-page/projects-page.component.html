@@ -1,1 +1,41 @@
-<p>projects-page works!</p>
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <div class="container py-3">
+        <div class="row gap-3 gap-lg-0">
+            <div class="col-lg-4">
+                <mat-card class="p-3" appearance="outlined">
+                    <h6 class="text-center mb-4">Pretražite projekte</h6>
+                    <form [formGroup]="filtersForm" (ngSubmit)="filterProjects()">
+                        <div class="d-flex flex-column">
+
+                            <app-tag-viewer [tags]="filtersForm.get('tags')!.value" (addTag)="addTagToForm($event)"
+                                (removeTag)="removeTagFromForm($event)" class="mb-3"></app-tag-viewer>
+
+                            <mat-form-field>
+                                <mat-label>Naziv</mat-label>
+                                <input matInput formControlName="title">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Datum</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="minDate">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+
+                            <button type=" submit" class="btn bg-purple text-beige">Pretraži</button>
+                        </div>
+
+                    </form>
+                </mat-card>
+            </div>
+
+            <div class="col-lg-8">
+                <mat-card class="p-3" appearance="outlined">
+                    <h6>Predloženi projekti</h6>
+                    <mat-spinner *ngIf="dataFromStore.isLoading" diameter="50"></mat-spinner>
+                </mat-card>
+            </div>
+        </div>
+
+    </div>
+</ng-container>

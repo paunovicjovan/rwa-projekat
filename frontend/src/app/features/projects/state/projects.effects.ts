@@ -25,7 +25,7 @@ export const createProject$ = createEffect(
         )
     },
     {functional: true}
-)
+);
 
 export const redirectAfterProjectCreation$ = createEffect(
     (actions$ = inject(Actions), router = inject(Router))=>{
@@ -38,4 +38,24 @@ export const redirectAfterProjectCreation$ = createEffect(
 }, {
     functional:true,
     dispatch: false
-})
+});
+
+export const loadSuggestedProjects$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.loadSuggestedProjects),
+            concatMap(() =>
+                projectsService.loadSuggestedProjects().pipe(
+                    map((projects: Project[]) => {
+                        return projectsActions.loadSuggestedProjectsSuccess({projects})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.loadSuggestedProjectsFailure())
+                        }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);

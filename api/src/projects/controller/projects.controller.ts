@@ -37,6 +37,7 @@ export class ProjectsController {
     @Query('limit') limit: number = 10,
     @Body() searchFilters: SearchProjectsFilters 
   ) {
+    limit = Math.min(100, limit);
     return this.projectsService.findManyPaginated({ page, limit }, searchFilters);
   }
 

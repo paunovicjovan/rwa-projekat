@@ -13,6 +13,7 @@ import { metaReducers } from './state/local-storage.metareducer';
 import { ProjectsModule } from './features/projects/projects.module';
 import { ReviewsModule } from './features/reviews/reviews.module';
 import { TagsModule } from './features/tags/tags.module';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { TagsModule } from './features/tags/tags.module';
     EffectsModule.forRoot([])
   ],
   providers: [
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideNativeDateAdapter()
   ],
   bootstrap: [AppComponent]
 })

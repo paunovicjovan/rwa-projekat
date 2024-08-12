@@ -20,4 +20,8 @@ export class ProjectsService {
     formData.append('projectDtoStringified', JSON.stringify(createProjectDto));
     return this.http.post<Project>(`${environment.apiUrl}/projects`, formData);
   }
+
+  loadSuggestedProjects(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${environment.apiUrl}/projects/suggested-projects`);
+  }
 }
