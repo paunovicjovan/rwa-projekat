@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request, Query } from '@nestjs/common';
 import { ProjectsService } from '../service/projects.service';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { ProjectDto } from '../dto/project.dto';
 import { CreateProjectFormData } from '../dto/create -project-form-data.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
+import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 
 @Controller('projects')
 export class ProjectsController {
@@ -29,9 +30,14 @@ export class ProjectsController {
     return this.projectsService.findSuggestedProjectsForUser(userId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.projectsService.findAll();
+  findManyPaginated(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Body() searchFilters: SearchProjectsFilters 
+  ) {
+    return this.projectsService.findManyPaginated({ page, limit }, searchFilters);
   }
 
   @Get(':id')

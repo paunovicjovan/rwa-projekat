@@ -12,7 +12,6 @@ import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
-import { TagDto } from 'src/tags/dto/tag.dto';
 import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 
 @Controller('users')

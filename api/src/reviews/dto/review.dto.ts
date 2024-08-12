@@ -1,10 +1,10 @@
-import { UserResponseDto } from "src/users/dto/user-response.dto";
+import { UserDto } from "src/users/dto/user.dto";
 
 export class ReviewDto {
     id: number;
     rating: number;
     content: string;
     createdAt: Date;
-    author: UserResponseDto;
-    reviewee: UserResponseDto;
+    author: UserDto;
+    reviewee: UserDto;
 }

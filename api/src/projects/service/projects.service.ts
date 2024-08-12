@@ -3,12 +3,14 @@ import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from '../entities/project.entity';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
 import { defaultIfEmpty, filter, from, Observable, switchMap } from 'rxjs';
 import { UserDto } from 'src/users/dto/user.dto';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
+import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from 'nestjs-typeorm-paginate';
+import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -52,6 +54,22 @@ export class ProjectsService {
       }),
       defaultIfEmpty([])
     )
+  }
+
+  findManyPaginated(options: IPaginationOptions, filters: SearchProjectsFilters): Observable<Pagination<ProjectResponseDto>> {
+    let queryBuilder = this.projectsRepository
+                        .createQueryBuilder('project')
+                        .where('LOWER(project.title) LIKE :title', { title: `%${filters.title.toLowerCase()}%` })
+                        .andWhere('(project.createdAt >= :minDate OR project.updatedAt >= :minDate)', { minDate: filters.minDate })
+
+    if(filters.tagsIds.length > 0) {
+      queryBuilder.innerJoinAndSelect('project.tags', 'tag')
+                  .andWhere('tag.id IN (:...tagsIds)', { tagsIds: filters.tagsIds })
+    }
+
+    queryBuilder.orderBy('project.updatedAt', 'DESC');
+                 
+    return from(paginate<ProjectResponseDto>(queryBuilder, options));
   }
 
   findAll() {
