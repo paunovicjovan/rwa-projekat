@@ -1,5 +1,6 @@
 import { ProjectStatus } from "../enums/project-status.enum";
 import { UserResponseDto } from "src/users/dto/user-response.dto";
+import { TagResponseDto } from "src/tags/dto/tag-response.dto";
 
 export class ProjectResponseDto {
     id: number;
@@ -12,5 +13,6 @@ export class ProjectResponseDto {
     status: ProjectStatus;
     applicationLink: string | null;
     repositoryLink: string | null;
-    createdBy: UserResponseDto
+    createdBy: UserResponseDto;
+    tags: TagResponseDto[]
 }

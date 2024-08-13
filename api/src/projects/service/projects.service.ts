@@ -5,12 +5,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from '../entities/project.entity';
 import { Raw, Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
-import { defaultIfEmpty, filter, from, Observable, switchMap } from 'rxjs';
+import { defaultIfEmpty, filter, from, map, Observable, switchMap } from 'rxjs';
 import { UserDto } from 'src/users/dto/user.dto';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
 import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -79,11 +80,11 @@ export class ProjectsService {
     return from(paginate<ProjectResponseDto>(queryBuilder, options));
   }
 
-  findOne(id: number) {
-    return this.projectsRepository.findOne({
+  findOne(id: number): Observable<ProjectResponseDto> {
+    return from(this.projectsRepository.findOne({
       where: {id},
       relations: ['createdBy', 'tags']
-    })
+    }))
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {

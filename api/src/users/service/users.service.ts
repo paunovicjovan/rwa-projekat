@@ -111,4 +111,22 @@ export class UsersService {
             })
         )
     }
+
+    findAppliedUsersForProject(projectId: number, options: IPaginationOptions): Observable<Pagination<UserResponseDto>> {
+        const queryBuilder = this.usersRepository
+                            .createQueryBuilder('user')
+                            .innerJoin('user.appliedTo', 'appliedTo')
+                            .where('appliedTo.id = :projectId', {projectId});
+
+        return from(paginate(queryBuilder, options));
+    }
+
+    findAcceptedUsersForProject(projectId: number, options: IPaginationOptions): Observable<Pagination<UserResponseDto>> {
+        const queryBuilder = this.usersRepository
+                            .createQueryBuilder('user')
+                            .innerJoin('user.acceptedIn', 'acceptedIn')
+                            .where('acceptedIn.id = :projectId', {projectId});
+
+        return from(paginate(queryBuilder, options));
+    }
 }

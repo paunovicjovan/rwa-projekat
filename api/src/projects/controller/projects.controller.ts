@@ -43,7 +43,7 @@ export class ProjectsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: number): Observable<ProjectResponseDto> {
     return this.projectsService.findOne(+id);
   }
 

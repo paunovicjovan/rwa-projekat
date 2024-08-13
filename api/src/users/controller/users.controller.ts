@@ -88,4 +88,24 @@ export class UsersController {
     findTagsForUser(@Param('username') username: string): Observable<TagResponseDto[]> {
         return this.usersService.findTagsForUser(username);
     }
+
+    @Get('applied-to/:projectId')
+    findAppliedUsersForProject(
+        @Param('projectId') projectId: number,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10
+    ) {
+        limit = Math.min(limit, 100);
+        return this.usersService.findAppliedUsersForProject(projectId, {page, limit});
+    }
+
+    @Get('accepted-in/:projectId')
+    findAcceptedUsersForProject(
+        @Param('projectId') projectId: number,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10
+    ) {
+        limit = Math.min(limit, 100);
+        return this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
+    }
 }

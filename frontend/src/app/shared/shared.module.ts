@@ -24,6 +24,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TranslateProjectStatusPipe } from './pipes/translate-project-status/translate-project-status.pipe';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const modules = [
   CommonModule,
@@ -45,7 +46,8 @@ const modules = [
   MatChipsModule,
   MatAutocompleteModule,
   MatTooltipModule,
-  MatDatepickerModule
+  MatDatepickerModule,
+  MatTabsModule
 ]
 
 @NgModule({

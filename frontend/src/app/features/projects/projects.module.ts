@@ -12,6 +12,7 @@ import { ProjectsListComponent } from './components/projects-list/projects-list.
 import { ProjectPreviewComponent } from './components/project-preview/project-preview.component';
 import { ProjectOverviewPageComponent } from './components/project-overview-page/project-overview-page.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { ProjectParticipantsComponent } from './components/project-participants/project-participants.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
     ProjectsListComponent,
     ProjectPreviewComponent,
     ProjectOverviewPageComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectParticipantsComponent
   ],
   imports: [
     SharedModule,
