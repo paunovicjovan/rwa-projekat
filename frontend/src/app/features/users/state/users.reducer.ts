@@ -32,11 +32,11 @@ export const usersReducer = createReducer(
             chosenUserProfile: null
         }
     }),
-    on(usersActions.loadUserProfileSuccess, (state, action)=>{
+    on(usersActions.loadUserProfileSuccess, (state, action) => {
         return {
             ...state,
             isLoading: false,
-            chosenUserProfile: action.loadedUser
+            chosenUserProfile: { ...action.loadedUser, tags: [] }
         }
     }),
     on(usersActions.loadUserProfileFailure, (state)=>{

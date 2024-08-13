@@ -1,0 +1,48 @@
+import { Component, Input } from '@angular/core';
+import { AppState } from '../../../../state/app-state.interface';
+import { Store } from '@ngrx/store';
+import * as projectsActions from '../../state/projects.actions';
+import * as projectsSelectors from '../../state/projects.selectors';
+import * as tagsSelectors from '../../../tags/state/tags.selectors';
+import * as authSelectors from '../../../auth/state/auth.selectors';
+import { combineLatest, Observable } from 'rxjs';
+import { Tag } from '../../../tags/models/tag.interface';
+
+@Component({
+  selector: 'app-project-details',
+  templateUrl: './project-details.component.html',
+  styleUrl: './project-details.component.scss'
+})
+export class ProjectDetailsComponent {
+
+  @Input({required: true}) projectId!: number;
+  dataFromStore$!: Observable<any>;
+
+  constructor(private store: Store<AppState>) {}
+
+  ngOnInit(): void {
+    this.loadProject();
+    this.selectDataFromStore();
+  }
+  
+  loadProject() {
+    this.store.dispatch(projectsActions.loadProject({projectId: this.projectId}));
+  }
+
+  selectDataFromStore() {
+    this.dataFromStore$ = combineLatest({
+      isLoading: this.store.select(projectsSelectors.selectIsLoading),
+      chosenProject: this.store.select(projectsSelectors.selectChosenProject),
+      tags: this.store.select(tagsSelectors.selectLoadedTags),
+      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser)
+    })
+  }
+
+  addTag(tag: Tag) {
+
+  }
+
+  removeTag(tagId: number) {
+    
+  }
+}

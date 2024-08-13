@@ -23,6 +23,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { TranslateProjectStatusPipe } from './pipes/translate-project-status/translate-project-status.pipe';
 
 const modules = [
   CommonModule,
@@ -52,7 +53,8 @@ const modules = [
     FormatDatePipe,
     TranslateRolePipe,
     ConfirmDialogComponent,
-    AvatarImageComponent
+    AvatarImageComponent,
+    TranslateProjectStatusPipe
   ],
   imports: [
     ...modules,
@@ -62,6 +64,7 @@ const modules = [
     ...modules,
     FormatDatePipe,
     TranslateRolePipe,
+    TranslateProjectStatusPipe,
     ConfirmDialogComponent,
     AvatarImageComponent
   ]

@@ -8,6 +8,7 @@ import { UsersPageComponent } from './features/users/components/users-page/users
 import { authGuard } from './core/guards/auth.guard';
 import { ProjectsPageComponent } from './features/projects/components/projects-page/projects-page.component';
 import { NewProjectComponent } from './features/projects/components/new-project/new-project.component';
+import { ProjectOverviewPageComponent } from './features/projects/components/project-overview-page/project-overview-page.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'new-project',
         component: NewProjectComponent
+      }, 
+      {
+        path: ':id',
+        component: ProjectOverviewPageComponent
       }
     ],
     canActivate: [authGuard]

@@ -8,7 +8,7 @@
                 </div>
                 <div class="ms-3">
                     <mat-card-title>
-                        <h6>{{review.author.username}}</h6>
+                        <h6 [routerLink]="'../' + review.author.username" class="cursor-pointer">{{review.author.username}}</h6>
                     </mat-card-title>
                     <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
                 </div>

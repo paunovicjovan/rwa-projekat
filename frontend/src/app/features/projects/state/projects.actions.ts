@@ -45,3 +45,17 @@ export const filterProjectsSuccess = createAction(
 export const filterProjectsFailure = createAction(
     '[Projects] Filter Projects Failure',
 );
+
+export const loadProject = createAction(
+    '[Projects] Load Project',
+    props<{ projectId: number }>()
+);
+
+export const loadProjectSuccess = createAction(
+    '[Projects] Load Project Success',
+    props<{ project: Project }>()
+);
+
+export const loadProjectFailure = createAction(
+    '[Projects] Load Project Failure'
+);

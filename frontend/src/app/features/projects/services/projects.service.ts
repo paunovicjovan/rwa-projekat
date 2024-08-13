@@ -42,4 +42,8 @@ export class ProjectsService {
 
     return this.http.post<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/filter-projects`, requestBody, {params: httpParams})
   }
+
+  loadProject(projectId: number): Observable<Project> {
+    return this.http.get<Project>(`${environment.apiUrl}/projects/${projectId}`);
+  }
 }

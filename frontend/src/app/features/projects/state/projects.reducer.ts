@@ -17,7 +17,8 @@ const initialState: ProjectsState = {
     ids: [],
     entities: {},
     isLoading: false,
-    paginationMetadata: initialPaginationMetadataState
+    paginationMetadata: initialPaginationMetadataState,
+    chosenProject: null
 }
 
 export const projectsAdapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -61,5 +62,24 @@ export const projectsReducer = createReducer(
             isLoading: false,
             paginationMetadata: initialPaginationMetadataState
         })
+    }),
+    on(projectsActions.loadProject, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.loadProjectSuccess, (state, action) => {
+        return {
+            ...state,
+            isLoading: false, 
+            chosenProject: { ...action.project, tags: [] }
+        }
+    }),
+    on(projectsActions.loadProjectFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false,
+        }
     }),
 )

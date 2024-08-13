@@ -1,0 +1,61 @@
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <mat-card appearance="outlined" class="p-3 d-flex justify-content-center">
+        <mat-spinner diameter="50" class="mx-auto" *ngIf="dataFromStore.isLoading; else loadedData"></mat-spinner>
+        <ng-template #loadedData>
+            <div class="row gap-2 gap-md-0">
+                <div class="col-md-4">
+                    <mat-card appearance="outlined" class="project-image mb-3">
+                        <app-avatar-image defaultImageUrl="assets/default-project-image.jpg" [imageUrl]="dataFromStore.chosenProject.image" route="projects/project-image"></app-avatar-image>
+                    </mat-card>
+                    <p>Autor: 
+                        <a class="text-purple text-decoration-none text-bold cursor-pointer" 
+                        [routerLink]="'../../users/' + dataFromStore.chosenProject.createdBy.username">
+                            {{dataFromStore.chosenProject.createdBy.username}}
+                        </a>
+                    </p>
+                    <p>Kreiran: 
+                        <span class="text-purple text-decoration-none text-bold">
+                            {{dataFromStore.chosenProject.createdAt | formatDate}}
+                        </span>
+                    </p>
+                    <p>Ažuriran: 
+                        <span class="text-purple text-decoration-none text-bold">
+                            {{dataFromStore.chosenProject.updatedAt | formatDate}}
+                        </span>
+                    </p>
+                </div>
+                
+                <div class="col-md-8">
+                    <h5>{{dataFromStore.chosenProject.title}}</h5>
+                    <mat-card appearance="outlined" class="p-3 mb-3">
+                        <p class="lead">Opis projekta</p>
+                        <span>{{dataFromStore.chosenProject.description}}</span>
+                    </mat-card>
+                    <mat-card *ngIf="dataFromStore.chosenProject.requirements" appearance="outlined" class="p-3 mb-3">
+                        <p class="lead">Zahtevi projekta</p>
+                        <span>{{dataFromStore.chosenProject.requirements}}</span>
+                    </mat-card>
+                    <mat-card appearance="outlined" class="p-3 mb-3">
+                        <p class="lead">Dodatne informacije</p>
+                        <p>Status projekta: <span class="text-bold">{{dataFromStore.chosenProject.status | translateProjectStatus}}</span></p>
+                        <ng-container *ngIf="dataFromStore.chosenProject.status === 'completed'">
+                            <p *ngIf="dataFromStore.chosenProject.applicationLink">
+                                Link aplikacije: <a class="text-bold text-decoration-none text-purple" target="_blank" [href]="dataFromStore.chosenProject.applicationLink">{{dataFromStore.chosenProject.applicationLink}}</a>
+                            </p>
+                            <p *ngIf="dataFromStore.chosenProject.repositoryLink">
+                                Link repozitorijuma: <a class="text-bold text-decoration-none text-purple" target="_blank" [href]="dataFromStore.chosenProject.repositoryLink">{{dataFromStore.chosenProject.repositoryLink}}</a>
+                            </p>
+                        </ng-container>
+                        
+                    </mat-card>
+                    <mat-card appearance="outlined" class="p-3 mb-3">
+                        <p class="lead">Tagovi projekta</p>
+                        <app-tag-viewer [tags]="dataFromStore.tags" [readonly]="dataFromStore.chosenProject.createdBy.id !== dataFromStore.loggedInUser.id"
+                                        (addTag)="addTag($event)" (removeTag)="removeTag($event)">
+                        </app-tag-viewer>
+                    </mat-card>
+                </div>
+            </div>
+        </ng-template>
+    </mat-card>
+</ng-container>

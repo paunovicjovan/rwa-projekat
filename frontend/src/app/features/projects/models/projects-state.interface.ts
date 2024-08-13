@@ -5,4 +5,5 @@ import { PaginationMetadata } from "../../../shared/models/pagination-metadata.i
 export interface ProjectsState extends EntityState<Project> {
     isLoading: boolean;
     paginationMetadata: PaginationMetadata;
+    chosenProject: Project | null;
 }

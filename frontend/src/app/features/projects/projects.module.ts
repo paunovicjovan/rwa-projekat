@@ -10,13 +10,17 @@ import { Features } from '../features.enum';
 import { projectsReducer } from './state/projects.reducer';
 import { ProjectsListComponent } from './components/projects-list/projects-list.component';
 import { ProjectPreviewComponent } from './components/project-preview/project-preview.component';
+import { ProjectOverviewPageComponent } from './components/project-overview-page/project-overview-page.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 @NgModule({
   declarations: [
     ProjectsPageComponent,
     NewProjectComponent,
     ProjectsListComponent,
-    ProjectPreviewComponent
+    ProjectPreviewComponent,
+    ProjectOverviewPageComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     SharedModule,

@@ -79,12 +79,11 @@ export class ProjectsService {
     return from(paginate<ProjectResponseDto>(queryBuilder, options));
   }
 
-  findAll() {
-    return `This action returns all projects`;
-  }
-
   findOne(id: number) {
-    return `This action returns a #${id} project`;
+    return this.projectsRepository.findOne({
+      where: {id},
+      relations: ['createdBy', 'tags']
+    })
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {

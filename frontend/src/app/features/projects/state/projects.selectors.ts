@@ -19,3 +19,8 @@ export const selectPaginationMetadata = createSelector(
     projectsFeature,
     (state: ProjectsState) => state.paginationMetadata
 )
+
+export const selectChosenProject = createSelector(
+    projectsFeature,
+    (state: ProjectsState) => state.chosenProject
+)
