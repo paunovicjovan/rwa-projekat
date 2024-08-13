@@ -3,6 +3,7 @@ import { User } from '../models/user.interface';
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { UserRoles } from '../models/user-roles.enum';
+import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
@@ -76,4 +77,32 @@ export const changeUserProfileImageSuccess = createAction(
 
 export const changeUserProfileImageFailure = createAction(
   '[Users] Change User Profile Image Failure',
+)
+
+export const loadAppliedUsersForProject = createAction(
+  '[Users] Load Applied Users For Project',
+  props<{ projectId: number, paginationOptions: PaginationParameters }>()
+)
+
+export const loadAppliedUsersForProjectSuccess = createAction(
+  '[Users] Load Applied Users For Project Success',
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
+)
+
+export const loadAppliedUsersForProjectFailure = createAction(
+  '[Users] Load Applied Users For Project Failure',
+)
+
+export const loadAcceptedUsersForProject = createAction(
+  '[Users] Load Accepted Users For Project',
+  props<{ projectId: number, paginationOptions: PaginationParameters }>()
+)
+
+export const loadAcceptedUsersForProjectSuccess = createAction(
+  '[Users] Load Accepted Users For Project Success',
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
+)
+
+export const loadAcceptedUsersForProjectFailure = createAction(
+  '[Users] Load Accepted Users For Project Failure',
 )

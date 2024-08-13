@@ -113,4 +113,42 @@ export const usersReducer = createReducer(
             isLoading: false
         }
     }),
+    on(usersActions.loadAppliedUsersForProject, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.loadAppliedUsersForProjectSuccess, (state, action)=>{
+        return usersAdapter.setAll(action.paginatedUsers.items , {
+            ...state,
+            isLoading: false,
+            paginationMetadata: action.paginatedUsers.meta
+        });
+    }),
+    on(usersActions.loadAppliedUsersForProjectFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(usersActions.loadAcceptedUsersForProject, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.loadAcceptedUsersForProjectSuccess, (state, action)=>{
+        return usersAdapter.setAll(action.paginatedUsers.items , {
+            ...state,
+            isLoading: false,
+            paginationMetadata: action.paginatedUsers.meta
+        });
+    }),
+    on(usersActions.loadAcceptedUsersForProjectFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

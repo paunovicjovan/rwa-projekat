@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment.development';
 import { UserRoles } from '../models/user-roles.enum';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
+import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,23 @@ export class UsersService {
 
   changeUserProfileImage(formData: FormData): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/users/upload-profile-image`, formData)
+  }
+
+  loadAppliedUsersForProject(projectId: number, paginationOptions: PaginationParameters): Observable<PaginatedResponse<User>> {
+    const httpParams = new HttpParams(
+      {
+        fromObject: { ...paginationOptions }
+      }
+    )
+    return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/applied-to/${projectId}`, {params: httpParams});
+  }
+
+  loadAcceptedUsersForProject(projectId: number, paginationOptions: PaginationParameters): Observable<PaginatedResponse<User>> {
+    const httpParams = new HttpParams(
+      {
+        fromObject: { ...paginationOptions }
+      }
+    )
+    return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/accepted-in/${projectId}`, {params: httpParams});
   }
 }

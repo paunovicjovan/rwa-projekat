@@ -118,3 +118,43 @@ export const changeUserProfileImage$ = createEffect(
     },
     {functional: true}
 )
+
+export const loadAppliedUsersForProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.loadAppliedUsersForProject),
+            switchMap(({ projectId, paginationOptions }) =>
+                usersService.loadAppliedUsersForProject(projectId, paginationOptions).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.loadAppliedUsersForProjectSuccess({ paginatedUsers })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadAppliedUsersForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const loadAcceptedUsersForProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.loadAcceptedUsersForProject),
+            switchMap(({ projectId, paginationOptions }) =>
+                usersService.loadAcceptedUsersForProject(projectId, paginationOptions).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.loadAcceptedUsersForProjectSuccess({ paginatedUsers })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadAcceptedUsersForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
