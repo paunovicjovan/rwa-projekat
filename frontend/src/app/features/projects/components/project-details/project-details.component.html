@@ -4,8 +4,11 @@
         <mat-card appearance="outlined" class="p-3 d-flex justify-content-center">
             <div class="row gap-2 gap-md-0">
                 <div class="col-md-4">
-                    <mat-card appearance="outlined" class="project-image mb-3">
+                    <mat-card appearance="outlined" class="project-image mb-3 position-relative">
                         <app-avatar-image defaultImageUrl="assets/default-project-image.jpg" [imageUrl]="dataFromStore.chosenProject.image" route="projects/project-image"></app-avatar-image>
+                        <button class="btn rounded-circle bg-green text-beige btn-edit-image" type="button" *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
+                            <mat-icon fontIcon="edit"></mat-icon>
+                        </button>
                     </mat-card>
                     <p>Autor: 
                         <a class="text-purple text-decoration-none text-bold cursor-pointer" 
@@ -23,6 +26,28 @@
                             {{dataFromStore.chosenProject.updatedAt | formatDate}}
                         </span>
                     </p>
+                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
+                        <ng-container *ngIf="dataFromStore.chosenProject.status === 'opened'">
+                            <div class="d-flex align-items-center">
+                                <button class="btn bg-purple text-beige">Zatvori prijave za projekat</button>
+                                <button mat-icon-button type="button" matTooltip="Zatvaranjem prijava korisnici više neće moći da pronađu ovaj projekat u pretrazi niti da se prijave.">
+                                    <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                                </button>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="dataFromStore.chosenProject.status === 'closed'">
+                            <div class="d-flex align-items-center">
+                                <button class="btn bg-purple text-beige">Otvori prijave za projekat</button>
+                                <button class="btn bg-red text-beige ms-2">Završi projekat</button>
+                                <button mat-icon-button type="button" matTooltip="Završavanjem projekta prekida se mogućnost vraćanja u stanje otvoren/zatvoren za prijave i mogućnost izmene podataka o projektu. Završen projekat prikazuje se kao portfolio.">
+                                    <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                                </button>
+                            </div>
+                        </ng-container>
+                        <hr>
+                        <button class="btn bg-red text-beige mt-2">Obriši projekat</button>
+
+                    </ng-container>
                 </div>
                 
                 <div class="col-md-8">
@@ -48,6 +73,11 @@
                         </ng-container>
                         
                     </mat-card>
+
+                    <div class="d-flex justify-content-end" *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
+                        <button class="btn bg-green text-beige mb-3">Izmeni podatke o projektu</button>
+                    </div>
+                    
                     <mat-card appearance="outlined" class="p-3 mb-3">
                         <p class="lead">Tagovi projekta</p>
                         <app-tag-viewer [tags]="dataFromStore.tags" [readonly]="dataFromStore.chosenProject.createdBy.id !== dataFromStore.loggedInUser.id"
