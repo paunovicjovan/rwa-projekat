@@ -18,7 +18,7 @@ export const selectChosenUserProfile = createSelector(
     (state: UsersState) => state.chosenUserProfile
 );
 
-export const selectFilteredUsers = createSelector(
+export const selectUsers = createSelector(
     usersFeature,
     (state: UsersState) => state.ids.map(id => state.entities[id]) //selectEntities nece da radi
 )

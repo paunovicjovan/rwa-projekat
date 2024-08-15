@@ -13,6 +13,7 @@ import { ProjectPreviewComponent } from './components/project-preview/project-pr
 import { ProjectOverviewPageComponent } from './components/project-overview-page/project-overview-page.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { ProjectParticipantsComponent } from './components/project-participants/project-participants.component';
+import { UsersModule } from '../users/users.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ProjectParticipantsComponent } from './components/project-participants/
   imports: [
     SharedModule,
     TagsModule,
+    UsersModule,
     EffectsModule.forFeature(projectsEffects),
     StoreModule.forFeature(Features.Projects, projectsReducer)
 ]

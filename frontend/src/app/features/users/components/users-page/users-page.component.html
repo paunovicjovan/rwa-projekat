@@ -8,7 +8,7 @@
 
         <ng-container *ngIf="!dataFromStore.isLoading">
             <div class="row w-100">
-                <app-user-preview *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
+                <app-user-preview class="col-12 col-md-12 col-lg-9 col-xl-8 mx-auto" *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>
             </div>
         </ng-container>
 

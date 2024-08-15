@@ -29,6 +29,9 @@ import { TagsModule } from "../tags/tags.module";
     StoreModule.forFeature(Features.Users, usersReducer),
     EffectsModule.forFeature(usersEffects),
     TagsModule
-]
+  ],
+  exports: [
+    UserPreviewComponent
+  ]
 })
 export class UsersModule { }

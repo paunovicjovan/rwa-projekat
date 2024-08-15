@@ -34,7 +34,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
-      filteredUsers: this.store.select(usersSelectors.selectFilteredUsers),
+      filteredUsers: this.store.select(usersSelectors.selectUsers),
       paginationMetadata: this.store.select(usersSelectors.selectUsersPaginationMetadata)
     })
   }
