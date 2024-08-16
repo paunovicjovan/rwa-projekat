@@ -11,8 +11,8 @@
             <ul class="navbar-nav d-flex align-items-md-center justify-content-end">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
                     <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="users">TAGOVI</a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects/new-project">NOVI PROJEKAT</a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects">PROJEKTI</a></li>
+                    <li class="nav-item text-end me-3"><a class="nav-link" [routerLink]="'user-projects/'+currentUser.username">MOJI PROJEKTI</a></li>
+                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
 
                     <li class="nav-item dropdown text-end cursor-pointer">

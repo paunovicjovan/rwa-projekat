@@ -1,54 +1,57 @@
 
-    <div class="container py-3">
-        <div class="row gap-3 gap-lg-0">
-            <div class="col-lg-4">
-                <mat-card class="p-3" appearance="outlined">
-                    <h6 class="text-center mb-4">Pretražite projekte</h6>
-                    <form [formGroup]="filtersForm" (ngSubmit)="filterProjects()">
-                        <div class="d-flex flex-column">
+<div class="container py-3">
+    <div class="row gap-3 gap-lg-0">
+        <div class="col-lg-4">
+            <a class="new-project-link bg-purple text-beige btn mb-3 w-100" [routerLink]="[ 'new-project' ]">
+                Kreiraj projekat
+            </a>
+            <mat-card class="p-3" appearance="outlined">
+                <h6 class="text-center mb-4">Pretražite projekte</h6>
+                <form [formGroup]="filtersForm" (ngSubmit)="filterProjects()">
+                    <div class="d-flex flex-column">
 
-                            <app-tag-viewer [tags]="formTags!.value" (addTag)="addTagToForm($event)"
-                                (removeTag)="removeTagFromForm($event)" class="mb-3"></app-tag-viewer>
+                        <app-tag-viewer [tags]="formTags!.value" (addTag)="addTagToForm($event)"
+                            (removeTag)="removeTagFromForm($event)" class="mb-3"></app-tag-viewer>
 
-                            <mat-form-field>
-                                <mat-label>Naziv</mat-label>
-                                <input matInput formControlName="title">
+                        <mat-form-field>
+                            <mat-label>Naziv</mat-label>
+                            <input matInput formControlName="title">
+                        </mat-form-field>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <mat-form-field subscriptSizing="dynamic" class="d-flex flex-grow-1">
+                                <mat-label>Datum</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="minDate">
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
 
-                            <div class="d-flex align-items-center mb-3">
-                                <mat-form-field subscriptSizing="dynamic" class="d-flex flex-grow-1">
-                                    <mat-label>Datum</mat-label>
-                                    <input matInput [matDatepicker]="picker" formControlName="minDate">
-                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                    <mat-datepicker #picker></mat-datepicker>
-                                </mat-form-field>
+                            <button mat-icon-button type="button" class="ms-2" (click)="clearChosenDate()">
+                                <mat-icon class="text-red" fontIcon="cancel"></mat-icon>
+                            </button>
 
-                                <button mat-icon-button type="button" class="ms-2" (click)="clearChosenDate()">
-                                    <mat-icon class="text-red" fontIcon="cancel"></mat-icon>
-                                </button>
+                            <button mat-icon-button type="button" matTooltip="Odabirom datuma prikazuju se samo projekti koji su kreirani ili ažurirani nakon odabranog datuma.">
+                                <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                            </button>
 
-                                <button mat-icon-button type="button" matTooltip="Odabirom datuma prikazuju se samo projekti koji su kreirani ili ažurirani nakon odabranog datuma.">
-                                    <mat-icon class="text-green" fontIcon="info"></mat-icon>
-                                </button>
-
-                            </div>
-
-                            <button type=" submit" class="btn bg-purple text-beige" [disabled]="filtersForm.invalid">Pretraži</button>
                         </div>
 
-                    </form>
-                </mat-card>
-            </div>
-
-            <div class="col-lg-8">
-                <mat-card class="p-3" appearance="outlined">
-                    <h6 class="text-center mb-3">{{hasSearched ? 'Rezultati pretrage' : 'Predloženi projekti'}}</h6>
-                    <div class="d-flex justify-content-center">
-                            <app-projects-list (onPaginateChange)="onPaginateChange($event)" [isSuggestedMode]="!hasSearched"></app-projects-list>
+                        <button type=" submit" class="btn bg-green text-beige" [disabled]="filtersForm.invalid">Pretraži</button>
                     </div>
 
-                </mat-card>
-            </div>
+                </form>
+            </mat-card>
         </div>
 
+        <div class="col-lg-8">
+            <mat-card class="p-3" appearance="outlined">
+                <h6 class="text-center mb-3">{{hasSearched ? 'Rezultati pretrage' : 'Predloženi projekti'}}</h6>
+                <div class="d-flex justify-content-center">
+                        <app-projects-list (onPaginateChange)="onPaginateChange($event)" [isSuggestedMode]="!hasSearched"></app-projects-list>
+                </div>
+
+            </mat-card>
+        </div>
     </div>
+
+</div>

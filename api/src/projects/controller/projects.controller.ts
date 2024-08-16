@@ -11,6 +11,7 @@ import { CreateProjectFormData } from '../dto/create-project-form-data.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import * as path from 'path';
+import { ProjectStatus } from '../enums/project-status.enum';
 
 @Controller('projects')
 export class ProjectsController {
@@ -62,5 +63,31 @@ export class ProjectsController {
       const relativeFilePath = `uploads/project-images/${imageName}`;
       const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
       return of(res.sendFile(absoluteFilePath));
+  }
+
+  @Get('applied-by/:username')
+  findAppliedProjectsForUser(@Param('username') username: string,
+                             @Query('page') page: number = 1, 
+                             @Query('limit') limit: number = 10
+  ) {
+    return this.projectsService.findAppliedProjectsForUser(username, { page, limit });
+  }
+
+  @Get('accepted-user/:username/:isCompleted')
+  findAcceptedProjectsForUser(@Param('username') username: string,
+                              @Param('isCompleted') isCompleted: string,
+                              @Query('page') page: number = 1, 
+                              @Query('limit') limit: number = 10
+  ) {
+    return this.projectsService.findAcceptedProjectsForUser(username, isCompleted === 'true', { page, limit });
+  }
+
+  @Get('created-by/:username/:status')
+  findCreatedProjectsForUser(@Param('username') username: string,
+                              @Param('status') status: ProjectStatus,
+                              @Query('page') page: number = 1, 
+                              @Query('limit') limit: number = 10
+  ) {
+    return this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
   }
 }

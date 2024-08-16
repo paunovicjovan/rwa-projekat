@@ -3,7 +3,7 @@ import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from '../entities/project.entity';
-import { Raw, Repository } from 'typeorm';
+import { In, Not, Raw, Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
 import { defaultIfEmpty, filter, from, map, Observable, switchMap } from 'rxjs';
 import { UserDto } from 'src/users/dto/user.dto';
@@ -12,6 +12,7 @@ import { ProjectResponseDto } from '../dto/project-response.dto';
 import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import { UserResponseDto } from 'src/users/dto/user-response.dto';
+import { ProjectStatus } from '../enums/project-status.enum';
 
 @Injectable()
 export class ProjectsService {
@@ -81,7 +82,7 @@ export class ProjectsService {
   }
 
   async findOne(id: number): Promise<ProjectResponseDto> {
-    return this.projectsRepository.findOne({
+    return await this.projectsRepository.findOne({
       where: {id},
       relations: ['createdBy', 'tags']
     })
@@ -94,5 +95,34 @@ export class ProjectsService {
 
   remove(id: number) {
     return `This action removes a #${id} project`;
+  }
+
+  async findAppliedProjectsForUser(username: string, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {
+    return await paginate(this.projectsRepository, options, {
+      where: {
+        appliedBy: { username }
+      },
+      order: { updatedAt: 'DESC' }
+    })
+  }
+
+  async findAcceptedProjectsForUser(username: string, isCompleted: boolean, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {
+    return await paginate(this.projectsRepository, options, {
+      where: {
+        acceptedUsers: { username },
+        status: isCompleted ? ProjectStatus.COMPLETED : Not(ProjectStatus.COMPLETED)
+      },
+      order: { updatedAt: 'DESC' }
+    })
+  }
+
+  async findCreatedProjectsForUser(username: string, status: ProjectStatus, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {
+    return await paginate(this.projectsRepository, options, {
+      where: {
+        createdBy: { username },
+        status: status
+      },
+      order: { updatedAt: 'DESC' }
+    })
   }
 }

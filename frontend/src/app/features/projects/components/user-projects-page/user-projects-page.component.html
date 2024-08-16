@@ -1,0 +1,15 @@
+<div class="container py-3">
+    <mat-card class="p-3" appearance="outlined">
+        <mat-tab-group class="mb-3">
+            <mat-tab label="Moje prijave">
+                <p class="lead text-center mt-4">Projekti za koje ste se prijavili</p>
+            </mat-tab>
+            <mat-tab label="Trenutne saradnje"></mat-tab>
+            <mat-tab label="Završene saradnje"></mat-tab>
+            <mat-tab label="Moji projekti"></mat-tab>
+        </mat-tab-group>
+
+        <app-projects-list (onPaginateChange)="handlePaginateChange($event)"></app-projects-list>
+
+    </mat-card>
+</div>
