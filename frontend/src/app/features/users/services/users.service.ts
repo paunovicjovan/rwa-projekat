@@ -7,6 +7,7 @@ import { UserRoles } from '../models/user-roles.enum';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { UpdateUserDto } from '../models/update-user-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,10 @@ export class UsersService {
 
   changeUserRole(userId: number, newRole: UserRoles): Observable<User> {
     return this.http.put<User>(`${environment.apiUrl}/users/role/${userId}`, { role: newRole });
+  }
+
+  updateUserData(userData: UpdateUserDto): Observable<User> {
+    return this.http.put<User>(`${environment.apiUrl}/users/${userData.id}`, userData);
   }
 
   deleteOne(userId: number) : Observable<any> {

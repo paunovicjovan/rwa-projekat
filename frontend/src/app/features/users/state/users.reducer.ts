@@ -18,7 +18,8 @@ export const initialState: UsersState = {
     entities: {},
     isLoading: false,
     chosenUserProfile: null,
-    paginationMetadata: initialPaginationMetadataState
+    paginationMetadata: initialPaginationMetadataState,
+    errorMessage: null
 }
 
 export const usersAdapter: EntityAdapter<User> = createEntityAdapter<User>();
@@ -74,6 +75,28 @@ export const usersReducer = createReducer(
             ...state,
             chosenUserProfile: action.user,
         });
+    }),
+    on(usersActions.updateUserData, (state)=>{
+        return {
+            ...state,
+            isLoading: true,
+            errorMessage: null
+        }
+    }),
+    on(usersActions.updateUserDataSuccess, (state, action)=>{
+        return usersAdapter.updateOne({id: action.user.id, changes: action.user}, {
+            ...state,
+            chosenUserProfile: action.user,
+            errorMessage: null,
+            isLoading: false
+        });
+    }),
+    on(usersActions.updateUserDataFailure, (state, action)=>{
+        return {
+            ...state,
+            isLoading: false,
+            errorMessage: action.errorMessage
+        }
     }),
     on(usersActions.deleteUserAccount, (state)=>{
         return {

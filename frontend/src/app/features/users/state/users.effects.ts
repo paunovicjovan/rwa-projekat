@@ -67,6 +67,26 @@ export const changeUserRole$ = createEffect(
     {functional: true}
 )
 
+export const updateUserData$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.updateUserData),
+            exhaustMap(({ userData }) =>
+                usersService.updateUserData(userData).pipe(
+                    map((user: User) => {
+                        return usersActions.updateUserDataSuccess({ user })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.updateUserDataFailure({ errorMessage: 'Neuspešna izmena podataka.'}))
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
 export const deleteUserAccount$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(

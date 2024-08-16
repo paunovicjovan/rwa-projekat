@@ -5,5 +5,6 @@ import { EntityState } from '@ngrx/entity'
 export interface UsersState extends EntityState<User> {
     isLoading: boolean;
     chosenUserProfile: User | null;
-    paginationMetadata: PaginationMetadata
+    paginationMetadata: PaginationMetadata;
+    errorMessage: string | null;
 }

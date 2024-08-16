@@ -4,6 +4,7 @@ import { FilterUsersRequest } from '../models/filter-users-request.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { UserRoles } from '../models/user-roles.enum';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { UpdateUserDto } from '../models/update-user-dto.interface';
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
@@ -49,6 +50,21 @@ export const changeUserRoleSuccess = createAction(
 
 export const changeUserRoleFailure = createAction(
   '[Users] Change User Role Failure'
+)
+
+export const updateUserData = createAction(
+  '[Users] Update User Data',
+  props<{ userData: UpdateUserDto }>()
+)
+
+export const updateUserDataSuccess = createAction(
+  '[Users] Update User Data Success',
+  props<{ user: User }>()
+)
+
+export const updateUserDataFailure = createAction(
+  '[Users] Update User Data Failure',
+  props<{ errorMessage: string }>()
 )
 
 export const deleteUserAccount = createAction(

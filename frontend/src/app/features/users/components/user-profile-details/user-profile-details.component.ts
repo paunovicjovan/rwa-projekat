@@ -13,6 +13,8 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
 import * as tagsSelectors from '../../../tags/state/tags.selectors';
 import * as tagsActions from '../../../tags/state/tags.actions';
 import { Tag } from '../../../tags/models/tag.interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UpdateUserDto } from '../../models/update-user-dto.interface';
 
 @Component({
   selector: 'app-user-profile-details',
@@ -26,23 +28,48 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
   dataFromStore$!: Observable<any>;
   userProfile: User | null = null;
   chosenUserSubscription?: Subscription;
+  isEditing: boolean = false;
+  userDataForm!: FormGroup;
 
   roles: string[] = Object.values(UserRoles);
   selectedRole!: UserRoles;
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>,
+              private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
+    this.initializeUserDataForm();
     this.selectDataFromStore();
   }
+
+  initializeUserDataForm() {
+    this.userDataForm = this.formBuilder.group({
+      username: [null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern('^[a-z0-9_.]+$')]
+      ],
+      firstName: [null, 
+        [Validators.required, 
+         Validators.minLength(3)]
+        ],
+      lastName: [null, 
+        [Validators.required,
+           Validators.minLength(3)]
+        ],
+    })
+  }
+
     
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
-      tags: this.store.select(tagsSelectors.selectLoadedTags)
+      tags: this.store.select(tagsSelectors.selectLoadedTags),
+      errorMessage: this.store.select(usersSelectors.selectErrorMessage)
     });
 
     this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
@@ -103,6 +130,24 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
 
   removeTag(tagId: number) {
     this.store.dispatch(tagsActions.removeTagFromUser({ tagId }));
+  }
+
+  switchToEditingMode() {
+    this.isEditing = true;
+    this.userDataForm.patchValue({...this.userProfile});
+  }
+
+  cancelUserDataChanges() {
+    this.isEditing = false;
+  }
+
+  saveUserDataChanges() {
+    const userData: UpdateUserDto = {
+      id: this.userProfile!.id,
+      ...this.userDataForm.getRawValue()
+    }
+    this.store.dispatch(usersActions.updateUserData({userData}));
+    this.isEditing = false;
   }
 
   ngOnDestroy(): void {
