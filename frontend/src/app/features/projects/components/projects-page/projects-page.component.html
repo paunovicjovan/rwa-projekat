@@ -2,9 +2,6 @@
 <div class="container py-3">
     <div class="row gap-3 gap-lg-0">
         <div class="col-lg-4">
-            <a class="new-project-link bg-purple text-beige btn mb-3 w-100" [routerLink]="[ 'new-project' ]">
-                Kreiraj projekat
-            </a>
             <mat-card class="p-3" appearance="outlined">
                 <h6 class="text-center mb-4">Pretražite projekte</h6>
                 <form [formGroup]="filtersForm" (ngSubmit)="filterProjects()">

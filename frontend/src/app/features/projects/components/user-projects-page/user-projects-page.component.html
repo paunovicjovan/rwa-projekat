@@ -2,8 +2,14 @@
     <mat-card class="p-3" appearance="outlined">
         <mat-tab-group class="mb-3" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="handleTabChange()">
             <mat-tab label="Moji projekti">
-                <p class="lead text-center mt-4">Projekti koje ste kreirali</p>
                 <div class="d-flex justify-content-center">
+                    <a class="new-project-link bg-purple text-beige btn mt-4" [routerLink]="[ '../../projects/new-project' ]">
+                        Kreiraj projekat
+                    </a>
+                </div>
+                <p class="lead text-center mt-4">Projekti koje ste kreirali</p>
+
+                <div class="d-flex justify-content-center mb-3">
                     <mat-button-toggle-group [(ngModel)]="selectedProjectStatus" (change)="handleStatusChange()">
                         <mat-button-toggle value="opened">Otvoreni za prijavu</mat-button-toggle>
                         <mat-button-toggle value="closed">Zatvoreni za prijavu</mat-button-toggle>

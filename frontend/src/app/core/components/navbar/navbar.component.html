@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md bg-light">
+<nav class="navbar navbar-expand-lg bg-light">
     <div class="container d-flex justify-content-between">
         <a class="navbar-brand" routerLink="/">
             <img src="assets/full-logo.png" alt="logo" class="logo-img logo" />
@@ -7,8 +7,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse py-4 py-md-0 d-md-flex justify-content-end" id="n-bar">
-            <ul class="navbar-nav d-flex align-items-md-center justify-content-end">
+        <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex justify-content-end" id="n-bar">
+            <ul class="navbar-nav d-flex align-items-lg-center justify-content-end">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
                     <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="users">TAGOVI</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" [routerLink]="'user-projects/'+currentUser.username">MOJI PROJEKTI</a></li>
@@ -33,7 +33,7 @@
                 </ng-container>
 
                 <ng-template #notLoggedIn>
-                    <li class="nav-item text-end"><a class="nav-link me-md-4" routerLink="login">PRIJAVA</a></li>
+                    <li class="nav-item text-end"><a class="nav-link me-lg-4" routerLink="login">PRIJAVA</a></li>
                     <li class="nav-item text-end"><a class="nav-link btn bg-purple text-beige" routerLink="register">REGISTRACIJA</a></li>
                 </ng-template>
             </ul>
