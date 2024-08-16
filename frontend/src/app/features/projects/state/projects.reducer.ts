@@ -82,4 +82,23 @@ export const projectsReducer = createReducer(
             isLoading: false,
         }
     }),
+    on(projectsActions.updateProject, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.updateProjectSuccess, (state, action) => {
+        return projectsAdapter.updateOne({id: action.project.id, changes: action.project}, {
+            ...state,
+            isLoading: false,
+            chosenProject: action.project
+        })
+    }),
+    on(projectsActions.updateProjectFailure, (state) => {
+        return projectsAdapter.removeAll({
+            ...state,
+            isLoading: false
+        })
+    }),
 )

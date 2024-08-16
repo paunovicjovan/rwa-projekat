@@ -2,10 +2,14 @@ import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
 import { ProjectsService } from "../services/projects.service"
 import * as projectsActions from './projects.actions'
-import { catchError, concatMap, map, of, switchMap, tap } from "rxjs"
+import { catchError, concatMap, exhaustMap, map, of, switchMap, tap } from "rxjs"
 import { Project } from "../models/project.interface"
 import { Router } from "@angular/router"
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface"
+import { MatDialog } from "@angular/material/dialog"
+import { UpdateProjectComponent } from "../components/update-project/update-project.component"
+import { noOperation } from "../../../shared/state/shared.actions"
+import { UpdateProjectDto } from "../models/update-project-dto.interface"
 
 
 export const createProject$ = createEffect(
@@ -100,3 +104,45 @@ export const loadProject$ = createEffect(
     },
     {functional: true}
 );
+
+export const openProjectDialog$ = createEffect(
+    (action$ = inject(Actions), dialog = inject(MatDialog)) => {
+        return action$.pipe(
+            ofType(projectsActions.openProjectDialog),
+            exhaustMap(({ dialogData }) => {
+                const dialogRef = dialog.open(UpdateProjectComponent, { width: '800px', data: dialogData });
+                return dialogRef.afterClosed().pipe(
+                    concatMap((dialogResult: UpdateProjectDto) => {
+                        if (dialogResult === undefined) 
+                            return of(noOperation());
+                        
+                        return of(projectsActions.updateProject({updateProjectDto: dialogResult}));
+                    })
+                );
+            }
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const updateProject$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.updateProject),
+            switchMap(({ updateProjectDto }) =>
+                projectsService.updateProject(updateProjectDto).pipe(
+                    map((project: Project) => {
+                        return projectsActions.updateProjectSuccess({project})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.updateProjectFailure())
+                        }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);
+

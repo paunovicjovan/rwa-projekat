@@ -7,6 +7,8 @@ import * as tagsSelectors from '../../../tags/state/tags.selectors';
 import * as authSelectors from '../../../auth/state/auth.selectors';
 import { combineLatest, Observable } from 'rxjs';
 import { Tag } from '../../../tags/models/tag.interface';
+import { UpdateProjectDto } from '../../models/update-project-dto.interface';
+import { Project } from '../../models/project.interface';
 
 @Component({
   selector: 'app-project-details',
@@ -44,5 +46,12 @@ export class ProjectDetailsComponent {
 
   removeTag(tagId: number) {
     
+  }
+
+  openProjectUpdateDialog(project: Project) {
+    const dialogData: UpdateProjectDto = {
+      ...project
+    }
+    this.store.dispatch(projectsActions.openProjectDialog({dialogData}))
   }
 }

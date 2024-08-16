@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request, Query, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request, Query, Res, Put } from '@nestjs/common';
 import { ProjectsService } from '../service/projects.service';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
@@ -43,12 +43,12 @@ export class ProjectsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Observable<ProjectResponseDto> {
+  findOne(@Param('id') id: number): Promise<ProjectResponseDto> {
     return this.projectsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
     return this.projectsService.update(+id, updateProjectDto);
   }
 

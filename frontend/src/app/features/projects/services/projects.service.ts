@@ -7,6 +7,7 @@ import { Project } from '../models/project.interface';
 import { FilterProjectsRequest } from '../models/filter-projects-request.interface';
 import { ProjectsFilters } from '../models/projects-filters.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
+import { UpdateProjectDto } from '../models/update-project-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +46,9 @@ export class ProjectsService {
 
   loadProject(projectId: number): Observable<Project> {
     return this.http.get<Project>(`${environment.apiUrl}/projects/${projectId}`);
+  }
+
+  updateProject(updateProjectDto: UpdateProjectDto): Observable<Project> {
+    return this.http.put<Project>(`${environment.apiUrl}/projects/${updateProjectDto.id}`, updateProjectDto);
   }
 }

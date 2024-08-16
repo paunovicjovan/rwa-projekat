@@ -80,15 +80,16 @@ export class ProjectsService {
     return from(paginate<ProjectResponseDto>(queryBuilder, options));
   }
 
-  findOne(id: number): Observable<ProjectResponseDto> {
-    return from(this.projectsRepository.findOne({
+  async findOne(id: number): Promise<ProjectResponseDto> {
+    return this.projectsRepository.findOne({
       where: {id},
       relations: ['createdBy', 'tags']
-    }))
+    })
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: number, updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
+    await this.projectsRepository.update(id, updateProjectDto);
+    return await this.findOne(id);
   }
 
   remove(id: number) {

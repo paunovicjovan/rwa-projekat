@@ -1,0 +1,36 @@
+<mat-dialog-content>
+    <mat-card appearance="outlined" class="p-3">
+        <form [formGroup]="projectForm">
+            <mat-form-field appearance="fill" class="w-100 mt-3">
+                <mat-label>Naziv</mat-label>
+                <input matInput placeholder="Naziv" formControlName="title" />
+                <mat-hint *ngIf="projectForm.controls['title'].touched && projectForm.controls['title'].errors">
+                    Unesite naziv projekta
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-100 mt-3">
+                <mat-label>Opis</mat-label>
+                <textarea matInput placeholder="Opis" formControlName="description"></textarea>
+                <mat-hint *ngIf="projectForm.controls['description'].touched && projectForm.controls['description'].errors">
+                    Unesite opis projekta (do 500 karaktera)
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-100 mt-3">
+                <mat-label>Zahtevi projekta</mat-label>
+                <textarea matInput placeholder="Zahtevi projekta" formControlName="requirements"></textarea>
+                <mat-hint *ngIf="projectForm.controls['requirements'].touched && projectForm.controls['requirements'].errors">
+                    Unesite zahteve projekta (do 500 karaktera)
+                </mat-hint>
+            </mat-form-field>
+        </form>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn bg-brown text-beige me-3" (click)="handleCancelForm()" cdkFocusInitial>Otkaži</button>
+        <button class="btn bg-green text-beige" (click)="handleSubmitForm()" [disabled]="projectForm.invalid">Sačuvaj</button>
+    </div>
+</mat-dialog-actions>

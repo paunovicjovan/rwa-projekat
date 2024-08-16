@@ -3,6 +3,7 @@ import { CreateProjectDto } from "../models/create-project-dto.interface";
 import { Project } from "../models/project.interface";
 import { FilterProjectsRequest } from "../models/filter-projects-request.interface";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
+import { UpdateProjectDto } from "../models/update-project-dto.interface";
 
 
 export const createProject = createAction(
@@ -58,4 +59,23 @@ export const loadProjectSuccess = createAction(
 
 export const loadProjectFailure = createAction(
     '[Projects] Load Project Failure'
+);
+
+export const updateProject = createAction(
+    '[Projects] Update Project',
+    props<{ updateProjectDto: UpdateProjectDto }>()
+);
+
+export const updateProjectSuccess = createAction(
+    '[Projects] Update Project Success',
+    props<{ project: Project }>()
+);
+
+export const updateProjectFailure = createAction(
+    '[Projects] Update Project Failure'
+);
+
+export const openProjectDialog = createAction(
+    '[Projects] Open Project Dialog',
+    props<{ dialogData: UpdateProjectDto }>()
 );
