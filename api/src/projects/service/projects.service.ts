@@ -102,6 +102,7 @@ export class ProjectsService {
       where: {
         appliedBy: { username }
       },
+      relations: ['createdBy'],
       order: { updatedAt: 'DESC' }
     })
   }
@@ -112,6 +113,7 @@ export class ProjectsService {
         acceptedUsers: { username },
         status: isCompleted ? ProjectStatus.COMPLETED : Not(ProjectStatus.COMPLETED)
       },
+      relations: ['createdBy'],
       order: { updatedAt: 'DESC' }
     })
   }
@@ -122,6 +124,7 @@ export class ProjectsService {
         createdBy: { username },
         status: status
       },
+      relations: ['createdBy'],
       order: { updatedAt: 'DESC' }
     })
   }

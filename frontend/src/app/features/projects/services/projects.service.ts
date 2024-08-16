@@ -8,6 +8,8 @@ import { FilterProjectsRequest } from '../models/filter-projects-request.interfa
 import { ProjectsFilters } from '../models/projects-filters.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { UpdateProjectDto } from '../models/update-project-dto.interface';
+import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { ProjectStatus } from '../enums/project-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +52,32 @@ export class ProjectsService {
 
   updateProject(updateProjectDto: UpdateProjectDto): Observable<Project> {
     return this.http.put<Project>(`${environment.apiUrl}/projects/${updateProjectDto.id}`, updateProjectDto);
+  }
+
+  findAppliedProjectsForUser(username: string, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        ...paginationOptions
+      }
+    });
+    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/applied-by/${username}`, {params: httpParams})
+  }
+
+  findAcceptedProjectsForUser(username: string, isCompleted: boolean, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        ...paginationOptions
+      }
+    });
+    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/accepted-user/${username}/${isCompleted}`, {params: httpParams})
+  }
+
+  findCreatedProjectsForUser(username: string, status: ProjectStatus, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        ...paginationOptions
+      }
+    });
+    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/created-by/${username}/${status}`, {params: httpParams})
   }
 }

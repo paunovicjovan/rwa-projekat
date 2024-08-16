@@ -25,6 +25,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TranslateProjectStatusPipe } from './pipes/translate-project-status/translate-project-status.pipe';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 const modules = [
   CommonModule,
@@ -47,7 +48,8 @@ const modules = [
   MatAutocompleteModule,
   MatTooltipModule,
   MatDatepickerModule,
-  MatTabsModule
+  MatTabsModule,
+  MatButtonToggleModule
 ]
 
 @NgModule({

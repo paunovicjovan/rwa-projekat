@@ -146,3 +146,62 @@ export const updateProject$ = createEffect(
     {functional: true}
 );
 
+export const findCreatedProjectsForUser$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.findCreatedProjectsForUser),
+            switchMap(({ username, status, paginationOptions }) =>
+                projectsService.findCreatedProjectsForUser(username, status, paginationOptions).pipe(
+                    map((paginatedProjects: PaginatedResponse<Project>) => {
+                        return projectsActions.findCreatedProjectsForUserSuccess({paginatedProjects})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.findCreatedProjectsForUserFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);
+
+export const findAppliedProjectsForUser$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.findAppliedProjectsForUser),
+            switchMap(({ username, paginationOptions }) =>
+                projectsService.findAppliedProjectsForUser(username, paginationOptions).pipe(
+                    map((paginatedProjects: PaginatedResponse<Project>) => {
+                        return projectsActions.findAppliedProjectsForUserSuccess({paginatedProjects})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.findAppliedProjectsForUserFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);
+
+export const findAcceptedProjectsForUser$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.findAcceptedProjectsForUser),
+            switchMap(({ username, isCompleted, paginationOptions }) =>
+                projectsService.findAcceptedProjectsForUser(username, isCompleted, paginationOptions).pipe(
+                    map((paginatedProjects: PaginatedResponse<Project>) => {
+                        return projectsActions.findAcceptedProjectsForUserSuccess({paginatedProjects})
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.findAcceptedProjectsForUserFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+);

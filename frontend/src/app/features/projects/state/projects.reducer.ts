@@ -101,4 +101,64 @@ export const projectsReducer = createReducer(
             isLoading: false
         })
     }),
+    on(projectsActions.findAppliedProjectsForUser, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.findAppliedProjectsForUserSuccess, (state, action) => {
+        return projectsAdapter.setAll(action.paginatedProjects.items, {
+            ...state,
+            isLoading: false, 
+            paginationMetadata: action.paginatedProjects.meta
+        })
+    }),
+    on(projectsActions.findAppliedProjectsForUserFailure, (state) => {
+        return projectsAdapter.removeAll({
+            ...state,
+            isLoading: false,
+            paginationMetadata: initialPaginationMetadataState
+        })
+    }),
+    on(projectsActions.findCreatedProjectsForUser, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.findCreatedProjectsForUserSuccess, (state, action) => {
+        return projectsAdapter.setAll(action.paginatedProjects.items, {
+            ...state,
+            isLoading: false, 
+            paginationMetadata: action.paginatedProjects.meta
+        })
+    }),
+    on(projectsActions.findCreatedProjectsForUserFailure, (state) => {
+        return projectsAdapter.removeAll({
+            ...state,
+            isLoading: false,
+            paginationMetadata: initialPaginationMetadataState
+        })
+    }),
+    on(projectsActions.findAcceptedProjectsForUser, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.findAcceptedProjectsForUserSuccess, (state, action) => {
+        return projectsAdapter.setAll(action.paginatedProjects.items, {
+            ...state,
+            isLoading: false, 
+            paginationMetadata: action.paginatedProjects.meta
+        })
+    }),
+    on(projectsActions.findAcceptedProjectsForUserFailure, (state) => {
+        return projectsAdapter.removeAll({
+            ...state,
+            isLoading: false,
+            paginationMetadata: initialPaginationMetadataState
+        })
+    }),
 )
