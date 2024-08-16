@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { AuthState } from '../../features/auth/models/auth-state.interface';
 import { inject } from '@angular/core';
-import { LocalStorageService } from '../services/local-storage.service';
+import { LocalStorageService } from '../services/local-storage/local-storage.service';
 import { Features } from '../../features/features.enum';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {

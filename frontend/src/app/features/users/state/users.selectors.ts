@@ -33,8 +33,3 @@ export const selectIsUserOnOwnProfile = createSelector(
     authFeature,
     (usersState, authState) => usersState.chosenUserProfile?.id === authState.currentLoggedInUser?.id
 )
-
-export const selectErrorMessage = createSelector(
-    usersFeature,
-    (state: UsersState) => state.errorMessage
-);

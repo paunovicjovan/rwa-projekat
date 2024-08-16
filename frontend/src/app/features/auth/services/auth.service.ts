@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthResponse } from '../models/auth-response.interface';
 import { environment } from '../../../../environments/environment.development';
 import { RegisterRequest } from '../models/register-request.interface';
-import { LocalStorageService } from '../../../core/services/local-storage.service';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthState } from '../models/auth-state.interface';
 import { Features } from '../../features.enum';

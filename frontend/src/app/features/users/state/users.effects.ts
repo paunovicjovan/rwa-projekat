@@ -6,6 +6,7 @@ import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
+import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -68,7 +69,7 @@ export const changeUserRole$ = createEffect(
 )
 
 export const updateUserData$ = createEffect(
-    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
         return action$.pipe(
             ofType(usersActions.updateUserData),
             exhaustMap(({ userData }) =>
@@ -77,7 +78,8 @@ export const updateUserData$ = createEffect(
                         return usersActions.updateUserDataSuccess({ user })
                     }),
                     catchError(() => {
-                        return of(usersActions.updateUserDataFailure({ errorMessage: 'Neuspešna izmena podataka.'}))
+                        snackBarService.openSnackBar('Neuspešna izmena podataka');
+                        return of(usersActions.updateUserDataFailure())
                     }
                     )
                 )

@@ -68,8 +68,7 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
-      tags: this.store.select(tagsSelectors.selectLoadedTags),
-      errorMessage: this.store.select(usersSelectors.selectErrorMessage)
+      tags: this.store.select(tagsSelectors.selectLoadedTags)
     });
 
     this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(

@@ -63,8 +63,7 @@ export const updateUserDataSuccess = createAction(
 )
 
 export const updateUserDataFailure = createAction(
-  '[Users] Update User Data Failure',
-  props<{ errorMessage: string }>()
+  '[Users] Update User Data Failure'
 )
 
 export const deleteUserAccount = createAction(

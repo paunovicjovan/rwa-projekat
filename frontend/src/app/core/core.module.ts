@@ -10,6 +10,7 @@ import { HomeComponent } from './components/home/home.component';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { FooterComponent } from './components/footer/footer.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FooterComponent } from './components/footer/footer.component';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    RouterLink
+    RouterLink,
+    MatSnackBarModule
   ],
   providers: [
     provideHttpClient(withInterceptors([jwtInterceptor])),

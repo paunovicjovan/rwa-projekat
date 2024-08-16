@@ -6,5 +6,4 @@ export interface UsersState extends EntityState<User> {
     isLoading: boolean;
     chosenUserProfile: User | null;
     paginationMetadata: PaginationMetadata;
-    errorMessage: string | null;
 }
