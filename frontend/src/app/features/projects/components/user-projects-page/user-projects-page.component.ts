@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, Subscription } from 'rxjs';
+import { map, Observable, Subscription } from 'rxjs';
 import { AppState } from '../../../../state/app-state.interface';
 import { PageEvent } from '@angular/material/paginator';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import * as projectsActions from '../../state/projects.actions';
 import { ProjectStatus } from '../../enums/project-status.enum';
+import { User } from '../../../users/models/user.interface';
+import * as authSelectors from '../../../auth/state/auth.selectors';
 
 @Component({
   selector: 'app-user-projects-page',
@@ -19,6 +20,7 @@ export class UserProjectsPageComponent {
   username!: string;
   selectedProjectStatus: ProjectStatus = ProjectStatus.OPENED;
   selectedTabIndex: number = 0;
+  loggedInUser$!: Observable<User | null | undefined>;
 
   constructor(private activatedRoute: ActivatedRoute,
               private store: Store<AppState>
@@ -26,6 +28,7 @@ export class UserProjectsPageComponent {
 
   ngOnInit(): void {
     this.observeRouteChanges();
+    this.selectDataFromStore();
     this.findProjects(1, 10);
   }
 
@@ -33,6 +36,10 @@ export class UserProjectsPageComponent {
     this.routeParamsSubscription = this.activatedRoute.params
     .pipe(map((params: Params) => params['username']))
     .subscribe(username => this.username = username);
+  }
+
+  selectDataFromStore() {
+    this.loggedInUser$ = this.store.select(authSelectors.selectCurrentLoggedInUser)
   }
 
   handlePaginateChange(pageEvent: PageEvent) {

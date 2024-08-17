@@ -77,6 +77,10 @@
                                 (addTag)="addTag($event)" (removeTag)="removeTag($event)">
                 </app-tag-viewer>
                 
+                <a [routerLink]="'../../user-projects/' + username" class="w-100 my-3 btn bg-brown text-beige">
+                    Pogledaj projekte
+                </a>
+
                 <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
                     <div class="d-flex align-items-center my-3">
                         <mat-form-field class="d-flex align-items-center" subscriptSizing="dynamic">
@@ -100,6 +104,8 @@
                 <ng-template #nonAdminView>
                     <p>Uloga: <span class="text-bold">{{userProfile.role | translateRole }}</span></p>
                 </ng-template>
+
+
 
             </mat-card-content>
 

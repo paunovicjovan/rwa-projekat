@@ -1,38 +1,40 @@
-<div class="container py-3">
-    <mat-card class="p-3" appearance="outlined">
-        <mat-tab-group class="mb-3" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="handleTabChange()">
-            <mat-tab label="Moji projekti">
-                <div class="d-flex justify-content-center">
-                    <a class="new-project-link bg-purple text-beige btn mt-4" [routerLink]="[ '../../projects/new-project' ]">
-                        Kreiraj projekat
-                    </a>
-                </div>
-                <p class="lead text-center mt-4">Projekti koje ste kreirali</p>
+<ng-container *ngIf="loggedInUser$ | async as loggedInUser">
+    <div class="container py-3">
+        <mat-card class="p-3" appearance="outlined">
+            <mat-tab-group class="mb-3" [(selectedIndex)]="selectedTabIndex" (selectedTabChange)="handleTabChange()">
+                <mat-tab label="Kreirani projekti">
+                    <div class="d-flex justify-content-center" *ngIf="loggedInUser.username === username">
+                        <a class="new-project-link bg-purple text-beige btn mt-4" [routerLink]="[ '../../projects/new-project' ]">
+                            Kreiraj projekat
+                        </a>
+                    </div>
+                    <p class="lead text-center mt-4">{{loggedInUser.username === username ? 'Projekti koje ste kreirali' : 'Projekti koje je korisnik kreirao'}}</p>
 
-                <div class="d-flex justify-content-center mb-3">
-                    <mat-button-toggle-group [(ngModel)]="selectedProjectStatus" (change)="handleStatusChange()">
-                        <mat-button-toggle value="opened">Otvoreni za prijavu</mat-button-toggle>
-                        <mat-button-toggle value="closed">Zatvoreni za prijavu</mat-button-toggle>
-                        <mat-button-toggle value="completed">Završeni</mat-button-toggle>
-                    </mat-button-toggle-group>
-                </div>
+                    <div class="d-flex justify-content-center mb-3">
+                        <mat-button-toggle-group [(ngModel)]="selectedProjectStatus" (change)="handleStatusChange()">
+                            <mat-button-toggle value="opened">Otvoreni za prijavu</mat-button-toggle>
+                            <mat-button-toggle value="closed" *ngIf="loggedInUser.username === username">Zatvoreni za prijavu</mat-button-toggle>
+                            <mat-button-toggle value="completed">Završeni</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
 
-            </mat-tab>
+                </mat-tab>
 
-            <mat-tab label="Moje prijave">
-                <p class="lead text-center mt-4">Projekti za koje ste se prijavili</p>
-            </mat-tab>
+                <mat-tab label="Moje prijave" *ngIf="loggedInUser.username === username">
+                    <p class="lead text-center mt-4">Projekti za koje ste se prijavili</p>
+                </mat-tab>
 
-            <mat-tab label="Trenutne saradnje">
-                <p class="lead text-center mt-4">Projekti na kojima ste prihvaćeni</p>
-            </mat-tab>
+                <mat-tab label="Trenutne saradnje" *ngIf="loggedInUser.username === username">
+                    <p class="lead text-center mt-4">Projekti na kojima ste prihvaćeni</p>
+                </mat-tab>
 
-            <mat-tab label="Završene saradnje">
-                <p class="lead text-center mt-4">Projekti na kojima ste prihvaćeni i završeni su</p>
-            </mat-tab>
-        </mat-tab-group>
+                <mat-tab label="Završene saradnje">
+                    <p class="lead text-center mt-4">{{loggedInUser.username === username ? 'Projekti na kojima ste učestvovali i završeni su' : 'Projekti na kojima je korisnik učestvovao i završeni su'}}</p>
+                </mat-tab>
+            </mat-tab-group>
 
-        <app-projects-list (onPaginateChange)="handlePaginateChange($event)"></app-projects-list>
+            <app-projects-list (onPaginateChange)="handlePaginateChange($event)"></app-projects-list>
 
-    </mat-card>
-</div>
+        </mat-card>
+    </div>
+</ng-container>
