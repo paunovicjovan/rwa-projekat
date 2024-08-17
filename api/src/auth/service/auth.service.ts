@@ -64,14 +64,16 @@ export class AuthService {
 
     private async validateUser(email: string, password: string): Promise<UserDto> {
         const user = await this.usersService.findOneByEmailWithPassword(email);
+        if(!user)
+            throw new Error('Neispravan e-mail ili lozinka.');
+
         const isCorrectPassword = await this.comparePasswords(password, user.password);
-        if(isCorrectPassword) {
-            const {password, ...userWithoutPassword} = user;
-            return userWithoutPassword as UserDto;
-        }
-        else {
+
+        if(!isCorrectPassword) 
             throw new Error('Neispravan e-mail ili lozinka.')
-        }
+        
+        delete user.password;
+        return user;
     }
 
     async comparePasswords(password: string, passwordHash: string) : Promise<any | boolean> {

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { Observable, of } from 'rxjs';
 import { UserResponseDto } from '../dto/user-response.dto';
@@ -50,8 +50,13 @@ export class UsersController {
     }
 
     @Put(':id')
-    updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
-        return this.usersService.updateOne(id, userData);
+    async updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
+        try {
+            return await this.usersService.updateOne(+id, userData);
+        }
+        catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Roles(UserRoles.ADMIN)

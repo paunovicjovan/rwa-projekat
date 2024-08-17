@@ -66,6 +66,11 @@ export class UsersService {
     }
 
     async updateOne(id: number, userData: UpdateUserDto) : Promise<UserResponseDto> {
+        if(userData.username) {
+            const existingUserByUsername = await this.findOneByUsername(userData.username);
+            if(existingUserByUsername && existingUserByUsername.id !== id)
+                throw new Error('Izabrano korisničko ime je zauzeto.');
+        }
         await this.usersRepository.update(id, userData);
         return await this.findOneById(id);
     }

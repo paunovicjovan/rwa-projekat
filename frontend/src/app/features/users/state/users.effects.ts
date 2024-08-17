@@ -7,6 +7,7 @@ import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
+import { HttpErrorResponse } from "@angular/common/http";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -77,8 +78,8 @@ export const updateUserData$ = createEffect(
                     map((user: User) => {
                         return usersActions.updateUserDataSuccess({ user })
                     }),
-                    catchError(() => {
-                        snackBarService.openSnackBar('Neuspešna izmena podataka');
+                    catchError(({error}) => {
+                        snackBarService.openSnackBar(error.message);
                         return of(usersActions.updateUserDataFailure())
                     }
                     )
