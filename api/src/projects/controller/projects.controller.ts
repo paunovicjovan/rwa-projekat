@@ -25,12 +25,12 @@ export class ProjectsController {
   //   return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
   // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('suggested-projects')
-  findSuggestedProjectsForUser(@Request() req): Observable<ProjectResponseDto[]> {
-    const userId = req.user.id;
-    return this.projectsService.findSuggestedProjectsForUser(userId);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get('suggested-projects')
+  // findSuggestedProjectsForUser(@Request() req): Observable<ProjectResponseDto[]> {
+  //   const userId = req.user.id;
+  //   return this.projectsService.findSuggestedProjectsForUser(userId);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Post('filter-projects')

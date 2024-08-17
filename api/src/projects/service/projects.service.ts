@@ -41,22 +41,22 @@ export class ProjectsService {
     return projectEntity;
   }
 
-  findSuggestedProjectsForUser(userId: number): Observable<ProjectResponseDto[]> {
-    return this.usersService.findTagsIdsForUser(userId).pipe(
-      filter((tagsIds: number[]) => tagsIds.length > 0),
-      switchMap((tagsIds: number[]) => {
-        return this.projectsRepository
-          .createQueryBuilder('project')
-          .innerJoinAndSelect('project.tags', 'tag')
-          .innerJoinAndSelect('project.createdBy', 'createdBy')
-          .where("tag.id IN (:...tagsIds) AND createdBy.id != :userId AND project.status = 'opened'", { tagsIds, userId })
-          .orderBy('project.createdAt', 'DESC')
-          .take(8)
-          .getMany();
-      }),
-      defaultIfEmpty([])
-    )
-  }
+  // findSuggestedProjectsForUser(userId: number): Observable<ProjectResponseDto[]> {
+  //   return this.usersService.findTagsIdsForUser(userId).pipe(
+  //     filter((tagsIds: number[]) => tagsIds.length > 0),
+  //     switchMap((tagsIds: number[]) => {
+  //       return this.projectsRepository
+  //         .createQueryBuilder('project')
+  //         .innerJoinAndSelect('project.tags', 'tag')
+  //         .innerJoinAndSelect('project.createdBy', 'createdBy')
+  //         .where("tag.id IN (:...tagsIds) AND createdBy.id != :userId AND project.status = 'opened'", { tagsIds, userId })
+  //         .orderBy('project.createdAt', 'DESC')
+  //         .take(8)
+  //         .getMany();
+  //     }),
+  //     defaultIfEmpty([])
+  //   )
+  // }
 
   async findManyPaginated(options: IPaginationOptions, filters: SearchProjectsFilters): Promise<Pagination<ProjectResponseDto>> {
     if(!filters.title)

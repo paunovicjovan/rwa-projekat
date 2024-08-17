@@ -50,42 +50,42 @@ export class UsersController {
     }
 
     @Put(':id')
-    updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<UserResponseDto> {
+    updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
         return this.usersService.updateOne(id, userData);
     }
 
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('/role/:id')
-    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Observable<UserResponseDto> {
+    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
         return this.usersService.updateOne(id, userData);
     }
 
-    // @Roles(UserRoles.ADMIN)
-    // @UseGuards(JwtAuthGuard, RolesGuard)
-    // @Delete(':id')
-    // deleteOne(@Param('id') id:number) : Observable<any> {
-    //     return this.usersService.deleteOne(id);
-    // }
+    @Roles(UserRoles.ADMIN)
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Delete(':id')
+    deleteOne(@Param('id') id:number) : Promise<any> {
+        return this.usersService.deleteOne(id);
+    }
 
-    // @UseGuards(JwtAuthGuard)
-    // @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
-    // @Post('upload-profile-image')
-    // uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<UserResponseDto> {
-    //     const user = req.user;
-    //     return this.usersService.updateProfileImage(user.id, file.filename);
-    // }
+    @UseGuards(JwtAuthGuard)
+    @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
+    @Post('upload-profile-image')
+    uploadProfileImage(@UploadedFile() file, @Request() req) : Promise<UserResponseDto> {
+        const user = req.user;
+        return this.usersService.updateProfileImage(user.id, file.filename);
+    }
 
     @Get('profile-image/:imageName')
-    getProfileImage(@Param('imageName') imageName: string, @Res() res) : Observable<Object> {
+    getProfileImage(@Param('imageName') imageName: string, @Res() res) : Promise<Object> {
         const relativeFilePath = `uploads/profile-images/${imageName}`;
         const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
-        return of(res.sendFile(absoluteFilePath));
+        return res.sendFile(absoluteFilePath);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get(':username/tags')
-    findTagsForUser(@Param('username') username: string): Observable<TagResponseDto[]> {
+    findTagsForUser(@Param('username') username: string): Promise<TagResponseDto[]> {
         return this.usersService.findTagsForUser(username);
     }
 

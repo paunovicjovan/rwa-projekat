@@ -12,17 +12,22 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @Post('register')
-    register(@Body() user: CreateUserDto) : Observable<AuthResponseDto> {
-        return this.authService.register(user).pipe(
-            map((user: AuthResponseDto) => user),
-            catchError((err) => throwError(()=>new HttpException(err.message, HttpStatus.BAD_REQUEST)))
-        );
+    async register(@Body() user: CreateUserDto) : Promise<AuthResponseDto> {
+        try {
+            return await this.authService.register(user);
+        }
+        catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+        }
     }
 
     @Post('login')
-    login(@Body() credentials: LoginRequestDto) : Observable<AuthResponseDto> {
-        return this.authService.login(credentials).pipe(
-            catchError((err) => throwError(() => new HttpException('Neispravan e-mail ili lozinka.', HttpStatus.BAD_REQUEST)))
-        )
+    async login(@Body() credentials: LoginRequestDto) : Promise<AuthResponseDto> {
+        try {
+            return await this.authService.login(credentials);
+        }
+        catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST)
+        }
     }
 }

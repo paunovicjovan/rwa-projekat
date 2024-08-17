@@ -19,35 +19,25 @@ export class AuthService {
         private usersService: UsersService
     ) {}
 
-    register(user: CreateUserDto) : Observable<AuthResponseDto> {
-        return this.usersService.findOneByEmail(user.email).pipe(
-            switchMap((existingUserByEmail: UserResponseDto) => {
-                if(existingUserByEmail)
-                    return throwError(() => new Error('Već postoji korisnik sa zadatim e-mail-om.'));
-                return this.usersService.findOneByUsername(user.username);
-            }),
+    async register(userDto: CreateUserDto) : Promise<AuthResponseDto> {
+        const existingUserByEmail = await this.usersService.findOneByEmail(userDto.email);
+        if(existingUserByEmail)
+            throw new Error('Već postoji korisnik sa zadatim e-mail-om.');
 
-            switchMap((existingUserByUsername: UserResponseDto) => {
-                if(existingUserByUsername)
-                    return throwError(() => new Error('Već postoji korisnik sa zadatim korisničkim imenom.'));
-                return this.hashPassword(user.password);
-            }),
-            
-            switchMap((passwordHash: string) => {
-                user.password = passwordHash;
-                const newUser = this.makeUserEntity(user);
-                return this.usersService.create(newUser);
-            }),
+        const existingUserByUsername = await this.usersService.findOneByUsername(userDto.username);
+        if(existingUserByUsername)
+            throw new Error('Već postoji korisnik sa zadatim korisničkim imenom.');
 
-            switchMap((user: UserDto) => {
-                return this.generateJWT(user).pipe(
-                    map((token: string) => {
-                        const {password, ...userWithoutPassword} = user;
-                        return {user: userWithoutPassword, token: token}
-                    })
-                )
-            })
-        )
+        const passwordHash = await this.hashPassword(userDto.password);
+        userDto.password = passwordHash;
+        const userEntity = this.makeUserEntity(userDto);
+        const createdUser = await this.usersService.create(userEntity);
+
+        if(createdUser) {
+            const token = await this.generateJWT(createdUser);
+            const {password, ...userWithoutPassword} = createdUser;
+            return {user: userWithoutPassword, token: token}
+        }
     }
 
     private makeUserEntity(user: CreateUserDto) : UserEntity {
@@ -64,49 +54,37 @@ export class AuthService {
         return userEntity;
     }
         
-    login(credentials: LoginRequestDto) : Observable<AuthResponseDto> {
-        return this.validateUser(credentials.email, credentials.password).pipe(
-            switchMap((user: UserDto) => {
-                if(user)
-                    return this.generateJWT(user).pipe(
-                        map((token: string) => {
-                            return {user, token}
-                        })
-                    )
-            })
-        )
+    async login(credentials: LoginRequestDto) : Promise<AuthResponseDto> {
+        const user = await this.validateUser(credentials.email, credentials.password);
+        if(user) {
+            const token = await this.generateJWT(user);
+            return {user, token}
+        }
     } 
 
-    private validateUser(email: string, password: string): Observable<UserDto> {
-        return this.usersService.findOneByEmailWithPassword(email).pipe(
-            switchMap((user: UserDto) => {
-                return this.comparePasswords(password, user.password).pipe(
-                    map((isCorrectPassword: boolean) => {
-                        if(isCorrectPassword)
-                        {
-                            const {password, ...userWithoutPassword} = user;
-                            return userWithoutPassword as UserDto;
-                        }
-                        else {
-                            throw new UnauthorizedException();
-                        }
-                    })
-                )
-            })
-        )
+    private async validateUser(email: string, password: string): Promise<UserDto> {
+        const user = await this.usersService.findOneByEmailWithPassword(email);
+        const isCorrectPassword = await this.comparePasswords(password, user.password);
+        if(isCorrectPassword) {
+            const {password, ...userWithoutPassword} = user;
+            return userWithoutPassword as UserDto;
+        }
+        else {
+            throw new Error('Neispravan e-mail ili lozinka.')
+        }
     }
 
-    comparePasswords(password: string, passwordHash: string) : Observable<any | boolean> {
-        return from<any | boolean>(bcrypt.compare(password, passwordHash));
+    async comparePasswords(password: string, passwordHash: string) : Promise<any | boolean> {
+        return bcrypt.compare(password, passwordHash);
     }
 
-    generateJWT(user: UserDto) : Observable<string> {
+    async generateJWT(user: UserDto) : Promise<string> {
         const payload = { email: user.email, sub: user.id };
-        return from(this.jwtService.signAsync(payload));
+        return await this.jwtService.signAsync(payload);
     }
 
-    hashPassword(password: string) : Observable<string> {
+    async hashPassword(password: string) : Promise<string> {
         const saltRounds = 10;
-        return from<string>(bcrypt.hash(password, saltRounds));
+        return bcrypt.hash(password, saltRounds);
     }
 }

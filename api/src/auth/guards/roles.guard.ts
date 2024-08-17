@@ -13,7 +13,7 @@ export class RolesGuard implements CanActivate {
                 private usersService: UsersService
     ) {}
 
-    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const requiredRoles = this.reflector.getAllAndOverride<UserRoles[]>(ROLES_KEY, [
             context.getHandler(),
             context.getClass()
@@ -22,15 +22,13 @@ export class RolesGuard implements CanActivate {
         if(!requiredRoles)
             return true;
 
-        const { user } = context.switchToHttp().getRequest();
-        return true;
-        // return this.usersService.findOneById(user.id)
-        // .pipe(
-        //     map((user:UserResponseDto)=>{
-        //         const hasPermission = requiredRoles.indexOf(user.role) > -1;
-        //         return user && hasPermission;
-        //     })
-        // )
+        const request = context.switchToHttp().getRequest();
+
+        const user = await this.usersService.findOneById(request.user.id)
+
+        const hasPermission = requiredRoles.indexOf(user.role) > -1;
+        
+        return user && hasPermission;
     }
 
 }

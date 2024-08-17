@@ -21,14 +21,14 @@ export class UsersService {
         private usersRepository: Repository<UserEntity>
     ) {}
 
-    create(user: CreateUserDto) : Observable<UserResponseDto> {
+    async create(user: CreateUserDto) : Promise<UserDto> {
         user.email = user.email.toLowerCase();
         user.username = user.username.toLowerCase();
-        return from(this.usersRepository.save(user));
+        return this.usersRepository.save(user);
     }
 
-    findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Observable<Pagination<UserResponseDto>> {
-        return from(paginate<UserResponseDto>(
+    async findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Promise<Pagination<UserResponseDto>> {
+        return paginate<UserResponseDto>(
             this.usersRepository, 
             options, 
             {
@@ -39,94 +39,85 @@ export class UsersService {
                 },
                 order: { createdAt: 'DESC' }
             }
-        ))
+        )
     }
 
     async findOneById(id: number): Promise<UserDto> {
         return this.usersRepository.findOne({where:{id}});
     }
 
-    findOneByEmail(email: string) : Observable<UserResponseDto> {
-        return from(this.usersRepository.findOne({where:{email}}));
+    async findOneByEmail(email: string) : Promise<UserResponseDto> {
+        return this.usersRepository.findOne({where:{email}});
     }
 
-    findOneByEmailWithPassword(email: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage', 'createdAt']}));
+    async findOneByEmailWithPassword(email: string) : Promise<UserDto> {
+        return this.usersRepository.findOne({
+            where:{email}, 
+            select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage', 'createdAt']});
     }
 
     async findOneByUsername(username: string) : Promise<UserDto> {
         return this.usersRepository.findOne({where:{username}, relations: ['tags']});
     }
 
-    // updateProfileImage(userId: number, imageName: string | null) : Observable<UserResponseDto> {
-    //     return this.deleteProfileImageFromFileSystem(userId).pipe(
-    //         switchMap(() => this.updateOne(userId, {profileImage: imageName})),
-    //     );
-    // }
-
-    updateOne(id: number, userData: UpdateUserDto) : Observable<UserResponseDto> {
-        return from(this.usersRepository.update(id, userData)).pipe(
-            switchMap(() => this.findOneById(id))
-        );
+    async updateProfileImage(userId: number, imageName: string | null) : Promise<UserResponseDto> {
+        await this.deleteProfileImageFromFileSystem(userId);
+        return await this.updateOne(userId, {profileImage: imageName});
     }
 
-    // deleteOne(id: number) : Observable<any> {
-    //     return this.deleteProfileImageFromFileSystem(id).pipe(
-    //         switchMap(()=> {
-    //             return this.usersRepository.delete(id);
-    //         })
-    //     )
-    // }
+    async updateOne(id: number, userData: UpdateUserDto) : Promise<UserResponseDto> {
+        await this.usersRepository.update(id, userData);
+        return await this.findOneById(id);
+    }
 
-    // private deleteProfileImageFromFileSystem(userId: number): Observable<UserResponseDto> {
-    //     return this.findOneById(userId).pipe(
-    //         tap((user: UserResponseDto) => {
-    //             if(user.profileImage !== null) {
-    //                 const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
-    //                 fs.unlinkSync(userProfileImagePath);
-    //             }
-    //         })
-    //     );
-    // }
+    async deleteOne(id: number) : Promise<any> {
+        await this.deleteProfileImageFromFileSystem(id);
+        return await this.usersRepository.delete(id);
+    }
 
-    findTagsForUser(username: string): Observable<TagResponseDto[]> {
+    private async deleteProfileImageFromFileSystem(userId: number): Promise<UserResponseDto> {
+        const user = await this.findOneById(userId);
+        if(user.profileImage !== null) {
+            const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
+            fs.unlinkSync(userProfileImagePath);
+        }
+        return user;
+    }
+
+    async findTagsForUser(username: string): Promise<TagResponseDto[]> {
         if(username === '')
-            return of([]);
+            return [];
 
-        return from(this.usersRepository.findOne({
+        const user = await this.usersRepository.findOne({
             where: {username},
             relations: ['tags']
-        })).pipe(
-            map((user: UserDto) => user.tags)
-        )
+        });
+        return user.tags;
     }
 
-    findTagsIdsForUser(userId: number): Observable<number[]> {
-        return from(this.usersRepository.findOne({
+    async findTagsIdsForUser(userId: number): Promise<number[]> {
+        const user = await this.usersRepository.findOne({
             where: {id: userId},
             relations: ['tags']
-        })).pipe(
-            map((user: UserDto) => {
-                return user.tags.map(tag => tag.id)
-            })
-        )
+        });
+        return user.tags.map(tag => tag.id);
     }
 
-    findAppliedUsersForProject(projectId: number, options: IPaginationOptions): Observable<Pagination<UserResponseDto>> {
+    async findAppliedUsersForProject(projectId: number, options: IPaginationOptions): Promise<Pagination<UserResponseDto>> {
         const queryBuilder = this.usersRepository
                             .createQueryBuilder('user')
                             .innerJoin('user.appliedTo', 'appliedTo')
                             .where('appliedTo.id = :projectId', {projectId});
 
-        return from(paginate(queryBuilder, options));
+        return paginate(queryBuilder, options);
     }
 
-    findAcceptedUsersForProject(projectId: number, options: IPaginationOptions): Observable<Pagination<UserResponseDto>> {
+    async findAcceptedUsersForProject(projectId: number, options: IPaginationOptions): Promise<Pagination<UserResponseDto>> {
         const queryBuilder = this.usersRepository
                             .createQueryBuilder('user')
                             .innerJoin('user.acceptedIn', 'acceptedIn')
                             .where('acceptedIn.id = :projectId', {projectId});
 
-        return from(paginate(queryBuilder, options));
+        return paginate(queryBuilder, options);
     }
 }
