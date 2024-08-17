@@ -17,60 +17,51 @@ export class TagsService {
               private usersService: UsersService
               ) {}
 
-  create(createTagDto: CreateTagDto): Observable<TagResponseDto> {
-    return from(this.tagsRepository.save(createTagDto));
+  async create(createTagDto: CreateTagDto): Promise<TagResponseDto> {
+    return this.tagsRepository.save(createTagDto);
   }
 
-  filterByName(name: string): Observable<TagResponseDto[]> {
+  async filterByName(name: string): Promise<TagResponseDto[]> {
     if(name === '')
-        return of([]);
+        return [];
       
-    return from(this.tagsRepository.find({
+    return this.tagsRepository.find({
       where: {
         name: Raw(tagInDb => `LOWER(${tagInDb}) LIKE '%${name.toLowerCase()}%'`)
       },
       take: 6
-    }));
+    });
   }
 
-  findOne(id: number): Observable<TagResponseDto> {
-    return from(this.tagsRepository.findOne({where: {id}}));
+  async findOne(id: number): Promise<TagResponseDto> {
+    return this.tagsRepository.findOne({where: {id}});
   }
 
-  update(id: number, updateTagDto: UpdateTagDto): Observable<TagResponseDto> {
-    return from(this.tagsRepository.update(id, updateTagDto)).pipe(
-      switchMap(() => this.findOne(id))
-    );
+  async update(id: number, updateTagDto: UpdateTagDto): Promise<TagResponseDto> {
+    await this.tagsRepository.update(id, updateTagDto);
+    return await this.findOne(id);
   }
 
-  remove(id: number): Observable<any> {
-    return from(this.tagsRepository.delete(id));
+  async deleteOne(id: number): Promise<any> {
+    return await this.tagsRepository.delete(id);
   }
 
-  addTagToUser(userId: number, tagId: number): Observable<TagResponseDto> {
-    return forkJoin([
-      this.usersService.findOneById(userId),
-      this.tagsRepository.findOne({
-        where: {id: tagId}, 
-        relations: ['users']
-      })
-    ]).pipe(
-      switchMap(([user, tag]) => {
-        tag.users.push(user);
-        return from(this.tagsRepository.save(tag));
-      })
-    )
-  } 
-
-  removeTagFromUser(userId: number, tagId: number): Observable<TagResponseDto> {
-    return from(this.tagsRepository.findOne({
+  async addTagToUser(userId: number, tagId: number): Promise<TagResponseDto> {
+    const user = await this.usersService.findOneById(userId);
+    const tag = await this.tagsRepository.findOne({
       where: {id: tagId}, 
       relations: ['users']
-    })).pipe(
-      switchMap((tag: TagDto) => {
-        tag.users = tag.users.filter((user: UserDto) => user.id !== userId)
-        return from(this.tagsRepository.save(tag));
-      })
-    )
+    });
+    tag.users.push(user);
+    return await this.tagsRepository.save(tag);
+  } 
+
+  async removeTagFromUser(userId: number, tagId: number): Promise<TagResponseDto> {
+    const tag = await this.tagsRepository.findOne({
+      where: {id: tagId}, 
+      relations: ['users']
+    });
+    tag.users = tag.users.filter((user: UserDto) => user.id !== userId);
+    return await this.tagsRepository.save(tag);
   } 
 }

@@ -17,13 +17,13 @@ import { ProjectStatus } from '../enums/project-status.enum';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
-  @Post()
-  create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Observable<ProjectDto> {
-    const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
-    return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
+  // @Post()
+  // create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Observable<ProjectDto> {
+  //   const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
+  //   return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('suggested-projects')
@@ -54,15 +54,15 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.projectsService.deleteOne(+id);
   }
 
   @Get('project-image/:imageName')
-  getProfileImage(@Param('imageName') imageName: string, @Res() res) : Observable<Object> {
+  getProfileImage(@Param('imageName') imageName: string, @Res() res) : Promise<Object> {
       const relativeFilePath = `uploads/project-images/${imageName}`;
       const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
-      return of(res.sendFile(absoluteFilePath));
+      return res.sendFile(absoluteFilePath);
   }
 
   @Get('applied-by/:username')

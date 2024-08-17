@@ -21,15 +21,15 @@ export class ProjectsService {
               private projectsRepository: Repository<ProjectEntity>,
               private usersService: UsersService) {}
 
-  create(imageName: string | undefined, createProjectDto: CreateProjectDto, userId: number): Observable<ProjectDto> {
-    return this.usersService.findOneById(userId).pipe(
-      switchMap((user: UserDto) => {
-        const projectEntity = this.createProjectEntity(imageName, createProjectDto);
-        projectEntity.createdBy = user;
-        return from(this.projectsRepository.save(projectEntity));
-      })
-    )
-  }
+  // create(imageName: string | undefined, createProjectDto: CreateProjectDto, userId: number): Observable<ProjectDto> {
+  //   return this.usersService.findOneById(userId).pipe(
+  //     switchMap((user: UserDto) => {
+  //       const projectEntity = this.createProjectEntity(imageName, createProjectDto);
+  //       projectEntity.createdBy = user;
+  //       return from(this.projectsRepository.save(projectEntity));
+  //     })
+  //   )
+  // }
 
   createProjectEntity(imageName: string | undefined, createProjectDto: CreateProjectDto): ProjectEntity {
     const projectEntity = this.projectsRepository.create();
@@ -58,7 +58,7 @@ export class ProjectsService {
     )
   }
 
-  findManyPaginated(options: IPaginationOptions, filters: SearchProjectsFilters): Observable<Pagination<ProjectResponseDto>> {
+  async findManyPaginated(options: IPaginationOptions, filters: SearchProjectsFilters): Promise<Pagination<ProjectResponseDto>> {
     if(!filters.title)
       filters.title = '';
 
@@ -78,7 +78,7 @@ export class ProjectsService {
 
     queryBuilder.orderBy('project.updatedAt', 'DESC');
                  
-    return from(paginate<ProjectResponseDto>(queryBuilder, options));
+    return paginate<ProjectResponseDto>(queryBuilder, options);
   }
 
   async findOne(id: number): Promise<ProjectResponseDto> {
@@ -93,8 +93,8 @@ export class ProjectsService {
     return await this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async deleteOne(id: number): Promise<any> {
+    return this.projectsRepository.delete({id});
   }
 
   async findAppliedProjectsForUser(username: string, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {

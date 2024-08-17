@@ -61,20 +61,20 @@ export class UsersController {
         return this.usersService.updateOne(id, userData);
     }
 
-    @Roles(UserRoles.ADMIN)
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Delete(':id')
-    deleteOne(@Param('id') id:number) : Observable<any> {
-        return this.usersService.deleteOne(id);
-    }
+    // @Roles(UserRoles.ADMIN)
+    // @UseGuards(JwtAuthGuard, RolesGuard)
+    // @Delete(':id')
+    // deleteOne(@Param('id') id:number) : Observable<any> {
+    //     return this.usersService.deleteOne(id);
+    // }
 
-    @UseGuards(JwtAuthGuard)
-    @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
-    @Post('upload-profile-image')
-    uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<UserResponseDto> {
-        const user = req.user;
-        return this.usersService.updateProfileImage(user.id, file.filename);
-    }
+    // @UseGuards(JwtAuthGuard)
+    // @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
+    // @Post('upload-profile-image')
+    // uploadProfileImage(@UploadedFile() file, @Request() req) : Observable<UserResponseDto> {
+    //     const user = req.user;
+    //     return this.usersService.updateProfileImage(user.id, file.filename);
+    // }
 
     @Get('profile-image/:imageName')
     getProfileImage(@Param('imageName') imageName: string, @Res() res) : Observable<Object> {

@@ -42,8 +42,8 @@ export class UsersService {
         ))
     }
 
-    findOneById(id: number): Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{id}}));
+    async findOneById(id: number): Promise<UserDto> {
+        return this.usersRepository.findOne({where:{id}});
     }
 
     findOneByEmail(email: string) : Observable<UserResponseDto> {
@@ -58,11 +58,11 @@ export class UsersService {
         return from(this.usersRepository.findOne({where:{username}, relations: ['tags']}));
     }
 
-    updateProfileImage(userId: number, imageName: string | null) : Observable<UserResponseDto> {
-        return this.deleteProfileImageFromFileSystem(userId).pipe(
-            switchMap(() => this.updateOne(userId, {profileImage: imageName})),
-        );
-    }
+    // updateProfileImage(userId: number, imageName: string | null) : Observable<UserResponseDto> {
+    //     return this.deleteProfileImageFromFileSystem(userId).pipe(
+    //         switchMap(() => this.updateOne(userId, {profileImage: imageName})),
+    //     );
+    // }
 
     updateOne(id: number, userData: UpdateUserDto) : Observable<UserResponseDto> {
         return from(this.usersRepository.update(id, userData)).pipe(
@@ -70,24 +70,24 @@ export class UsersService {
         );
     }
 
-    deleteOne(id: number) : Observable<any> {
-        return this.deleteProfileImageFromFileSystem(id).pipe(
-            switchMap(()=> {
-                return this.usersRepository.delete(id);
-            })
-        )
-    }
+    // deleteOne(id: number) : Observable<any> {
+    //     return this.deleteProfileImageFromFileSystem(id).pipe(
+    //         switchMap(()=> {
+    //             return this.usersRepository.delete(id);
+    //         })
+    //     )
+    // }
 
-    private deleteProfileImageFromFileSystem(userId: number): Observable<UserResponseDto> {
-        return this.findOneById(userId).pipe(
-            tap((user: UserResponseDto) => {
-                if(user.profileImage !== null) {
-                    const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
-                    fs.unlinkSync(userProfileImagePath);
-                }
-            })
-        );
-    }
+    // private deleteProfileImageFromFileSystem(userId: number): Observable<UserResponseDto> {
+    //     return this.findOneById(userId).pipe(
+    //         tap((user: UserResponseDto) => {
+    //             if(user.profileImage !== null) {
+    //                 const userProfileImagePath = `./uploads/profile-images/${user.profileImage}`;
+    //                 fs.unlinkSync(userProfileImagePath);
+    //             }
+    //         })
+    //     );
+    // }
 
     findTagsForUser(username: string): Observable<TagResponseDto[]> {
         if(username === '')
