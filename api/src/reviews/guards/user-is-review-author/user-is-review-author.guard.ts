@@ -8,18 +8,15 @@ export class UserIsReviewAuthorGuard implements CanActivate {
 
   constructor(private reviewsService: ReviewsService) {}
 
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const params = request.params;
     const reviewId: number = params.id;
     const userId: number = request.user.id;
-    return true;
-    // return this.reviewsService.findOneById(reviewId).pipe(
-    //   map((review: ReviewDto) => {
-    //     const hasPermission = review.author.id === userId;
-    //     return hasPermission;
-    // })
-    // )
+   
+    const review = await this.reviewsService.findOneById(reviewId);
+    const hasPermission = review.author.id === userId;
+    return hasPermission;
   }
 
 }

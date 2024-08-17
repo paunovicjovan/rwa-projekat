@@ -13,24 +13,20 @@ export class ReviewAuthorOrAdminGuard implements CanActivate {
               private usersService: UsersService
   ) {}
 
-  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const params = request.params;
     const reviewId: number = params.id;
     const userId: number = request.user.id;
-    return true;
-    // return this.usersService.findOneById(userId).pipe(
-    //   switchMap((user: UserDto) => {
-    //     return this.reviewsService.findOneById(reviewId).pipe(
-    //       map((review: ReviewDto) => {
-    //         const isBasicUser = user.role === UserRoles.USER;
-    //         const isAuthor = user.id === review.author.id;
-    //         const hasPermission = !isBasicUser || isAuthor;
-    //         return hasPermission;
-    //     })
-    //     )
-    //   })
-    // )
+    
+    const user = await this.usersService.findOneById(userId);
+    const review = await this.reviewsService.findOneById(reviewId);
+    
+    const isBasicUser = user.role === UserRoles.USER;
+    const isAuthor = user.id === review.author.id;
+    const hasPermission = !isBasicUser || isAuthor;
+
+    return hasPermission;
   }
 
 }

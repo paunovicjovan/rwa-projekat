@@ -5,7 +5,6 @@ import { UpdateProjectDto } from '../dto/update-project.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
-import { Observable, of } from 'rxjs';
 import { ProjectDto } from '../dto/project.dto';
 import { CreateProjectFormData } from '../dto/create-project-form-data.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
@@ -17,20 +16,20 @@ import { ProjectStatus } from '../enums/project-status.enum';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  // @UseGuards(JwtAuthGuard)
-  // @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
-  // @Post()
-  // create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Observable<ProjectDto> {
-  //   const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
-  //   return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
+  @Post()
+  create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Promise<ProjectDto> {
+    const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
+    return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
+  }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('suggested-projects')
-  // findSuggestedProjectsForUser(@Request() req): Observable<ProjectResponseDto[]> {
-  //   const userId = req.user.id;
-  //   return this.projectsService.findSuggestedProjectsForUser(userId);
-  // }
+  @UseGuards(JwtAuthGuard)
+  @Get('suggested-projects')
+  findSuggestedProjectsForUser(@Request() req): Promise<ProjectResponseDto[]> {
+    const userId = req.user.id;
+    return this.projectsService.findSuggestedProjectsForUser(userId);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('filter-projects')
