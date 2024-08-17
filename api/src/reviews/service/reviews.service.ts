@@ -19,16 +19,11 @@ export class ReviewsService {
       private usersService: UsersService
     ) {}
 
-  create(review: CreateReviewDto, authorId: number, revieweeUsername: string) : Observable<ReviewDto> {
-    return forkJoin([
-      this.usersService.findOneById(authorId),
-      this.usersService.findOneByUsername(revieweeUsername)
-    ]).pipe(
-      switchMap(([author, reviewee]) => {
-        const reviewEntity = this.createReviewEntity(review, author, reviewee);
-        return from(this.reviewsRepository.save(reviewEntity));
-      })
-    )
+  async create(review: CreateReviewDto, authorId: number, revieweeUsername: string) : Promise<ReviewDto> {
+    const author = await this.usersService.findOneById(authorId);
+    const reviewee = await this.usersService.findOneByUsername(revieweeUsername);
+    const reviewEntity = this.createReviewEntity(review, author, reviewee);
+    return await this.reviewsRepository.save(reviewEntity);
   }
 
   private createReviewEntity(review: CreateReviewDto, author: UserDto, reviewee: UserDto) : ReviewEntity {
@@ -43,8 +38,8 @@ export class ReviewsService {
     return reviewEntity;
   }
 
-  findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Observable<Pagination<ReviewDto>> {
-    return from(paginate<ReviewDto>(
+  async findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Promise<Pagination<ReviewDto>> {
+    return paginate<ReviewDto>(
         this.reviewsRepository, 
         options, 
         {
@@ -52,20 +47,22 @@ export class ReviewsService {
             order: { createdAt: 'DESC' },
             relations: ['author', 'reviewee']
         }
-    ))
+    );
 }
 
-  findOneById(id: number) : Observable<ReviewDto> {
-    return from(this.reviewsRepository.findOne({where: {id}, relations: ['author', 'reviewee']}));
+  async findOneById(id: number) : Promise<ReviewDto> {
+    return this.reviewsRepository.findOne({
+      where: {id}, 
+      relations: ['author', 'reviewee']
+    });
   }
 
-  update(id: number, reviewData: UpdateReviewDto) : Observable<ReviewDto> {
-    return from(this.reviewsRepository.update(id, reviewData)).pipe(
-      switchMap(() => this.findOneById(id))
-    );
+  async update(id: number, reviewData: UpdateReviewDto) : Promise<ReviewDto> {
+    await this.reviewsRepository.update(id, reviewData);
+    return await this.findOneById(id);
   }
 
-  deleteOne(id: number) : Observable<any> {
-    return from(this.reviewsRepository.delete(id));
+  async deleteOne(id: number) : Promise<any> {
+    return this.reviewsRepository.delete(id);
   }
 }

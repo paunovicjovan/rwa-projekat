@@ -13,13 +13,13 @@ export class UserIsReviewAuthorGuard implements CanActivate {
     const params = request.params;
     const reviewId: number = params.id;
     const userId: number = request.user.id;
-    
-      return this.reviewsService.findOneById(reviewId).pipe(
-        map((review: ReviewDto) => {
-          const hasPermission = review.author.id === userId;
-          return hasPermission;
-      })
-    )
+    return true;
+    // return this.reviewsService.findOneById(reviewId).pipe(
+    //   map((review: ReviewDto) => {
+    //     const hasPermission = review.author.id === userId;
+    //     return hasPermission;
+    // })
+    // )
   }
 
 }

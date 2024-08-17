@@ -15,7 +15,7 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':revieweeUsername')
-  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Observable<ReviewDto> {
+  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewDto> {
     const authorId = req.user.id;
     return this.reviewsService.create(review, +authorId, revieweeUsername);
   }
@@ -37,19 +37,19 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) : Observable<ReviewDto> {
+  findOne(@Param('id') id: string) : Promise<ReviewDto> {
     return this.reviewsService.findOneById(+id);
   }
 
   @UseGuards(JwtAuthGuard, UserIsReviewAuthorGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Observable<ReviewDto> {
+  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewDto> {
     return this.reviewsService.update(+id, reviewData);
   }
 
   @UseGuards(JwtAuthGuard, ReviewAuthorOrAdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) : Observable<any> {
+  remove(@Param('id') id: number) : Promise<any> {
     return this.reviewsService.deleteOne(+id);
   }
 }

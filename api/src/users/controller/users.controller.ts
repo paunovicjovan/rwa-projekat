@@ -45,7 +45,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get(':username')
-    findOneByUsername(@Param('username') username: string) : Observable<UserResponseDto> {
+    findOneByUsername(@Param('username') username: string) : Promise<UserResponseDto> {
         return this.usersService.findOneByUsername(username);
     }
 

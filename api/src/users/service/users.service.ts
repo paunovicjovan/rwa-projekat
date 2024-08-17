@@ -54,8 +54,8 @@ export class UsersService {
         return from(this.usersRepository.findOne({where:{email}, select:['id', 'firstName', 'lastName', 'email', 'username', 'password', 'role', 'profileImage', 'createdAt']}));
     }
 
-    findOneByUsername(username: string) : Observable<UserDto> {
-        return from(this.usersRepository.findOne({where:{username}, relations: ['tags']}));
+    async findOneByUsername(username: string) : Promise<UserDto> {
+        return this.usersRepository.findOne({where:{username}, relations: ['tags']});
     }
 
     // updateProfileImage(userId: number, imageName: string | null) : Observable<UserResponseDto> {
