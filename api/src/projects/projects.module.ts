@@ -11,6 +11,7 @@ import { UsersModule } from 'src/users/users.module';
     TypeOrmModule.forFeature([ProjectEntity]),
     UsersModule
   ],
+  exports: [ProjectsService],
   providers: [ProjectsService],
 })
 export class ProjectsModule {}

@@ -43,7 +43,7 @@
                             {{dataFromStore.chosenProject.updatedAt | formatDate}}
                         </span>
                     </p>
-                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
+                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id; else notOwnProject">
                         <ng-container *ngIf="dataFromStore.chosenProject.status === 'opened'">
                             <div class="d-flex align-items-center">
                                 <button class="btn bg-purple text-beige">Zatvori prijave</button>
@@ -67,6 +67,12 @@
                         <button class="btn bg-red text-beige mt-2" (click)="deleteProject(dataFromStore.chosenProject.id)">Obriši projekat</button>
 
                     </ng-container>
+
+                    <ng-template #notOwnProject>
+                        <button class="btn bg-purple text-beige me-2">Prijavi se</button>
+                        <button class="btn bg-red text-beige">Odjavi se</button>
+                    </ng-template>
+                    
                 </div>
                 
                 <div class="col-md-8">
@@ -104,7 +110,7 @@
                     <mat-card appearance="outlined" class="p-3 mb-3">
                         <p class="lead">Tagovi projekta</p>
                         <app-tag-viewer [tags]="dataFromStore.tags" [readonly]="dataFromStore.chosenProject.createdBy.id !== dataFromStore.loggedInUser.id || dataFromStore.chosenProject.status === 'completed'"
-                                        (addTag)="addTag($event)" (removeTag)="removeTag($event)">
+                                        (addTag)="addTag($event, dataFromStore.chosenProject.id)" (removeTag)="removeTag($event, dataFromStore.chosenProject.id)">
                         </app-tag-viewer>
                     </mat-card>
                 </div>

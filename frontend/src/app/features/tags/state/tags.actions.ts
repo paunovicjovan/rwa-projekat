@@ -51,3 +51,31 @@ export const removeTagFromUserSuccess = createAction(
 export const removeTagFromUserFailure = createAction(
     '[Tags] Remove Tag From User Failure',
 );
+
+export const addTagToProject = createAction(
+    '[Tags] Add Tag To Project',
+    props<{ projectId:number, tagId: number }>()
+);
+
+export const addTagToProjectSuccess = createAction(
+    '[Tags] Add Tag To Project Success',
+    props<{ tag: Tag }>()
+);
+
+export const addTagToProjectFailure = createAction(
+    '[Tags] Add Tag To Project Failure',
+);
+
+export const removeTagFromProject = createAction(
+    '[Tags] Remove Tag From Project',
+    props<{ projectId: number, tagId: number }>()
+);
+
+export const removeTagFromProjectSuccess = createAction(
+    '[Tags] Remove Tag From Project Success',
+    props<{ tag: Tag }>()
+);
+
+export const removeTagFromProjectFailure = createAction(
+    '[Tags] Remove Tag From Project Failure',
+);

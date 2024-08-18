@@ -22,4 +22,12 @@ export class TagsService {
   removeTagFromUser(tagId: number): Observable<Tag> {
     return this.http.delete<Tag>(`${environment.apiUrl}/tags/remove-tag-from-user/${tagId}`);
   }
+
+  addTagToProject(projectId: number, tagId: number): Observable<Tag> {
+    return this.http.post<Tag>(`${environment.apiUrl}/tags/add-tag-to-project/${tagId}/${projectId}`, {});
+  }
+
+  removeTagFromProject(projectId: number, tagId: number): Observable<Tag> {
+    return this.http.delete<Tag>(`${environment.apiUrl}/tags/remove-tag-from-project/${tagId}/${projectId}`);
+  }
 }

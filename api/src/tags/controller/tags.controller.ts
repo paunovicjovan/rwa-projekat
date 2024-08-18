@@ -51,13 +51,25 @@ export class TagsController {
   @Post('add-tag-to-user/:tagId')
   addTagToUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
       const userId = req.user.id;
-      return this.tagsService.addTagToUser(userId, tagId);
+      return this.tagsService.addTagToUser(+userId, +tagId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove-tag-from-user/:tagId')
   removeTagFromUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
       const userId = req.user.id;
-      return this.tagsService.removeTagFromUser(userId, tagId);
+      return this.tagsService.removeTagFromUser(+userId, +tagId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('add-tag-to-project/:tagId/:projectId')
+  addTagToProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
+      return this.tagsService.addTagToProject(+projectId, +tagId);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('remove-tag-from-project/:tagId/:projectId')
+  removeTagFromProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
+      return this.tagsService.removeTagFromProject(+projectId, +tagId);
   }
 }

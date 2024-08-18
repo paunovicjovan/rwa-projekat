@@ -74,7 +74,7 @@ export class ProjectsService {
     return paginate<ProjectResponseDto>(queryBuilder, options);
   }
 
-  async findOne(id: number): Promise<ProjectResponseDto> {
+  async findOne(id: number): Promise<ProjectDto> {
     return await this.projectsRepository.findOne({
       where: {id},
       relations: ['createdBy', 'tags']

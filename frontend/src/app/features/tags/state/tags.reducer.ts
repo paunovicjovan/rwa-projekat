@@ -49,4 +49,10 @@ export const tagsReducer = createReducer(
     on(tagsActions.removeTagFromUserSuccess, (state, action) => {
         return tagsAdapter.removeOne(action.tag.id, state);
     }),
+    on(tagsActions.addTagToProjectSuccess, (state, action) => {
+        return tagsAdapter.addOne(action.tag, state);
+    }),
+    on(tagsActions.removeTagFromProjectSuccess, (state, action) => {
+        return tagsAdapter.removeOne(action.tag.id, state);
+    }),
 )

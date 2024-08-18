@@ -9,12 +9,15 @@ import { TagDto } from '../dto/tag.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { UserDto } from 'src/users/dto/user.dto';
 import { TagResponseDto } from '../dto/tag-response.dto';
+import { ProjectsService } from 'src/projects/service/projects.service';
+import { ProjectDto } from 'src/projects/dto/project.dto';
 
 @Injectable()
 export class TagsService {
   constructor(@InjectRepository(TagEntity)
               private tagsRepository: Repository<TagEntity>,
-              private usersService: UsersService
+              private usersService: UsersService,
+              private projectsService: ProjectsService
               ) {}
 
   async create(createTagDto: CreateTagDto): Promise<TagResponseDto> {
@@ -62,6 +65,25 @@ export class TagsService {
       relations: ['users']
     });
     tag.users = tag.users.filter((user: UserDto) => user.id !== userId);
+    return await this.tagsRepository.save(tag);
+  }
+
+  async addTagToProject(projectId: number, tagId: number): Promise<TagResponseDto> {
+    const project = await this.projectsService.findOne(projectId);
+    const tag = await this.tagsRepository.findOne({
+      where: {id: tagId}, 
+      relations: ['projects']
+    });
+    tag.projects.push(project);
+    return await this.tagsRepository.save(tag);
+  } 
+
+  async removeTagFromProject(projectId: number, tagId: number): Promise<TagResponseDto> {
+    const tag = await this.tagsRepository.findOne({
+      where: {id: tagId}, 
+      relations: ['projects']
+    });
+    tag.projects = tag.projects.filter((project: ProjectDto) => project.id !== projectId);
     return await this.tagsRepository.save(tag);
   } 
 }

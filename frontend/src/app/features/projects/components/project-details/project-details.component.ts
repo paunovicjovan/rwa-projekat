@@ -11,6 +11,7 @@ import { UpdateProjectDto } from '../../models/update-project-dto.interface';
 import { Project } from '../../models/project.interface';
 import * as sharedActions from '../../../../shared/state/shared.actions';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import * as tagsActions from '../../../tags/state/tags.actions';
 
 @Component({
   selector: 'app-project-details',
@@ -45,12 +46,12 @@ export class ProjectDetailsComponent {
     })
   }
 
-  addTag(tag: Tag) {
-
+  addTag(tag: Tag, projectId: number) {
+    this.store.dispatch(tagsActions.addTagToProject({ tagId:tag.id, projectId }));
   }
 
-  removeTag(tagId: number) {
-    
+  removeTag(tagId: number, projectId: number) {
+    this.store.dispatch(tagsActions.removeTagFromProject({ tagId, projectId }));
   }
 
   openProjectUpdateDialog(project: Project) {

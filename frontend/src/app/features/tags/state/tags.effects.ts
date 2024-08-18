@@ -64,3 +64,43 @@ export const removeTagFromUser$ = createEffect(
     },
     {functional: true}
 )
+
+export const addTagToProject$ = createEffect(
+    (action$ = inject(Actions), tagsService = inject(TagsService)) => {
+        return action$.pipe(
+            ofType(tagsActions.addTagToProject),
+            concatMap(({ projectId, tagId }) =>
+                tagsService.addTagToProject(projectId, tagId).pipe(
+                    map((tag: Tag) => {
+                        return tagsActions.addTagToProjectSuccess({ tag })
+                    }),
+                    catchError(() => {
+                        return of(tagsActions.addTagToProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const removeTagFromProject$ = createEffect(
+    (action$ = inject(Actions), tagsService = inject(TagsService)) => {
+        return action$.pipe(
+            ofType(tagsActions.removeTagFromProject),
+            concatMap(({ projectId, tagId }) =>
+                tagsService.removeTagFromProject(projectId, tagId).pipe(
+                    map((tag: Tag) => {
+                        return tagsActions.removeTagFromProjectSuccess({ tag })
+                    }),
+                    catchError(() => {
+                        return of(tagsActions.removeTagFromProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
