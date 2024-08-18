@@ -121,3 +121,44 @@ export const loadAcceptedUsersForProjectSuccess = createAction(
 export const loadAcceptedUsersForProjectFailure = createAction(
   '[Users] Load Accepted Users For Project Failure',
 )
+
+export const applyForProject = createAction(
+  '[Users] Apply For Project',
+  props<{ projectId: number }>()
+);
+
+export const applyForProjectSuccess = createAction(
+  '[Users] Apply For Project Success'
+);
+
+export const applyForProjectFailure = createAction(
+  '[Users] Apply For Project Failure'
+);
+
+export const unenrollUserFromProject = createAction(
+  '[Users] Unenroll User From Project',
+  props<{ projectId: number; userId: number }>()
+);
+
+export const unenrollUserFromProjectSuccess = createAction(
+  '[Users] Unenroll User From Project Success',
+  props<{ user: User }>()
+);
+
+export const unenrollUserFromProjectFailure = createAction(
+  '[Users] Unenroll User From Project Failure'
+);
+
+export const acceptUserInProject = createAction(
+  '[Users] Accept User To Project',
+  props<{ projectId: number; userId: number }>()
+);
+
+export const acceptUserInProjectSuccess = createAction(
+  '[Users] Accept User To Project Success',
+  props<{ user: User }>()
+);
+
+export const acceptUserInProjectFailure = createAction(
+  '[Users] Accept User To Project Failure'
+);

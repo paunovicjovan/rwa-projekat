@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
 import * as usersActions from '../../../users/state/users.actions';
 import * as usersSelectors from '../../../users/state/users.selectors';
+import * as sharedActions from '../../../../shared/state/shared.actions';
 import { combineLatest, Observable } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 import { ParticipantStatus } from '../../models/participant-status.enum';
@@ -61,4 +62,14 @@ export class ProjectParticipantsComponent implements OnInit {
     })
   }
 
+  acceptUserInProject(userId: number) {
+    this.store.dispatch(usersActions.acceptUserInProject({userId, projectId: this.projectId}));
+  }
+
+  unenrollUserFromProject(userId: number) {
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: "Da li sigurno želite da uklonite korisnika sa projekta?",
+      actionToDispatch: usersActions.unenrollUserFromProject({userId, projectId: this.projectId})
+    }));
+  }
 }

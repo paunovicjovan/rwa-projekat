@@ -1,24 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Like, Raw, Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
-import { from, map, Observable, of, pluck, switchMap, tap } from 'rxjs';
 import { UserResponseDto } from '../dto/user-response.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import * as fs from 'fs';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
-import { TagDto } from 'src/tags/dto/tag.dto';
-import { TagsService } from 'src/tags/service/tags.service';
 import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
+import { ProjectsService } from 'src/projects/service/projects.service';
+import { ProjectDto } from 'src/projects/dto/project.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(UserEntity)
-        private usersRepository: Repository<UserEntity>
+        private usersRepository: Repository<UserEntity>,
+        @Inject(forwardRef(() => ProjectsService))
+        private projectsService: ProjectsService
     ) {}
 
     async create(user: CreateUserDto) : Promise<UserDto> {
@@ -124,5 +125,36 @@ export class UsersService {
                             .where('acceptedIn.id = :projectId', {projectId});
 
         return paginate(queryBuilder, options);
+    }
+
+    async enrollUserInProject(userId: number, projectId: number): Promise<UserResponseDto> {
+        const project = await this.projectsService.findOne(projectId);
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['appliedTo']
+        });
+        user.appliedTo.push(project);
+        return await this.usersRepository.save(user);
+    }
+
+    async unenrollUserFromProject(userId: number, projectId: number): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['appliedTo', 'acceptedIn']
+        })
+        user.appliedTo = user.appliedTo.filter((project: ProjectDto) => project.id !== projectId);
+        user.acceptedIn = user.acceptedIn.filter((project: ProjectDto) => project.id !== projectId);
+        return await this.usersRepository.save(user);
+    }
+
+    async acceptUserInProject(userId: number, projectId: number): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['appliedTo', 'acceptedIn']
+        });
+        const project = await this.projectsService.findOne(projectId);
+        user.appliedTo = user.appliedTo.filter((project: ProjectDto) => project.id !== projectId);
+        user.acceptedIn.push(project);
+        return await this.usersRepository.save(user);
     }
 }

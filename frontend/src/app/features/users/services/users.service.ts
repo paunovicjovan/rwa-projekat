@@ -61,4 +61,16 @@ export class UsersService {
     )
     return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/accepted-in/${projectId}`, {params: httpParams});
   }
+
+  applyForProject(projectId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/enroll-user-in-project/${projectId}`, {});
+  }
+
+  unenrollUserFromProject(projectId: number, userId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/unenroll-user/${projectId}/${userId}`, {});
+  }
+
+  acceptUserInProject(projectId: number, userId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/accept-user-in-project/${projectId}/${userId}`, {});
+  }
 }

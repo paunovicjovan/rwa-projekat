@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UsersService } from "../services/users.service";
 import * as usersActions from '../state/users.actions'
-import { catchError, exhaustMap, map, of, switchMap, tap } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
@@ -173,6 +173,67 @@ export const loadAcceptedUsersForProject$ = createEffect(
                     }),
                     catchError(() => {
                         return of(usersActions.loadAcceptedUsersForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const applyForProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(usersActions.applyForProject),
+            exhaustMap(({ projectId }) =>
+                usersService.applyForProject(projectId).pipe(
+                    map(() => {
+                        snackBarService.openSnackBar('Uspešno ste se prijavili za projekat. Autor projekta će videti vaš zahtev i prihvatiti ga ili odbaciti.')
+                        return usersActions.applyForProjectSuccess()
+                    }),
+                    catchError(() => {
+                        return of(usersActions.applyForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const unenrollUserFromProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.unenrollUserFromProject),
+            concatMap(({ projectId, userId }) =>
+                usersService.unenrollUserFromProject(projectId, userId).pipe(
+                    map((user: User) => {
+                        return usersActions.unenrollUserFromProjectSuccess({user})
+                    }),
+                    catchError(() => {
+                        return of(usersActions.unenrollUserFromProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const acceptUserInProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.acceptUserInProject),
+            concatMap(({ projectId, userId }) =>
+                usersService.acceptUserInProject(projectId, userId).pipe(
+                    map((user: User) => {
+                        return usersActions.acceptUserInProjectSuccess({user})
+                    }),
+                    catchError(() => {
+                        return of(usersActions.acceptUserInProjectFailure())
                     }
                     )
                 )

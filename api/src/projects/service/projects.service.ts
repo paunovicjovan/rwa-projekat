@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,6 +18,7 @@ export class ProjectsService {
 
   constructor(@InjectRepository(ProjectEntity)
               private projectsRepository: Repository<ProjectEntity>,
+              @Inject(forwardRef(() => UsersService))
               private usersService: UsersService) {}
 
   async create(imageName: string | undefined, createProjectDto: CreateProjectDto, userId: number): Promise<ProjectDto> {
@@ -144,23 +145,4 @@ export class ProjectsService {
     })
   }
 
-  async enrollUserInProject(userId: number, projectId: number): Promise<ProjectResponseDto> {
-    const user = await this.usersService.findOneById(userId);
-    const project = await this.projectsRepository.findOne({
-      where: {id: projectId},
-      relations: ['appliedBy']
-    });
-    project.appliedBy.push(user);
-    return await this.projectsRepository.save(project);
-  }
-
-  async unenrollUserFromProject(userId: number, projectId: number): Promise<ProjectResponseDto> {
-    const user = await this.usersService.findOneById(userId);
-    const project = await this.projectsRepository.findOne({
-      where: {id: projectId},
-      relations: ['appliedBy']
-    });
-    project.appliedBy = project.appliedBy.filter((user: UserDto) => user.id !== userId);
-    return await this.projectsRepository.save(project);
-  }
 }

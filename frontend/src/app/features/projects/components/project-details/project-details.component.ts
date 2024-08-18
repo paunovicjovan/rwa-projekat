@@ -13,6 +13,7 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import * as tagsActions from '../../../tags/state/tags.actions';
 import { ProjectStatus } from '../../enums/project-status.enum';
+import * as usersActions from '../../../users/state/users.actions';
 
 @Component({
   selector: 'app-project-details',
@@ -114,11 +115,11 @@ export class ProjectDetailsComponent {
   }
 
   applyForProject(projectId: number) {
-    this.store.dispatch(projectsActions.applyForProject({projectId}));
+    this.store.dispatch(usersActions.applyForProject({projectId}));
   }
 
   unenrollFromProject(projectId: number, userId: number) {
-    this.store.dispatch(projectsActions.unenrollUserFromProject({projectId, userId}));
+    this.store.dispatch(usersActions.unenrollUserFromProject({projectId, userId}));
   }
 
 }

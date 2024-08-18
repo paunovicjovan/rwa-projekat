@@ -13,10 +13,10 @@
             </div>
             <div class="col-md-2 d-flex justify-content-end justify-content-md-center">
                 <button  class="btn btn-sm bg-green text-beige" *ngIf="selectedParticipantsView === 'applied'">
-                    <mat-icon fontIcon="check"></mat-icon>
+                    <mat-icon fontIcon="check" (click)="acceptUserInProject(user.id)"></mat-icon>
                 </button>
                 <button class="btn btn-sm bg-red text-beige ms-2" >
-                    <mat-icon fontIcon="remove"></mat-icon>
+                    <mat-icon fontIcon="remove" (click)="unenrollUserFromProject(user.id)"></mat-icon>
                 </button>
             </div>
         </div>

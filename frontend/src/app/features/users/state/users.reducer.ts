@@ -170,4 +170,26 @@ export const usersReducer = createReducer(
             isLoading: false
         }
     }),
+    on(usersActions.unenrollUserFromProjectSuccess, (state, action)=>{
+        return usersAdapter.removeOne(action.user.id, {
+            ...state,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems - 1,
+                itemCount: state.paginationMetadata.itemCount - 1,
+                itemsPerPage: state.paginationMetadata.itemsPerPage - 1
+            }
+        });
+    }),
+    on(usersActions.acceptUserInProjectSuccess, (state, action)=>{
+        return usersAdapter.removeOne(action.user.id, {
+            ...state,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems - 1,
+                itemCount: state.paginationMetadata.itemCount - 1,
+                itemsPerPage: state.paginationMetadata.itemsPerPage - 1
+            }
+        });
+    }),
 )

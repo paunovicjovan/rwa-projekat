@@ -96,17 +96,4 @@ export class ProjectsController {
   ) {
     return this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
   }
-
-  @UseGuards(JwtAuthGuard)
-  @Post(':projectId/enroll-user')
-  enrollUserInProject(@Param('projectId') projectId: number, @Request() req): Promise<ProjectResponseDto> {
-    const userId = req.user.id;
-    return this.projectsService.enrollUserInProject(+userId, +projectId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post(':projectId/unenroll-user/:userId')
-  unenrollUserFromProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<ProjectResponseDto> {
-    return this.projectsService.unenrollUserFromProject(+userId, +projectId);
-  }
 }

@@ -113,4 +113,23 @@ export class UsersController {
         limit = Math.min(limit, 100);
         return this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('enroll-user-in-project/:projectId')
+    enrollUserInProject(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
+      const userId = req.user.id;
+      return this.usersService.enrollUserInProject(+userId, +projectId);
+    }
+  
+    @UseGuards(JwtAuthGuard)
+    @Post('unenroll-user/:projectId/:userId')
+    unenrollUserFromProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+      return this.usersService.unenrollUserFromProject(+userId, +projectId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('accept-user-in-project/:projectId/:userId')
+    acceptUserInProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+      return this.usersService.acceptUserInProject(+userId, +projectId);
+    }
 }
