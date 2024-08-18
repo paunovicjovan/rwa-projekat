@@ -69,8 +69,8 @@
                     </ng-container>
 
                     <ng-template #notOwnProject>
-                        <button class="btn bg-purple text-beige me-2">Prijavi se</button>
-                        <button class="btn bg-red text-beige">Odjavi se</button>
+                        <button class="btn bg-purple text-beige me-2" (click)="applyForProject(dataFromStore.chosenProject.id)">Prijavi se</button>
+                        <button class="btn bg-red text-beige" (click)="unenrollFromProject(dataFromStore.chosenProject.id, dataFromStore.loggedInUser.id)">Odjavi se</button>
                     </ng-template>
                     
                 </div>

@@ -11,6 +11,7 @@ import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import { ProjectStatus } from '../enums/project-status.enum';
 import * as fs from 'fs';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -141,5 +142,25 @@ export class ProjectsService {
       relations: ['createdBy'],
       order: { updatedAt: 'DESC' }
     })
+  }
+
+  async enrollUserInProject(userId: number, projectId: number): Promise<ProjectResponseDto> {
+    const user = await this.usersService.findOneById(userId);
+    const project = await this.projectsRepository.findOne({
+      where: {id: projectId},
+      relations: ['appliedBy']
+    });
+    project.appliedBy.push(user);
+    return await this.projectsRepository.save(project);
+  }
+
+  async unenrollUserFromProject(userId: number, projectId: number): Promise<ProjectResponseDto> {
+    const user = await this.usersService.findOneById(userId);
+    const project = await this.projectsRepository.findOne({
+      where: {id: projectId},
+      relations: ['appliedBy']
+    });
+    project.appliedBy = project.appliedBy.filter((user: UserDto) => user.id !== userId);
+    return await this.projectsRepository.save(project);
   }
 }

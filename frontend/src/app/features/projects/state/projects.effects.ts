@@ -10,6 +10,7 @@ import { MatDialog } from "@angular/material/dialog"
 import { UpdateProjectComponent } from "../components/update-project/update-project.component"
 import { noOperation } from "../../../shared/state/shared.actions"
 import { UpdateProjectDto } from "../models/update-project-dto.interface"
+import { SnackbarService } from "../../../core/services/snackbar/snackbar.service"
 
 
 export const createProject$ = createEffect(
@@ -242,13 +243,54 @@ export const changeProjectImage$ = createEffect(
     (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
         return action$.pipe(
             ofType(projectsActions.changeProjectImage),
-            concatMap(({ projectId, image }) =>
+            exhaustMap(({ projectId, image }) =>
                 projectsService.changeProjectImage(projectId, image).pipe(
                     map((project: Project) => {
                         return projectsActions.changeProjectImageSuccess({ project })
                     }),
                     catchError(() => {
                         return of(projectsActions.changeProjectImageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const applyForProject$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService), snackBarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(projectsActions.applyForProject),
+            exhaustMap(({ projectId }) =>
+                projectsService.applyForProject(projectId).pipe(
+                    map(() => {
+                        snackBarService.openSnackBar('Uspešno ste se prijavili za projekat. Autor projekta će videti vaš zahtev i prihvatiti ga ili odbaciti.')
+                        return projectsActions.applyForProjectSuccess()
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.applyForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const unenrollUserFromProject$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.unenrollUserFromProject),
+            concatMap(({ projectId, userId }) =>
+                projectsService.unenrollUserFromProject(projectId, userId).pipe(
+                    map(() => {
+                        return projectsActions.unenrollUserFromProjectSuccess()
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.unenrollUserFromProjectFailure())
                     }
                     )
                 )

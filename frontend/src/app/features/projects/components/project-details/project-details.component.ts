@@ -113,4 +113,12 @@ export class ProjectDetailsComponent {
     this.store.dispatch(projectsActions.openProjectDialog({dialogData}))
   }
 
+  applyForProject(projectId: number) {
+    this.store.dispatch(projectsActions.applyForProject({projectId}));
+  }
+
+  unenrollFromProject(projectId: number, userId: number) {
+    this.store.dispatch(projectsActions.unenrollUserFromProject({projectId, userId}));
+  }
+
 }

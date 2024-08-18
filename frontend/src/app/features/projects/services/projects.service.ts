@@ -90,4 +90,12 @@ export class ProjectsService {
     formData.append('file', image);
     return this.http.post<Project>(`${environment.apiUrl}/projects/upload-project-image/${projectId}`, formData)
   }
+
+  applyForProject(projectId: number): Observable<Project> {
+    return this.http.post<Project>(`${environment.apiUrl}/projects/${projectId}/enroll-user`, {});
+  }
+
+  unenrollUserFromProject(projectId: number, userId: number): Observable<Project> {
+    return this.http.post<Project>(`${environment.apiUrl}/projects/${projectId}/unenroll-user/${userId}`, {});
+  }
 }

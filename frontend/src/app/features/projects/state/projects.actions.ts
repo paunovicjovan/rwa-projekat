@@ -142,13 +142,39 @@ export const deleteProjectFailure = createAction(
 export const changeProjectImage = createAction(
     '[Users] Change Project Image',
     props<{ projectId: number, image: File }>()
-  )
-  
-  export const changeProjectImageSuccess = createAction(
-    '[Users] Change Project Image Success',
-    props<{ project: Project }>()
-  )
-  
-  export const changeProjectImageFailure = createAction(
-    '[Users] Change Project Image Failure',
-  )
+)
+
+export const changeProjectImageSuccess = createAction(
+'[Users] Change Project Image Success',
+props<{ project: Project }>()
+)
+
+export const changeProjectImageFailure = createAction(
+'[Users] Change Project Image Failure',
+)
+
+export const applyForProject = createAction(
+    '[Users] Apply For Project',
+    props<{ projectId: number }>()
+)
+
+export const applyForProjectSuccess = createAction(
+'[Users] Apply For Project Success',
+)
+
+export const applyForProjectFailure = createAction(
+'[Users] Apply For Project Failure',
+)
+
+export const unenrollUserFromProject = createAction(
+    '[Users] Unenroll User From Project',
+    props<{ projectId: number, userId: number }>()
+)
+
+export const unenrollUserFromProjectSuccess = createAction(
+'[Users] Unenroll User From Project Success',
+)
+
+export const unenrollUserFromProjectFailure = createAction(
+'[Users] Unenroll User From Project Failure',
+)
