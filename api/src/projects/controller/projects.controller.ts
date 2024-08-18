@@ -53,8 +53,15 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  delete(@Param('id') id: number) {
     return this.projectsService.deleteOne(+id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
+  @Post('upload-project-image/:id')
+  uploadProfileImage(@UploadedFile() file, @Param('id') id: number) : Promise<ProjectResponseDto> {
+      return this.projectsService.updateProjectImage(id, file.filename);
   }
 
   @Get('project-image/:imageName')

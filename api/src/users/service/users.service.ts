@@ -60,9 +60,9 @@ export class UsersService {
         return this.usersRepository.findOne({where:{username}, relations: ['tags']});
     }
 
-    async updateProfileImage(userId: number, imageName: string | null) : Promise<UserResponseDto> {
+    async updateProfileImage(userId: number, newImageName: string | null) : Promise<UserResponseDto> {
         await this.deleteProfileImageFromFileSystem(userId);
-        return await this.updateOne(userId, {profileImage: imageName});
+        return await this.updateOne(userId, {profileImage: newImageName});
     }
 
     async updateOne(id: number, userData: UpdateUserDto) : Promise<UserResponseDto> {

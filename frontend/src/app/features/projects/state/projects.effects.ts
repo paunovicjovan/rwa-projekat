@@ -237,3 +237,23 @@ export const redirectAfterDeleteSuccess$ = createEffect((actions$ = inject(Actio
     functional:true,
     dispatch: false
 })
+
+export const changeProjectImage$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.changeProjectImage),
+            concatMap(({ projectId, image }) =>
+                projectsService.changeProjectImage(projectId, image).pipe(
+                    map((project: Project) => {
+                        return projectsActions.changeProjectImageSuccess({ project })
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.changeProjectImageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)

@@ -84,4 +84,10 @@ export class ProjectsService {
   delete(projectId: number): Observable<any> {
     return this.http.delete<any>(`${environment.apiUrl}/projects/${projectId}`);
   }
+
+  changeProjectImage(projectId: number, image: File): Observable<Project> {
+    const formData = new FormData();
+    formData.append('file', image);
+    return this.http.post<Project>(`${environment.apiUrl}/projects/upload-project-image/${projectId}`, formData)
+  }
 }

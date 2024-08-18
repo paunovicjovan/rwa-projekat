@@ -10,6 +10,7 @@ import { ProjectResponseDto } from '../dto/project-response.dto';
 import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import { ProjectStatus } from '../enums/project-status.enum';
+import * as fs from 'fs';
 
 @Injectable()
 export class ProjectsService {
@@ -80,6 +81,11 @@ export class ProjectsService {
     })
   }
 
+  async updateProjectImage(projectId: number, newImageName: string | null) : Promise<ProjectResponseDto> {
+    await this.deleteProjectImageFromFileSystem(projectId);
+    return await this.update(projectId, {image: newImageName});
+}
+
   async update(id: number, updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
     await this.projectsRepository.update(id, updateProjectDto);
     return await this.findOne(id);
@@ -91,8 +97,18 @@ export class ProjectsService {
     project.appliedBy = [];
     project.acceptedUsers = [];
     await this.projectsRepository.save(project);
+    await this.deleteProjectImageFromFileSystem(id);
     return await this.projectsRepository.delete(id);
   }
+
+  private async deleteProjectImageFromFileSystem(projectId: number): Promise<ProjectResponseDto> {
+    const project = await this.findOne(projectId);
+    if(project.image !== null) {
+      const projectImagePath = `./uploads/project-images/${project.image}`;
+      fs.unlinkSync(projectImagePath);
+    }
+    return project;
+}
 
   async findAppliedProjectsForUser(username: string, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {
     return await paginate(this.projectsRepository, options, {

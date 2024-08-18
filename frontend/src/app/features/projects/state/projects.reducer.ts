@@ -180,4 +180,23 @@ export const projectsReducer = createReducer(
             isLoading: false
         }
     }),
+    on(projectsActions.changeProjectImage, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.changeProjectImageSuccess, (state, action)=>{
+        return projectsAdapter.updateOne({id: action.project.id, changes: action.project } , {
+            ...state,
+            chosenProject: action.project,
+            isLoading: false
+        });
+    }),
+    on(projectsActions.changeProjectImageFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { AppState } from '../../../../state/app-state.interface';
 import { Store } from '@ngrx/store';
 import * as projectsActions from '../../state/projects.actions';
@@ -10,6 +10,7 @@ import { Tag } from '../../../tags/models/tag.interface';
 import { UpdateProjectDto } from '../../models/update-project-dto.interface';
 import { Project } from '../../models/project.interface';
 import * as sharedActions from '../../../../shared/state/shared.actions';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Component({
   selector: 'app-project-details',
@@ -19,7 +20,10 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
 export class ProjectDetailsComponent {
 
   @Input({required: true}) projectId!: number;
+  @ViewChild("imageUploadControl", {static:false}) imageUploadControl!:ElementRef;
   dataFromStore$!: Observable<any>;
+  imageChangedEvent: Event | null = null;
+  croppedImage: Blob | null | undefined = null;
 
   constructor(private store: Store<AppState>) {}
 
@@ -62,4 +66,26 @@ export class ProjectDetailsComponent {
       actionToDispatch: projectsActions.deleteProject({ projectId })
     }));
   }
+
+  selectedImageChanged(event: Event) {
+    this.imageChangedEvent = event;
+  }
+
+  onImageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.blob;
+  }
+
+  cancelImageChange() {
+    this.imageChangedEvent = null;
+    this.imageUploadControl.nativeElement.value = null;
+  }
+
+  submitImageChange(projectId: number) {
+    if(!this.croppedImage) 
+      return;
+
+    const croppedImageFile = new File([this.croppedImage], 'profile-image.png', { type: 'image/png' });
+    this.store.dispatch(projectsActions.changeProjectImage({ projectId, image: croppedImageFile }))
+  }
+
 }

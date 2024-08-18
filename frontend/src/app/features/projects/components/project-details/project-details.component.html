@@ -6,10 +6,27 @@
                 <div class="col-md-4">
                     <mat-card appearance="outlined" class="project-image mb-3 position-relative">
                         <app-avatar-image defaultImageUrl="assets/default-project-image.jpg" [imageUrl]="dataFromStore.chosenProject.image" route="projects/project-image"></app-avatar-image>
-                        <button class="btn rounded-circle bg-green text-beige btn-edit-image" type="button" *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
+                        <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
+                        (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
+                        <button class="btn rounded-circle bg-green text-beige btn-edit-image" (click)="imageUploadControl.click()" type="button" *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
                             <mat-icon fontIcon="edit"></mat-icon>
                         </button>
                     </mat-card>
+
+                    <ng-container *ngIf="imageUploadControl.value">
+                        <image-cropper [imageChangedEvent]="imageChangedEvent" format="png"
+                            (imageCropped)="onImageCropped($event)" [aspectRatio]="3/2">
+                        </image-cropper>
+                        <div class="d-flex justify-content-center">
+                            <button class="m-2 btn bg-red text-beige" (click)="cancelImageChange()">
+                                <mat-icon fontIcon="cancel"></mat-icon>
+                            </button>
+                            <button class="m-2 btn bg-green text-beige" (click)="submitImageChange(dataFromStore.chosenProject.id)">
+                                <mat-icon fontIcon="check"></mat-icon>
+                            </button>
+                        </div>
+                    </ng-container>
+
                     <p>Autor: 
                         <a class="text-purple text-decoration-none text-bold cursor-pointer" 
                         [routerLink]="'../../users/' + dataFromStore.chosenProject.createdBy.username">

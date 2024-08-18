@@ -138,3 +138,17 @@ export const deleteProjectSuccess = createAction(
 export const deleteProjectFailure = createAction(
     '[Projects] Delete Project Failure'
 );
+
+export const changeProjectImage = createAction(
+    '[Users] Change Project Image',
+    props<{ projectId: number, image: File }>()
+  )
+  
+  export const changeProjectImageSuccess = createAction(
+    '[Users] Change Project Image Success',
+    props<{ project: Project }>()
+  )
+  
+  export const changeProjectImageFailure = createAction(
+    '[Users] Change Project Image Failure',
+  )
