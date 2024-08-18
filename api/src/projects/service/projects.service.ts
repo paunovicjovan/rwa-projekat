@@ -86,7 +86,12 @@ export class ProjectsService {
   }
 
   async deleteOne(id: number): Promise<any> {
-    return this.projectsRepository.delete({id});
+    const project = await this.projectsRepository.findOne({where: {id}});
+    project.tags = [];
+    project.appliedBy = [];
+    project.acceptedUsers = [];
+    await this.projectsRepository.save(project);
+    return await this.projectsRepository.delete(id);
   }
 
   async findAppliedProjectsForUser(username: string, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {

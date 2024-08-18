@@ -80,4 +80,8 @@ export class ProjectsService {
     });
     return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/created-by/${username}/${status}`, {params: httpParams})
   }
+
+  delete(projectId: number): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}/projects/${projectId}`);
+  }
 }

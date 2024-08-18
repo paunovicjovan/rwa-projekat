@@ -124,3 +124,17 @@ export const findAcceptedProjectsForUserSuccess = createAction(
 export const findAcceptedProjectsForUserFailure = createAction(
     '[Projects] Find Accepted Projects For User Failure'
 );
+
+export const deleteProject = createAction(
+    '[Projects] Delete Project',
+    props<{ projectId: number }>()
+);
+
+export const deleteProjectSuccess = createAction(
+    '[Projects] Delete Project Success',
+    props<{ projectId: number }>()
+);
+
+export const deleteProjectFailure = createAction(
+    '[Projects] Delete Project Failure'
+);

@@ -161,4 +161,23 @@ export const projectsReducer = createReducer(
             paginationMetadata: initialPaginationMetadataState
         })
     }),
+    on(projectsActions.deleteProject, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.deleteProjectSuccess, (state, action)=>{
+        return projectsAdapter.removeOne(action.projectId, {
+            ...state,
+            chosenProject: null,
+            isLoading: false
+        });
+    }),
+    on(projectsActions.deleteProjectFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

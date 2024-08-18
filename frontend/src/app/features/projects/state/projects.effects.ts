@@ -205,3 +205,35 @@ export const findAcceptedProjectsForUser$ = createEffect(
     },
     {functional: true}
 );
+
+export const deleteProject$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.deleteProject),
+            concatMap(({ projectId }) =>
+                projectsService.delete(projectId).pipe(
+                    map(() => {
+                        return projectsActions.deleteProjectSuccess({ projectId })
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.deleteProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const redirectAfterDeleteSuccess$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(projectsActions.deleteProjectSuccess),
+        tap(() => {
+            router.navigateByUrl('/projects')
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
+})

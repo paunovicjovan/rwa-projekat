@@ -9,6 +9,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { Tag } from '../../../tags/models/tag.interface';
 import { UpdateProjectDto } from '../../models/update-project-dto.interface';
 import { Project } from '../../models/project.interface';
+import * as sharedActions from '../../../../shared/state/shared.actions';
 
 @Component({
   selector: 'app-project-details',
@@ -53,5 +54,12 @@ export class ProjectDetailsComponent {
       ...project
     }
     this.store.dispatch(projectsActions.openProjectDialog({dialogData}))
+  }
+
+  deleteProject(projectId: number) {
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: "Da li sigurno želite da obrišete ovaj projekat?",
+      actionToDispatch: projectsActions.deleteProject({ projectId })
+    }));
   }
 }
