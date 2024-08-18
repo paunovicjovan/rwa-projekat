@@ -12,6 +12,7 @@ import { Project } from '../../models/project.interface';
 import * as sharedActions from '../../../../shared/state/shared.actions';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import * as tagsActions from '../../../tags/state/tags.actions';
+import { ProjectStatus } from '../../enums/project-status.enum';
 
 @Component({
   selector: 'app-project-details',
@@ -54,13 +55,6 @@ export class ProjectDetailsComponent {
     this.store.dispatch(tagsActions.removeTagFromProject({ tagId, projectId }));
   }
 
-  openProjectUpdateDialog(project: Project) {
-    const dialogData: UpdateProjectDto = {
-      ...project
-    }
-    this.store.dispatch(projectsActions.openProjectDialog({dialogData}))
-  }
-
   deleteProject(projectId: number) {
     this.store.dispatch(sharedActions.openConfirmationDialog({
       message: "Da li sigurno želite da obrišete ovaj projekat?",
@@ -87,6 +81,36 @@ export class ProjectDetailsComponent {
 
     const croppedImageFile = new File([this.croppedImage], 'profile-image.png', { type: 'image/png' });
     this.store.dispatch(projectsActions.changeProjectImage({ projectId, image: croppedImageFile }))
+  }
+
+  disableApplications(projectId: number) {
+    const updateProjectDto: UpdateProjectDto = {
+      id: projectId,
+      status: ProjectStatus.CLOSED
+    }
+    this.store.dispatch(projectsActions.updateProject({updateProjectDto}));
+  }
+
+  enableApplications(projectId: number) {
+    const updateProjectDto: UpdateProjectDto = {
+      id: projectId,
+      status: ProjectStatus.OPENED
+    }
+    this.store.dispatch(projectsActions.updateProject({updateProjectDto}));
+  }
+
+  finishProject(project:Project) {
+    this.openProjectUpdateDialog({
+      ...project,
+      status: ProjectStatus.COMPLETED
+    });
+  }
+
+  openProjectUpdateDialog(project: Project) {
+    const dialogData: UpdateProjectDto = {
+      ...project
+    }
+    this.store.dispatch(projectsActions.openProjectDialog({dialogData}))
   }
 
 }

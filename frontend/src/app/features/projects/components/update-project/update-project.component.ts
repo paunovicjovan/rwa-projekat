@@ -13,7 +13,7 @@ export class UpdateProjectComponent {
 
   constructor(private formBuilder: FormBuilder,
               private dialogRef: MatDialogRef<UpdateProjectComponent>,
-              @Inject(MAT_DIALOG_DATA) private dialogData: UpdateProjectDto
+              @Inject(MAT_DIALOG_DATA) public dialogData: UpdateProjectDto
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +34,9 @@ export class UpdateProjectComponent {
       ]],
       requirements: [this.dialogData.requirements, [
         Validators.maxLength(500)
-      ]]
+      ]],
+      applicationLink: [this.dialogData.applicationLink],
+      repositoryLink: [this.dialogData.repositoryLink]
     });
   }
 
@@ -45,6 +47,7 @@ export class UpdateProjectComponent {
   handleSubmitForm() {
     const dialogResult: UpdateProjectDto = {
       id: this.dialogData.id,
+      status: this.dialogData.status,
       ...this.projectForm.getRawValue()
     }
     this.dialogRef.close(dialogResult);

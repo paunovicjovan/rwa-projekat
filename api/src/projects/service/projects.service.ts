@@ -62,6 +62,7 @@ export class ProjectsService {
                         .createQueryBuilder('project')
                         .innerJoinAndSelect('project.createdBy', 'createdBy')
                         .where('LOWER(project.title) LIKE :title', { title: `%${filters.title.toLowerCase()}%` })
+                        .andWhere("project.status = 'opened'")
                         .andWhere('(project.createdAt >= :minDate OR project.updatedAt >= :minDate)', { minDate: filters.minDate })
 
     if(filters.tagsIds.length > 0) {

@@ -1,6 +1,8 @@
 <mat-dialog-content>
     <mat-card appearance="outlined" class="p-3">
         <form [formGroup]="projectForm">
+            <p *ngIf="dialogData.status === 'completed'" class="text-bold">Možete još jednom da izmenite podatke projekta pre nego što bude sačuvan kao završen.</p>
+
             <mat-form-field appearance="fill" class="w-100 mt-3">
                 <mat-label>Naziv</mat-label>
                 <input matInput placeholder="Naziv" formControlName="title" />
@@ -24,11 +26,27 @@
                     Unesite zahteve projekta (do 500 karaktera)
                 </mat-hint>
             </mat-form-field>
+
+            <ng-container *ngIf="dialogData.status === 'completed'">
+                <hr>
+                <p class="text-bold">Opciono dodajte link aplikacije i/ili repozitorijuma</p>
+                <mat-form-field appearance="fill" class="w-100 mt-3">
+                    <mat-label>Link aplikacije</mat-label>
+                    <input matInput placeholder="Link aplikacije" formControlName="applicationLink" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="w-100 mt-3">
+                    <mat-label>Link repozitorijuma</mat-label>
+                    <input matInput placeholder="Link repozitorijuma" formControlName="repositoryLink" />
+                </mat-form-field>
+            </ng-container>
+            
         </form>
     </mat-card>
 </mat-dialog-content>
 
 <mat-dialog-actions>
+    <p class="text-bold text-red" *ngIf="dialogData.status === 'completed'">Nakon potvrde akcije više nećete moći da menjate podatke o projektu.</p>
     <div class="d-flex justify-content-end mt-3">
         <button class="btn bg-brown text-beige me-3" (click)="handleCancelForm()" cdkFocusInitial>Otkaži</button>
         <button class="btn bg-green text-beige" (click)="handleSubmitForm()" [disabled]="projectForm.invalid">Sačuvaj</button>
