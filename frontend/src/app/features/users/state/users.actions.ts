@@ -34,10 +34,6 @@ export const filterUsersFailure = createAction(
   '[Users] Load Users Failure'
 )
 
-export const clearLoadedUsers = createAction(
-  '[Users] Clear Loaded Users'
-)
-
 export const changeUserRole = createAction(
   '[Users] Change User Role',
   props<{userId: number, newRole: UserRoles }>()

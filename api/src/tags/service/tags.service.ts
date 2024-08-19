@@ -46,6 +46,13 @@ export class TagsService {
   }
 
   async deleteOne(id: number): Promise<any> {
+    const tag = await this.tagsRepository.findOne({
+      where: {id},
+      relations: ['projects', 'users']
+    });
+    tag.projects = [];
+    tag.users = [];
+    await this.tagsRepository.save(tag);
     return await this.tagsRepository.delete(id);
   }
 

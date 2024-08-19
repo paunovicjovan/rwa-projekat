@@ -1,5 +1,5 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
-    <mat-card appearance="outlined" class="p-3">
+    <mat-card appearance="outlined" class="p-3 w-100 h-100">
         <div class="d-flex justify-content-between flex-column flex-sm-row">
             <h5 class="mb-3">Ocene korisnika</h5>
             <button *ngIf="dataFromStore.loggedInUser.username !== revieweeUsername"

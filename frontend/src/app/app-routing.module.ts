@@ -5,12 +5,13 @@ import { RegisterComponent } from './features/auth/components/register/register.
 import { HomeComponent } from './core/components/home/home.component';
 import { UserProfilePageComponent } from './features/users/components/user-profile-page/user-profile-page.component';
 import { UsersPageComponent } from './features/users/components/users-page/users-page.component';
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard } from './core/guards/auth-guard/auth.guard';
 import { ProjectsPageComponent } from './features/projects/components/projects-page/projects-page.component';
 import { NewProjectComponent } from './features/projects/components/new-project/new-project.component';
 import { ProjectOverviewPageComponent } from './features/projects/components/project-overview-page/project-overview-page.component';
 import { UserProjectsPageComponent } from './features/projects/components/user-projects-page/user-projects-page.component';
 import { ManageTagsPageComponent } from './features/tags/components/manage-tags-page/manage-tags-page.component';
+import { adminOrModeratorGuard } from './core/guards/admin-or-moderator-guard/admin-or-moderator.guard';
 
 const routes: Routes = [
   {
@@ -64,7 +65,7 @@ const routes: Routes = [
   {
     path: 'manage-tags',
     component: ManageTagsPageComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard, adminOrModeratorGuard]
   }
 ];
 

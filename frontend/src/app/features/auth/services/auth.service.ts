@@ -9,6 +9,7 @@ import { LocalStorageService } from '../../../core/services/local-storage/local-
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { AuthState } from '../models/auth-state.interface';
 import { Features } from '../../features.enum';
+import { UserRoles } from '../../users/models/user-roles.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,10 @@ export class AuthService {
   hasValidJwt(): boolean {
     const authState: AuthState = this.localStorageService.get(Features.Auth) as AuthState;
     return !this.jwtService.isTokenExpired(authState.token);
+  }
+
+  getUserRole(): UserRoles | undefined {
+    const authState: AuthState = this.localStorageService.get(Features.Auth) as AuthState;
+    return authState.currentLoggedInUser?.role;
   }
 }

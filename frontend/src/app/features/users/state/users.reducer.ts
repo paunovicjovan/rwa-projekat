@@ -66,9 +66,6 @@ export const usersReducer = createReducer(
             isLoading: false
         }
     }),
-    on(usersActions.clearLoadedUsers, (state)=>{
-        return usersAdapter.removeAll(state);
-    }),
     on(usersActions.changeUserRoleSuccess, (state, action) => {
         return usersAdapter.updateOne({id: action.user.id, changes: action.user } , {
             ...state,

@@ -13,7 +13,7 @@ import { combineLatest, Observable } from 'rxjs';
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss'
 })
-export class UsersPageComponent implements OnInit, OnDestroy {
+export class UsersPageComponent implements OnInit {
 
   pageEvent!: PageEvent;
   filtersState!: UsersFilters;
@@ -56,9 +56,5 @@ export class UsersPageComponent implements OnInit, OnDestroy {
       limit: 10
     }
     this.store.dispatch(usersActions.filterUsers({ filterData }));
-  }
-
-  ngOnDestroy(): void {
-    // this.store.dispatch(usersActions.clearLoadedUsers());
   }
 }
