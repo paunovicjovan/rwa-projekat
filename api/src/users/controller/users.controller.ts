@@ -13,6 +13,7 @@ import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
+import { UserIsOwnerGuard } from '../guards/user-is-owner/user-is-owner.guard';
 
 @Controller('users')
 export class UsersController {
@@ -49,6 +50,7 @@ export class UsersController {
         return this.usersService.findOneByUsername(username);
     }
 
+    @UseGuards(JwtAuthGuard, UserIsOwnerGuard)
     @Put(':id')
     async updateOne(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
         try {

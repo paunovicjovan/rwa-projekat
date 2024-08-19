@@ -60,7 +60,8 @@ const routes: Routes = [
   },
   {
     path: 'user-projects/:username',
-    component: UserProjectsPageComponent
+    component: UserProjectsPageComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'manage-tags',
