@@ -10,6 +10,7 @@ import { ProjectsPageComponent } from './features/projects/components/projects-p
 import { NewProjectComponent } from './features/projects/components/new-project/new-project.component';
 import { ProjectOverviewPageComponent } from './features/projects/components/project-overview-page/project-overview-page.component';
 import { UserProjectsPageComponent } from './features/projects/components/user-projects-page/user-projects-page.component';
+import { ManageTagsPageComponent } from './features/tags/components/manage-tags-page/manage-tags-page.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,11 @@ const routes: Routes = [
   {
     path: 'user-projects/:username',
     component: UserProjectsPageComponent
+  },
+  {
+    path: 'manage-tags',
+    component: ManageTagsPageComponent,
+    canActivate: [authGuard]
   }
 ];
 

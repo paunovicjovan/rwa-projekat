@@ -1,0 +1,46 @@
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+
+    <div class="container py-3">
+        <div class="row">
+            <div class="col-md-4">
+                <mat-card appearance="outlined" class="p-3">
+                    <h6 class="text-center">{{isEditingTag ? 'Izmenite tag' : 'Kreirajte novi tag'}}</h6>
+                    <form [formGroup]="tagForm" (ngSubmit)="submitForm()">
+                        <div class="d-flex flex-column">
+                            
+                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                <mat-label>Naziv</mat-label>
+                                <input matInput placeholder="Naziv" formControlName="name">
+                                <mat-error *ngIf="tagForm.controls['name'].touched && tagForm.controls['name'].errors">Naziv
+                                    taga je obavezan (do 30 karaktera)</mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                <mat-label>Opis</mat-label>
+                                <textarea matInput placeholder="Opis" formControlName="description" rows="3"></textarea>
+                                <mat-error
+                                    *ngIf="tagForm.controls['description'].touched && tagForm.controls['description'].errors">
+                                    Opis taga može sadržati do 100 karaktera
+                                </mat-error>
+                            </mat-form-field>
+
+                            <div class="d-flex gap-2 justify-content-stretch">
+                                <button *ngIf="isEditingTag" type="button" class="btn bg-red text-beige w-100" (click)="leaveEditMode()">Otkaži</button>
+                                <button type="submit" class="btn bg-purple text-beige w-100" [disabled]="tagForm.invalid">Sačuvaj</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </mat-card>
+            </div>
+            <div class="col-md-8">
+                <mat-card appearance="outlined" class="p-3">
+                    <h6 class="text-center">Pretražite tagove</h6>
+                    <app-tag-viewer [tags]="dataFromStore.tags" (addTag)="showTag($event)" (removeTag)="deleteTag($event)" (clickTag)="switchToEditMode($event)"></app-tag-viewer>
+                </mat-card>
+            </div>
+        </div>
+
+    </div>
+
+</ng-container>

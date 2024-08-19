@@ -55,4 +55,46 @@ export const tagsReducer = createReducer(
     on(tagsActions.removeTagFromProjectSuccess, (state, action) => {
         return tagsAdapter.removeOne(action.tag.id, state);
     }),
+    on(tagsActions.addTagToState, (state, action) => {
+        return tagsAdapter.addOne(action.tag, state);
+    }),
+    on(tagsActions.createTag, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(tagsActions.createTagSuccess, (state, action) => {
+        return tagsAdapter.addOne(action.tag, {
+            ...state,
+            isLoading: false
+        })
+    }),
+    on(tagsActions.createTagFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(tagsActions.updateTag, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(tagsActions.updateTagSuccess, (state, action) => {
+        return tagsAdapter.updateOne({id: action.tag.id, changes: action.tag}, {
+            ...state,
+            isLoading: false
+        })
+    }),
+    on(tagsActions.updateTagFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(tagsActions.deleteTagSuccess, (state, action) => {
+        return tagsAdapter.removeOne(action.tagId, state);
+    })
 )

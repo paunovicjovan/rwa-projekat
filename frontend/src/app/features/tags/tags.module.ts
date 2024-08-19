@@ -6,11 +6,13 @@ import { Features } from '../features.enum';
 import { tagsReducer } from './state/tags.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import * as tagsEffects from '../tags/state/tags.effects';
+import { ManageTagsPageComponent } from './components/manage-tags-page/manage-tags-page.component';
 
 
 @NgModule({
   declarations: [
-    TagViewerComponent
+    TagViewerComponent,
+    ManageTagsPageComponent
   ],
   imports: [
     SharedModule,

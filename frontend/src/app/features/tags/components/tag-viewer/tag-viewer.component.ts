@@ -18,6 +18,7 @@ export class TagViewerComponent {
   @Input() readonly: boolean = false;
   @Output() addTag: EventEmitter<Tag> = new EventEmitter();
   @Output() removeTag: EventEmitter<number> = new EventEmitter();
+  @Output() clickTag: EventEmitter<Tag> = new EventEmitter();
 
   searchTag = new FormControl();
   selectedTag: Tag | null = null;
@@ -51,6 +52,10 @@ export class TagViewerComponent {
 
   handleRemoveTag(tag: Tag) {
     this.removeTag.emit(tag.id);
+  }
+
+  handleClickTag(tag: Tag) {
+    this.clickTag.emit(tag);
   }
 
   setSelectedTag(tag: Tag) {

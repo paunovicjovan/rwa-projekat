@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex justify-content-end" id="n-bar">
             <ul class="navbar-nav d-flex align-items-lg-center justify-content-end">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-                    <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="users">TAGOVI</a></li>
+                    <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" [routerLink]="'user-projects/'+currentUser.username">MOJI PROJEKTI</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>

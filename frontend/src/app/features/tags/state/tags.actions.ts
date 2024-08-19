@@ -1,5 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { Tag } from "../models/tag.interface";
+import { CreateTagDto } from "../models/create-tag-dto.interface";
+import { UpdateTagDto } from "../models/update-tag-dto.interface";
 
 export const searchTags = createAction(
     '[Tags] Search Tags',
@@ -78,4 +80,51 @@ export const removeTagFromProjectSuccess = createAction(
 
 export const removeTagFromProjectFailure = createAction(
     '[Tags] Remove Tag From Project Failure',
+);
+
+export const createTag = createAction(
+    '[Tags] Create Tag',
+    props<{ tag: CreateTagDto }>()
+);
+
+export const createTagSuccess = createAction(
+    '[Tags] Create Tag Success',
+    props<{ tag: Tag }>()
+);
+
+export const createTagFailure = createAction(
+    '[Tags] Create Tag Failure',
+);
+
+export const addTagToState = createAction(
+    '[Tags] Add Tag To State',
+    props<{ tag: Tag }>()
+);
+
+export const updateTag = createAction(
+    '[Tags] Update Tag',
+    props<{ tag: UpdateTagDto }>()
+);
+
+export const updateTagSuccess = createAction(
+    '[Tags] Update Tag Success',
+    props<{ tag: Tag }>()
+);
+
+export const updateTagFailure = createAction(
+    '[Tags] Update Tag Failure',
+);
+
+export const deleteTag = createAction(
+    '[Tags] Delete Tag',
+    props<{ tagId: number }>()
+);
+
+export const deleteTagSuccess = createAction(
+    '[Tags] Delete Tag Success',
+    props<{ tagId: number }>()
+);
+
+export const deleteTagFailure = createAction(
+    '[Tags] Delete Tag Failure',
 );
