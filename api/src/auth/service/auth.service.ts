@@ -89,4 +89,8 @@ export class AuthService {
         const saltRounds = 10;
         return bcrypt.hash(password, saltRounds);
     }
+
+    async decodeJWT(jwt: string): Promise<any> {
+        return await this.jwtService.verifyAsync(jwt);
+    }
 }
