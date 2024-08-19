@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateProjectDto } from '../models/create-project-dto.interface';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { Project } from '../models/project.interface';
 import { FilterProjectsRequest } from '../models/filter-projects-request.interface';
@@ -46,8 +46,11 @@ export class ProjectsService {
     return this.http.post<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/filter-projects`, requestBody, {params: httpParams})
   }
 
-  loadProject(projectId: number): Observable<Project> {
-    return this.http.get<Project>(`${environment.apiUrl}/projects/${projectId}`);
+  loadProject(projectId: number): Observable<any> {
+    return forkJoin({
+      project: this.http.get<Project>(`${environment.apiUrl}/projects/${projectId}`),
+      canUserApply: this.http.get<boolean>(`${environment.apiUrl}/projects/can-apply/${projectId}`)
+    })
   }
 
   updateProject(updateProjectDto: UpdateProjectDto): Observable<Project> {

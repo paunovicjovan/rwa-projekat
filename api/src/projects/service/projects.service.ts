@@ -145,4 +145,16 @@ export class ProjectsService {
     })
   }
 
+  async canUserApply(userId: number, projectId: number): Promise<boolean> {
+    const project = await this.projectsRepository.findOne({
+      where: {id: projectId},
+      relations: ['createdBy', 'appliedBy', 'acceptedUsers']
+    });
+    const isUserApplied = project.appliedBy.some((user: UserDto) => user.id == userId);
+    const isUserAccepted = project.acceptedUsers.some((user: UserDto) => user.id == userId);
+    const isUserAuthor = project.createdBy.id === userId;
+    const canApply = !isUserApplied && !isUserAccepted && !isUserAuthor;
+    return canApply;
+  }
+
 }

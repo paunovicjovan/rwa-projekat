@@ -57,7 +57,7 @@ export const loadProject = createAction(
 
 export const loadProjectSuccess = createAction(
     '[Projects] Load Project Success',
-    props<{ project: Project }>()
+    props<{ project: Project, canUserApply: boolean }>()
 );
 
 export const loadProjectFailure = createAction(

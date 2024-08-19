@@ -2,6 +2,7 @@ import { createReducer, on } from "@ngrx/store";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
 import { ProjectsState } from "../models/projects-state.interface";
 import * as projectsActions from './projects.actions';
+import * as usersActions from '../../users/state/users.actions';
 import { Project } from "../models/project.interface";
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 
@@ -18,7 +19,8 @@ const initialState: ProjectsState = {
     entities: {},
     isLoading: false,
     paginationMetadata: initialPaginationMetadataState,
-    chosenProject: null
+    chosenProject: null,
+    canUserApplyToProject: false
 }
 
 export const projectsAdapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -73,7 +75,8 @@ export const projectsReducer = createReducer(
         return {
             ...state,
             isLoading: false, 
-            chosenProject: { ...action.project, tags: [] }
+            chosenProject: { ...action.project, tags: [] },
+            canUserApplyToProject: action.canUserApply
         }
     }),
     on(projectsActions.loadProjectFailure, (state) => {
@@ -199,4 +202,16 @@ export const projectsReducer = createReducer(
             isLoading: false
         }
     }),
+    on(usersActions.applyForProjectSuccess, (state) => {
+        return {
+            ...state,
+            canUserApplyToProject: false
+        }
+    }),
+    on(usersActions.unenrollUserFromProjectSuccess, (state) => {
+        return {
+            ...state,
+            canUserApplyToProject: true
+        }
+    })
 )

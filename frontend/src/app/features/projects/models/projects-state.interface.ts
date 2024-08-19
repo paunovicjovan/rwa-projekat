@@ -6,4 +6,5 @@ export interface ProjectsState extends EntityState<Project> {
     isLoading: boolean;
     paginationMetadata: PaginationMetadata;
     chosenProject: Project | null;
+    canUserApplyToProject: boolean;
 }

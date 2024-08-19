@@ -92,8 +92,8 @@ export const loadProject$ = createEffect(
             ofType(projectsActions.loadProject),
             switchMap(({ projectId }) =>
                 projectsService.loadProject(projectId).pipe(
-                    map((project: Project) => {
-                        return projectsActions.loadProjectSuccess({project})
+                    map(({project, canUserApply}) => {
+                        return projectsActions.loadProjectSuccess({project, canUserApply})
                     }),
                     catchError(() => {
                         return of(projectsActions.loadProjectFailure())

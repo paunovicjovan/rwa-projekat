@@ -69,8 +69,16 @@
                     </ng-container>
 
                     <ng-template #notOwnProject>
-                        <button class="btn bg-purple text-beige me-2" (click)="applyForProject(dataFromStore.chosenProject.id)">Prijavi se</button>
-                        <button class="btn bg-red text-beige" (click)="unenrollFromProject(dataFromStore.chosenProject.id, dataFromStore.loggedInUser.id)">Odjavi se</button>
+                        <hr>
+                        <ng-container *ngIf="dataFromStore.canUserApply; else notApplied">
+                            <button class="btn bg-purple text-beige me-2 w-100" (click)="applyForProject(dataFromStore.chosenProject.id)">Prijavi se za projekat</button>
+                        </ng-container>
+                        
+                        <ng-template #notApplied>
+                            <p>Prijavili ste se za ovaj projekat</p>
+                            <button class="btn bg-red text-beige w-100" (click)="unenrollFromProject(dataFromStore.chosenProject.id, dataFromStore.loggedInUser.id)">Odjavi se</button>
+                        </ng-template>
+                        
                     </ng-template>
                     
                 </div>

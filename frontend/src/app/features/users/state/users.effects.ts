@@ -183,13 +183,12 @@ export const loadAcceptedUsersForProject$ = createEffect(
 )
 
 export const applyForProject$ = createEffect(
-    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.applyForProject),
             exhaustMap(({ projectId }) =>
                 usersService.applyForProject(projectId).pipe(
                     map(() => {
-                        snackBarService.openSnackBar('Uspešno ste se prijavili za projekat. Autor projekta će videti vaš zahtev i prihvatiti ga ili odbaciti.')
                         return usersActions.applyForProjectSuccess()
                     }),
                     catchError(() => {
@@ -207,7 +206,7 @@ export const unenrollUserFromProject$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.unenrollUserFromProject),
-            concatMap(({ projectId, userId }) =>
+            exhaustMap(({ projectId, userId }) =>
                 usersService.unenrollUserFromProject(projectId, userId).pipe(
                     map((user: User) => {
                         return usersActions.unenrollUserFromProjectSuccess({user})

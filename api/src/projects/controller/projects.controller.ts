@@ -96,4 +96,11 @@ export class ProjectsController {
   ) {
     return this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('can-apply/:projectId')
+  canUserApply(@Param('projectId') projectId: number, @Request() req): Promise<boolean> {
+    const userId = req.user.id;
+    return this.projectsService.canUserApply(userId, projectId);
+  }
 }

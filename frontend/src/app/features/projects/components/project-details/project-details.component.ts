@@ -44,7 +44,8 @@ export class ProjectDetailsComponent {
       isLoading: this.store.select(projectsSelectors.selectIsLoading),
       chosenProject: this.store.select(projectsSelectors.selectChosenProject),
       tags: this.store.select(tagsSelectors.selectLoadedTags),
-      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser)
+      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
+      canUserApply: this.store.select(projectsSelectors.selectCanUserApply)
     })
   }
 
