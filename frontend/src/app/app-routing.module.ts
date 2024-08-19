@@ -12,6 +12,7 @@ import { ProjectOverviewPageComponent } from './features/projects/components/pro
 import { UserProjectsPageComponent } from './features/projects/components/user-projects-page/user-projects-page.component';
 import { ManageTagsPageComponent } from './features/tags/components/manage-tags-page/manage-tags-page.component';
 import { adminOrModeratorGuard } from './core/guards/admin-or-moderator-guard/admin-or-moderator.guard';
+import { ChatsPageComponent } from './features/chat/components/chats-page/chats-page.component';
 
 const routes: Routes = [
   {
@@ -67,6 +68,11 @@ const routes: Routes = [
     path: 'manage-tags',
     component: ManageTagsPageComponent,
     canActivate: [authGuard, adminOrModeratorGuard]
+  },
+  {
+    path: 'chats',
+    component: ChatsPageComponent,
+    canActivate: [authGuard]
   }
 ];
 

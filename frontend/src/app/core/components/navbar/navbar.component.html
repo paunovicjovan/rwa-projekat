@@ -11,9 +11,11 @@
             <ul class="navbar-nav d-flex align-items-lg-center justify-content-end">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
                     <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
+                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="chats"><mat-icon fontIcon="chats"></mat-icon></a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" [routerLink]="'user-projects/'+currentUser.username">MOJI PROJEKTI</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
                     <li class="nav-item text-end me-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
+
 
                     <li class="nav-item dropdown text-end cursor-pointer">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
