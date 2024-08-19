@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { tap } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 import { CustomSocket } from '../sockets/custom-socket';
 
 @Injectable({
@@ -7,11 +7,10 @@ import { CustomSocket } from '../sockets/custom-socket';
 })
 export class ChatService {
 
+  // constructor(@Inject(CustomSocket) private socket: CustomSocket) { }
   constructor(private socket: CustomSocket) { }
 
-  getMessage() {
-    return this.socket.fromEvent('messageResponse').pipe(
-      tap(message => console.log(message))
-    )
+  getMessage(): Observable<string> {
+    return this.socket.fromEvent('messageResponse')
   }
 }

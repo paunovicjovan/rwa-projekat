@@ -14,6 +14,7 @@ import { ProjectsModule } from './features/projects/projects.module';
 import { ReviewsModule } from './features/reviews/reviews.module';
 import { TagsModule } from './features/tags/tags.module';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { ChatModule } from './features/chat/chat.module';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     ReviewsModule, 
     TagsModule,
     ProjectsModule,
+    ChatModule,
     StoreModule.forRoot({}, {
       metaReducers
     }),

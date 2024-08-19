@@ -4,5 +4,6 @@ export enum Features {
     Users = 'users',
     Reviews = 'reviews',
     Tags = 'tags',
-    Projects = 'projects'
+    Projects = 'projects',
+    Chats = 'chats'
 }

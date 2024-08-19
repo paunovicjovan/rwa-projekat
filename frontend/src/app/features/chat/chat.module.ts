@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { AuthModule } from '../auth/auth.module';
-import { Socket, SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-import { environment } from '../../../environments/environment.development';
 import { ChatsPageComponent } from './components/chats-page/chats-page.component';
+import { CustomSocket } from './sockets/custom-socket';
+import { EffectsModule } from '@ngrx/effects';
+import * as chatEffects from './state/chat.effects';
+import { StoreModule } from '@ngrx/store';
+import { Features } from '../features.enum';
+import { chatsReducer } from './state/chat.reducer';
 
 
 
@@ -13,8 +17,10 @@ import { ChatsPageComponent } from './components/chats-page/chats-page.component
   ],
   imports: [
     SharedModule,
-    AuthModule
+    AuthModule,
+    EffectsModule.forFeature(chatEffects),
+    StoreModule.forFeature(Features.Chats, chatsReducer)
   ],
-  providers: [Socket]
+  providers: [CustomSocket]
 })
 export class ChatModule { }
