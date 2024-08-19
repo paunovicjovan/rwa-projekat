@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ReviewsModule } from './reviews/reviews.module';
 import { TagsModule } from './tags/tags.module';
 import { ProjectsModule } from './projects/projects.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -34,7 +35,8 @@ import { ProjectsModule } from './projects/projects.module';
             }),
             ReviewsModule,
             TagsModule,
-            ProjectsModule
+            ProjectsModule,
+            ChatModule
           ],
   controllers: [AppController],
   providers: [AppService],

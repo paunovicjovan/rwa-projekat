@@ -3,6 +3,7 @@ import { UserRoles } from "../enums/user-roles.enum";
 import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { TagEntity } from "src/tags/entities/tag.entity";
 import { ProjectEntity } from "src/projects/entities/project.entity";
+import { ConnectedUserEntity } from "src/chat/entities/connected-user.entity";
 
 
 @Entity()
@@ -54,4 +55,7 @@ export class UserEntity {
     @ManyToMany(() => ProjectEntity, project => project.acceptedUsers)
     @JoinTable()
     acceptedIn: ProjectEntity[]
+
+    @OneToMany(() => ConnectedUserEntity, connectedUser => connectedUser.user)
+    connections: ConnectedUserEntity[]
 }
