@@ -40,7 +40,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       socket.data.user = user;
       await this.createConnectedUser(socket);
 
-      const userRooms = await this.roomsService.getRoomsForUser(user.id, {page: 1, limit: 10});
+      const userRooms = await this.roomsService.findRoomsForUser(user.id, {page: 1, limit: 10});
       return this.server.to(socket.id).emit('rooms', userRooms);
     }
     catch {
@@ -71,7 +71,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const createdRoom = await this.roomsService.createRoom(room, socket.data.user);
 
     for (const user of createdRoom.users) {
-      const rooms = await this.roomsService.getRoomsForUser(user.id, { page: 1, limit: 10 });
+      const rooms = await this.roomsService.findRoomsForUser(user.id, { page: 1, limit: 10 });
       const connections: ConnectedUserDto[] = await this.connectedUserService.findByUserId(user.id);
       for (const connection of connections) {
         await this.server.to(connection.socketId).emit('rooms', rooms);
@@ -82,7 +82,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('loadRooms')
   async onPaginateRoom(socket: Socket, paginationOptions: IPaginationOptions) {
     paginationOptions.limit = Math.min(100, Number(paginationOptions.limit));
-    const rooms = await this.roomsService.getRoomsForUser(socket.data.user.id, paginationOptions);
+    const rooms = await this.roomsService.findRoomsForUser(socket.data.user.id, paginationOptions);
     return this.server.to(socket.id).emit('rooms', rooms);
   }
 }

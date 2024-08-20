@@ -18,10 +18,17 @@ export class RoomsService {
 
   async createRoom(room: CreateRoomDto, creator: UserDto): Promise<RoomResponseDto> {
     room.users.push(creator);
-    return this.roomsRepository.save(room);
+    return await this.roomsRepository.save(room);
   }
 
-  async getRoomsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<RoomResponseDto>> {
+  async findRoom(roomId: number): Promise<RoomResponseDto> {
+    return await this.roomsRepository.findOne({
+      where: {id: roomId},
+      relations: ['users']
+    });
+  }
+
+  async findRoomsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<RoomResponseDto>> {
     return await paginate(this.roomsRepository, options, {
         where: {
             users: { id: userId }

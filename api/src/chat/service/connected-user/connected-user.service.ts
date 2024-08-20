@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 export class ConnectedUserService {
   constructor(
     @InjectRepository(ConnectedUserEntity)
-    private readonly connectedUserRepository: Repository<ConnectedUserEntity>,
+    private connectedUserRepository: Repository<ConnectedUserEntity>,
   ) {}
 
   async create(connectedUser: CreateConnectedUserDto): Promise<ConnectedUserDto> {
