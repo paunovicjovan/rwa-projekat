@@ -4,6 +4,7 @@ import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { TagEntity } from "src/tags/entities/tag.entity";
 import { ProjectEntity } from "src/projects/entities/project.entity";
 import { ConnectedUserEntity } from "src/chat/entities/connected-user.entity";
+import { RoomEntity } from "src/chat/entities/room.entity";
 
 
 @Entity()
@@ -58,4 +59,7 @@ export class UserEntity {
 
     @OneToMany(() => ConnectedUserEntity, connectedUser => connectedUser.user)
     connections: ConnectedUserEntity[]
+
+    @ManyToMany(() => RoomEntity, room => room.users)
+    rooms: RoomEntity[]
 }

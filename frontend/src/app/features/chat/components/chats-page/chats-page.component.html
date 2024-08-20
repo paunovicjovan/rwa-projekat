@@ -1,2 +1,7 @@
-<p>chats-page works!</p>
-<p>{{message | async}}</p>
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <div class="container py-3">
+        <p *ngFor="let room of dataFromStore.rooms">
+            {{room.name}}
+        </p>
+    </div>
+</ng-container>

@@ -1,10 +1,13 @@
 import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import {Socket, Server} from 'socket.io'
 import { AuthService } from 'src/auth/service/auth.service';
 import { CreateConnectedUserDto } from 'src/chat/dto/connected-user/create-connected-user.dto';
+import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
+import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
+import { RoomsService } from 'src/chat/service/rooms/rooms.service';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 
@@ -16,7 +19,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   constructor(private authService: AuthService,
               private connectedUserService: ConnectedUserService,
-              private usersService: UsersService
+              private usersService: UsersService,
+              private roomsService: RoomsService
             ) {}
 
   async onModuleInit() {
@@ -33,18 +37,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       }
 
       socket.data.user = user;
+      await this.createConnectedUser(socket);
 
-      const connectedUserDto: CreateConnectedUserDto = {
-        socketId: socket.id,
-        user: user
-      }
-      await this.connectedUserService.create(connectedUserDto);
-
-      return this.server.to(socket.id).emit('messageResponse', 'Connected');
+      const userRooms = await this.roomsService.getRoomsForUser(user.id, {page: 1, limit: 10});
+      return this.server.to(socket.id).emit('rooms', userRooms);
     }
     catch {
       return this.disconnect(socket);
     }
+  }
+
+  async createConnectedUser(socket: Socket) {
+    const connectedUserDto: CreateConnectedUserDto = {
+      socketId: socket.id,
+      user: socket.data.user
+    }
+    await this.connectedUserService.create(connectedUserDto);
   }
   
   private disconnect(socket: Socket) {
@@ -56,5 +64,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     await this.connectedUserService.deleteBySocketId(socket.id);
     socket.disconnect();
   }
+
+  @SubscribeMessage('createRoom')
+  async onCreateRoom(socket: Socket, room: CreateRoomDto): Promise<RoomResponseDto> {
+    return await this.roomsService.createRoom(room, socket.data.user);
+  }
   
+  @SubscribeMessage('findRooms')
+  async onPaginateRoom(socket: Socket, paginationOptions: IPaginationOptions) {
+    paginationOptions.limit = Math.min(100, Number(paginationOptions.limit));
+    const rooms = await this.roomsService.getRoomsForUser(socket.data.user.id, paginationOptions);
+    return this.server.to(socket.id).emit('rooms', rooms);
+  }
 }

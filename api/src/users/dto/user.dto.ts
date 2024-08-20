@@ -3,6 +3,7 @@ import { UserRoles } from "../enums/user-roles.enum";
 import { TagDto } from "src/tags/dto/tag.dto";
 import { ProjectDto } from "src/projects/dto/project.dto";
 import { ConnectedUserDto } from "src/chat/dto/connected-user/connected-user.dto";
+import { RoomDto } from "src/chat/dto/room/room.dto";
 
 export class UserDto {
     id: number;
@@ -21,4 +22,5 @@ export class UserDto {
     appliedTo: ProjectDto[];
     acceptedIn: ProjectDto[];
     connections: ConnectedUserDto[]
+    rooms: RoomDto[]
 }

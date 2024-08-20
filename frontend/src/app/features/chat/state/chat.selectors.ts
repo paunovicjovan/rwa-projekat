@@ -5,7 +5,7 @@ import { ChatState } from "../models/chat-state.interface";
 
 export const chatsFeature = createFeatureSelector<ChatState>(Features.Chats);
 
-export const selectTest = createSelector(
+export const selectRooms = createSelector(
     chatsFeature,
-    (state: ChatState) => state.test
+    (state: ChatState) => state.ids.map(id => state.entities[id])
 )
