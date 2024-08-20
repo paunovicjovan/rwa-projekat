@@ -37,3 +37,8 @@ export const createRoom = createAction(
     '[Chats] Create Room',
     props<{ createRoomDto: CreateRoomDto }>()
 );
+
+export const chooseRoom = createAction(
+    '[Chats] Choose Room',
+    props<{roomId: number}>()
+)

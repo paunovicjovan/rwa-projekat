@@ -16,7 +16,9 @@ const initialPaginationMetadataState : PaginationMetadata = {
 const initialState: ChatState = {
     ids: [],
     entities: {},
-    paginationMetadata: initialPaginationMetadataState
+    paginationMetadata: initialPaginationMetadataState,
+    chosenRoomId: null,
+    messages: []
 }
 
 export const chatsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>();
@@ -33,5 +35,11 @@ export const chatsReducer = createReducer(
             ...state,
             paginationMetadata: action.paginatedRooms.meta
         });
+    }),
+    on(chatsActions.chooseRoom, (state, action) => {
+        return {
+            ...state,
+            chosenRoomId: action.roomId
+        }
     })
 )

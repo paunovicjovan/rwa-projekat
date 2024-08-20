@@ -1,8 +1,8 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="container py-3">
-        <div class="row">
+        <div class="row gap-3 gap-md-0">
             <div class="col-md-5">
-                <mat-card appearance="outlined" class="p-3">
+                <mat-card appearance="outlined" class="p-3 h-100">
                     <p class="lead">Poruke</p>
                     <button class="btn bg-purple text-beige mb-2" (click)="openNewRoomDialog()">Novi chat</button>
                     <mat-selection-list [multiple]="false" (selectionChange)="handleSelectRoom($event)" hideSingleSelectionIndicator>
@@ -32,7 +32,7 @@
                 </mat-card>
             </div>
             <div class="col-md-7">
-                chat
+                <app-chatroom [chatroom]="dataFromStore.chosenRoom"></app-chatroom>
             </div>
         </div>
     </div>

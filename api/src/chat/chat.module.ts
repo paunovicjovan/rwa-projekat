@@ -10,11 +10,12 @@ import { RoomsService } from './service/rooms/rooms.service';
 import { JoinedRoomsService } from './service/joined-rooms/joined-rooms.service';
 import { JoinedRoomEntity } from './entities/joined-room.entity';
 import { MessagesService } from './service/messages/messages.service';
+import { MessageEntity } from './entities/message.entity';
 
 @Module({
   providers: [ChatGateway, ConnectedUserService, RoomsService, JoinedRoomsService, MessagesService],
   imports: [
-    TypeOrmModule.forFeature([ConnectedUserEntity, RoomEntity, JoinedRoomEntity]),
+    TypeOrmModule.forFeature([ConnectedUserEntity, RoomEntity, JoinedRoomEntity, MessageEntity]),
     AuthModule,
     UsersModule
   ]

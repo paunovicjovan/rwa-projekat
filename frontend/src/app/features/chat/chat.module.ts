@@ -10,13 +10,17 @@ import { Features } from '../features.enum';
 import { chatsReducer } from './state/chat.reducer';
 import { UsersModule } from "../users/users.module";
 import { RoomFormDialogComponent } from './components/room-form-dialog/room-form-dialog.component';
+import { ChatroomComponent } from './components/chatroom/chatroom.component';
+import { MessageDisplayComponent } from './components/message-display/message-display.component';
 
 
 
 @NgModule({
   declarations: [
     ChatsPageComponent,
-    RoomFormDialogComponent
+    RoomFormDialogComponent,
+    ChatroomComponent,
+    MessageDisplayComponent
   ],
   imports: [
     SharedModule,

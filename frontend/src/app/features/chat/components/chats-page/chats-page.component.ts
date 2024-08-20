@@ -30,13 +30,14 @@ export class ChatsPageComponent {
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       rooms: this.store.select(chatSelectors.selectRooms),
-      paginationMetadata: this.store.select(chatSelectors.selectPaginationMetadata)
+      paginationMetadata: this.store.select(chatSelectors.selectPaginationMetadata),
+      chosenRoom: this.store.select(chatSelectors.selectChosenRoom)
     })
   }
 
   handleSelectRoom(event: MatSelectionListChange) {
     const selectedRoom = event.source.selectedOptions.selected[0].value;
-    console.log(selectedRoom);
+    this.store.dispatch(chatActions.chooseRoom({ roomId: selectedRoom.id }))
   }
 
   onPaginateChange(event: PageEvent) {

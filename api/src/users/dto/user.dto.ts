@@ -4,6 +4,8 @@ import { TagDto } from "src/tags/dto/tag.dto";
 import { ProjectDto } from "src/projects/dto/project.dto";
 import { ConnectedUserDto } from "src/chat/dto/connected-user/connected-user.dto";
 import { RoomDto } from "src/chat/dto/room/room.dto";
+import { JoinedRoomDto } from "src/chat/dto/joined-room/joined-room.dto";
+import { MessageDto } from "src/chat/dto/message/message.dto";
 
 export class UserDto {
     id: number;
@@ -23,4 +25,6 @@ export class UserDto {
     acceptedIn: ProjectDto[];
     connections: ConnectedUserDto[]
     rooms: RoomDto[]
+    joinedRooms: JoinedRoomDto[]
+    messages: MessageDto[]
 }
