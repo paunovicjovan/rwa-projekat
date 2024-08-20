@@ -3,6 +3,7 @@ import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGa
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import {Socket, Server} from 'socket.io'
 import { AuthService } from 'src/auth/service/auth.service';
+import { ConnectedUserDto } from 'src/chat/dto/connected-user/connected-user.dto';
 import { CreateConnectedUserDto } from 'src/chat/dto/connected-user/create-connected-user.dto';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
@@ -66,8 +67,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   }
 
   @SubscribeMessage('createRoom')
-  async onCreateRoom(socket: Socket, room: CreateRoomDto): Promise<RoomResponseDto> {
-    return await this.roomsService.createRoom(room, socket.data.user);
+  async onCreateRoom(socket: Socket, room: CreateRoomDto) {
+    const createdRoom = await this.roomsService.createRoom(room, socket.data.user);
+
+    for (const user of createdRoom.users) {
+      const rooms = await this.roomsService.getRoomsForUser(user.id, { page: 1, limit: 10 });
+      const connections: ConnectedUserDto[] = await this.connectedUserService.findByUserId(user.id);
+      for (const connection of connections) {
+        await this.server.to(connection.socketId).emit('rooms', rooms);
+      }
+    }
   }
   
   @SubscribeMessage('loadRooms')
