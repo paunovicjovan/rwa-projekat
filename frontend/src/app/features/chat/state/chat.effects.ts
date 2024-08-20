@@ -1,7 +1,7 @@
 import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
 import * as chatsActions from './chat.actions';
-import { catchError, concatMap, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { ChatService } from "../services/chat.service";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Room } from "../models/room.interface";
@@ -11,6 +11,7 @@ import { RoomFormDialogComponent } from "../components/room-form-dialog/room-for
 import { noOperation } from "../../../shared/state/shared.actions";
 import { RoomDialogData } from "../models/room-dialog-data.interface";
 import { CreateRoomDto } from "../models/create-room-dto.interface";
+import * as authActions from '../../auth/state/auth.actions';
 
 export const connect$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService), authService = inject(AuthService)) => {
@@ -18,6 +19,18 @@ export const connect$ = createEffect(
             ofType(chatsActions.connect),
             tap(() =>
                 chatsService.connect(authService.getJwt())
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const disconnect$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(authActions.logout),
+            tap(() =>
+                chatsService.disconnect()
             )
         )
     },
