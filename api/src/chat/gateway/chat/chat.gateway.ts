@@ -70,7 +70,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     return await this.roomsService.createRoom(room, socket.data.user);
   }
   
-  @SubscribeMessage('findRooms')
+  @SubscribeMessage('loadRooms')
   async onPaginateRoom(socket: Socket, paginationOptions: IPaginationOptions) {
     paginationOptions.limit = Math.min(100, Number(paginationOptions.limit));
     const rooms = await this.roomsService.getRoomsForUser(socket.data.user.id, paginationOptions);

@@ -5,6 +5,10 @@ import { Store } from '@ngrx/store';
 import * as chatActions from '../../state/chat.actions';
 import * as chatSelectors from '../../state/chat.selectors';
 import { combineLatest, Observable } from 'rxjs';
+import { Room } from '../../models/room.interface';
+import { MatSelectionListChange } from '@angular/material/list';
+import { PageEvent } from '@angular/material/paginator';
+import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
 
 @Component({
   selector: 'app-chats-page',
@@ -25,7 +29,21 @@ export class ChatsPageComponent {
 
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
-      rooms: this.store.select(chatSelectors.selectRooms)
+      rooms: this.store.select(chatSelectors.selectRooms),
+      paginationMetadata: this.store.select(chatSelectors.selectPaginationMetadata)
     })
+  }
+
+  handleSelectRoom(event: MatSelectionListChange) {
+    const selectedRoom = event.source.selectedOptions.selected[0].value;
+    console.log(selectedRoom);
+  }
+
+  onPaginateChange(event: PageEvent) {
+    const paginationOptions: PaginationParameters = {
+      page: event.pageIndex + 1,
+      limit: event.pageSize
+    }
+    this.store.dispatch(chatActions.loadRooms({paginationOptions}))
   }
 }

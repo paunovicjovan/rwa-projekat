@@ -23,8 +23,11 @@ export class RoomsService {
 
   async getRoomsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<RoomResponseDto>> {
     return await paginate(this.roomsRepository, options, {
-        where: {users: {id: userId }},
+        where: {
+            users: { id: userId }
+        },
+        relations: ['users'],
         order: {createdAt: 'DESC'}
-    })
+    });
   }
 }

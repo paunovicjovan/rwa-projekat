@@ -34,6 +34,11 @@ export class AuthService {
     return !this.jwtService.isTokenExpired(authState.token);
   }
 
+  getJwt(): string | null {
+    const authState: AuthState = this.localStorageService.get(Features.Auth) as AuthState;
+    return authState.token;
+  }
+
   getUserRole(): UserRoles | undefined {
     const authState: AuthState = this.localStorageService.get(Features.Auth) as AuthState;
     return authState.currentLoggedInUser?.role;

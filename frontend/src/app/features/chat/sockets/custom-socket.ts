@@ -5,9 +5,7 @@ import { environment } from '../../../../environments/environment.development';
 const config: SocketIoConfig = { 
     url: environment.socketUrl, 
     options: {
-      extraHeaders: {
-        Authorization: JSON.parse(localStorage.getItem('auth')!).token
-      }
+      autoConnect: false
     }
 };
 

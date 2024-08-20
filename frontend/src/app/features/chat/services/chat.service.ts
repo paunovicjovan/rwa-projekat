@@ -13,11 +13,24 @@ export class ChatService {
   // constructor(@Inject(CustomSocket) private socket: CustomSocket) { }
   constructor(private socket: CustomSocket) { }
 
+  connect(jwt: string | null) {
+    this.socket.ioSocket.io.opts.extraHeaders = { Authorization: jwt };
+    this.socket.connect();
+  }
+
+  disconnect() {
+    this.socket.disconnect();
+  }
+
   getMessage(): Observable<string> {
     return this.socket.fromEvent('messageResponse')
   }
 
-  loadRooms(): Observable<PaginatedResponse<Room>> {
+  getRooms(): Observable<PaginatedResponse<Room>> {
     return this.socket.fromEvent<PaginatedResponse<Room>>('rooms');
+  }
+
+  loadRooms(paginationOptions: PaginationParameters) {
+    this.socket.emit('loadRooms', {page: paginationOptions.page, limit: paginationOptions.limit});
   }
 }
