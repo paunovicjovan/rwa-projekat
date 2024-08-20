@@ -18,12 +18,13 @@ export class JoinedRoomsService {
     return await this.joinedRoomRepository.save(joinedRoom);
   }
 
+  //nepotrebna
   async findByUser(user: UserDto): Promise<JoinedRoomResponseDto[]> {
     return await this.joinedRoomRepository.find({where: { user }});
   }
 
-  async findByRoom(room: RoomDto): Promise<JoinedRoomResponseDto[]> {
-    return await this.joinedRoomRepository.find({ where: { room } });
+  async findByRoomId(roomId: number): Promise<JoinedRoomResponseDto[]> {
+    return await this.joinedRoomRepository.find({ where: { room: { id: roomId } } });
   }
 
   async deleteBySocketId(socketId: string): Promise<any> {
