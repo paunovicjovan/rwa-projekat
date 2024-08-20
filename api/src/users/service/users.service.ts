@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Raw, Repository } from 'typeorm';
+import { Not, Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UserDto } from '../dto/user.dto';
 import { UserResponseDto } from '../dto/user-response.dto';
@@ -28,12 +28,13 @@ export class UsersService {
         return this.usersRepository.save(user);
     }
 
-    async findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters) : Promise<Pagination<UserResponseDto>> {
+    async findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters, requesterId: number) : Promise<Pagination<UserResponseDto>> {
         return paginate<UserResponseDto>(
             this.usersRepository, 
             options, 
             {
                 where: {
+                    id: Not(requesterId),
                     username: Raw(usernameInDb => `LOWER(${usernameInDb}) LIKE '%${filters.username.toLowerCase()}%'`),
                     firstName: Raw(firstNameInDb => `LOWER(${firstNameInDb}) LIKE '%${filters.firstName.toLowerCase()}%'`),
                     lastName: Raw(lastNameInDb => `LOWER(${lastNameInDb}) LIKE '%${filters.lastName.toLowerCase()}%'`)

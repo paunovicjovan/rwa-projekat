@@ -19,5 +19,8 @@ export class RoomEntity {
 
   @CreateDateColumn()
   createdAt: Date;
-  
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
 }

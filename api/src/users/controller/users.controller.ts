@@ -29,7 +29,8 @@ export class UsersController {
         @Query('limit') limit: number = 10,
         @Query('username') username: string = '',
         @Query('firstName') firstName: string = '',
-        @Query('lastName') lastName: string = ''
+        @Query('lastName') lastName: string = '',
+        @Request() req
     ) {
         limit = Math.min(100, limit);
         const paginateOptions : IPaginationOptions = {
@@ -41,7 +42,8 @@ export class UsersController {
             firstName,
             lastName
         }
-        return this.usersService.findManyPaginated(paginateOptions, usersFilters);
+        const requesterId = req.user.id;
+        return this.usersService.findManyPaginated(paginateOptions, usersFilters, +requesterId);
     }
 
     @UseGuards(JwtAuthGuard)

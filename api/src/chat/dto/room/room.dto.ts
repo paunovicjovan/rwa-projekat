@@ -6,4 +6,5 @@ export class RoomDto {
   description: string;
   users: UserDto[];
   createdAt: Date;
+  updatedAt: Date;
 }

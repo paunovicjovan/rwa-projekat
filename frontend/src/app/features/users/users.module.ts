@@ -12,6 +12,7 @@ import { UsersSearchFiltersComponent } from './components/users-search-filters/u
 import { UserPreviewComponent } from './components/user-preview/user-preview.component';
 import { ReviewsModule } from '../reviews/reviews.module';
 import { TagsModule } from "../tags/tags.module";
+import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 
 
 
@@ -22,6 +23,7 @@ import { TagsModule } from "../tags/tags.module";
     UsersPageComponent,
     UsersSearchFiltersComponent,
     UserPreviewComponent,
+    UserViewerComponent,
   ],
   imports: [
     SharedModule,
@@ -31,7 +33,8 @@ import { TagsModule } from "../tags/tags.module";
     TagsModule
   ],
   exports: [
-    UserPreviewComponent
+    UserPreviewComponent,
+    UserViewerComponent
   ]
 })
 export class UsersModule { }

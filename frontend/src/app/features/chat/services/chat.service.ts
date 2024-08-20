@@ -4,6 +4,7 @@ import { CustomSocket } from '../sockets/custom-socket';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { Room } from '../models/room.interface';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { CreateRoomDto } from '../models/create-room-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class ChatService {
 
   loadRooms(paginationOptions: PaginationParameters) {
     this.socket.emit('loadRooms', {page: paginationOptions.page, limit: paginationOptions.limit});
+  }
+
+  createRoom(room: CreateRoomDto) {
+    this.socket.emit('createRoom', room);
   }
 }

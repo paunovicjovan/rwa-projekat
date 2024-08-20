@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Tag } from '../../models/tag.interface';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
-import { combineLatest, debounceTime, distinctUntilChanged, filter, Observable, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, filter, Observable, Subscription, tap } from 'rxjs';
 import * as tagsActions from '../../state/tags.actions';
 import * as tagsSelectors from '../../state/tags.selectors';
 
@@ -12,7 +12,7 @@ import * as tagsSelectors from '../../state/tags.selectors';
   templateUrl: './tag-viewer.component.html',
   styleUrl: './tag-viewer.component.scss'
 })
-export class TagViewerComponent {
+export class TagViewerComponent implements OnDestroy {
 
   @Input({required: true}) tags!: Tag[] | null;
   @Input() readonly: boolean = false;
@@ -20,9 +20,10 @@ export class TagViewerComponent {
   @Output() removeTag: EventEmitter<number> = new EventEmitter();
   @Output() clickTag: EventEmitter<Tag> = new EventEmitter();
 
-  searchTag = new FormControl();
+  searchTagControl = new FormControl();
   selectedTag: Tag | null = null;
   filteredTags$!: Observable<Tag[]>;
+  searchSubscription?: Subscription;
 
   constructor(private store: Store<AppState>) { }
 
@@ -32,7 +33,7 @@ export class TagViewerComponent {
   }
 
   observeSearchChanges() {
-    this.searchTag.valueChanges.pipe(
+    this.searchSubscription = this.searchTagControl.valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       filter((tagName: string) => tagName !== ''),
@@ -47,7 +48,7 @@ export class TagViewerComponent {
   handleAddTag() {
     this.addTag.emit(this.selectedTag!);
     this.selectedTag = null;
-    this.searchTag.setValue(null);
+    this.searchTagControl.setValue(null);
   }
 
   handleRemoveTag(tag: Tag) {
@@ -64,5 +65,9 @@ export class TagViewerComponent {
 
   displayTag(tag?: Tag) {
     return tag?.name ?? '';
+  }
+
+  ngOnDestroy(): void {
+    this.searchSubscription?.unsubscribe();
   }
 }

@@ -4,4 +4,5 @@ export class RoomResponseDto {
     name: string;
     description: string | null;
     createdAt: Date;
+    updatedAt: Date;
 }

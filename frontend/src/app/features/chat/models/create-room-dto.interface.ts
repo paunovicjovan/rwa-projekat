@@ -1,10 +1,7 @@
 import { User } from "../../users/models/user.interface";
 
-export interface Room {
-    id: number;
+export interface CreateRoomDto {
     name: string;
     description: string | null;
     users: User[]
-    createdAt: Date;
-    updatedAt: Date;
 }

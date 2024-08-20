@@ -1,0 +1,31 @@
+<mat-dialog-content>
+    <mat-card appearance="outlined" class="p-3">
+        <p class="lead text-center">
+            Kreirajte novi chat
+        </p>
+        <form [formGroup]="roomForm">
+            <mat-form-field appearance="fill" class="w-100 mt-3" subscriptSizing="dynamic">
+                <mat-label>Naziv</mat-label>
+                <input matInput placeholder="Naziv" formControlName="name" />
+                <mat-hint *ngIf="roomForm.controls['name'].touched && roomForm.controls['name'].errors">
+                    Naziv je obavezan
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill" class="w-100 my-3" subscriptSizing="dynamic">
+                <mat-label>Opis</mat-label>
+                <textarea matInput placeholder="Opis" formControlName="description"></textarea>
+                <mat-hint *ngIf="roomForm.controls['description'].touched && roomForm.controls['description'].errors">
+                    Opis može sadržati do 100 karaktera
+                </mat-hint>
+            </mat-form-field>
+            <app-user-viewer [users]="users.value" (addUser)="addUserToForm($event)" (removeUser)="removeUserFromForm($event)"></app-user-viewer>
+        </form>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn bg-brown text-beige me-3" (click)="handleCancelForm()" cdkFocusInitial>Otkaži</button>
+        <button class="btn bg-green text-beige" (click)="handleSubmitForm()" [disabled]="roomForm.invalid">Sačuvaj</button>
+    </div>
+</mat-dialog-actions>

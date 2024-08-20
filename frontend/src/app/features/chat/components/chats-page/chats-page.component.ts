@@ -46,4 +46,8 @@ export class ChatsPageComponent {
     }
     this.store.dispatch(chatActions.loadRooms({paginationOptions}))
   }
+
+  openNewRoomDialog() {
+    this.store.dispatch(chatActions.openRoomDialog({dialogData: undefined}));
+  }
 }

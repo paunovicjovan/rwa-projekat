@@ -27,7 +27,7 @@ export class RoomsService {
             users: { id: userId }
         },
         relations: ['users'],
-        order: {createdAt: 'DESC'}
+        order: {updatedAt: 'DESC'}
     });
   }
 }

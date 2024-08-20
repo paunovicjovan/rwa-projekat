@@ -8,19 +8,23 @@ import * as chatEffects from './state/chat.effects';
 import { StoreModule } from '@ngrx/store';
 import { Features } from '../features.enum';
 import { chatsReducer } from './state/chat.reducer';
+import { UsersModule } from "../users/users.module";
+import { RoomFormDialogComponent } from './components/room-form-dialog/room-form-dialog.component';
 
 
 
 @NgModule({
   declarations: [
-    ChatsPageComponent
+    ChatsPageComponent,
+    RoomFormDialogComponent
   ],
   imports: [
     SharedModule,
     AuthModule,
     EffectsModule.forFeature(chatEffects),
-    StoreModule.forFeature(Features.Chats, chatsReducer)
-  ],
+    StoreModule.forFeature(Features.Chats, chatsReducer),
+    UsersModule
+],
   providers: [CustomSocket]
 })
 export class ChatModule { }
