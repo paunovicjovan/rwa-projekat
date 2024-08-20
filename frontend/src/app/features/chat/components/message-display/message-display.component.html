@@ -1,4 +1,9 @@
-<div class="d-flex flex-column bg-secondary p-2 m-1">
-    <span>{{message.user.username}}</span>
-    <span>{{message.text}}</span>
+<div class="w-100 d-flex" [ngClass]="{ownMessage: isOwnMessage}">
+    <div class="d-flex flex-column p-2 m-1 message">
+        <span class="text-small text-bold message-author">{{message.user.username}}</span>
+        <span>{{message.text}}</span>
+        <div class="d-flex timestamp">
+            <small>{{message.createdAt | formatTime}}</small>
+        </div>
+    </div>
 </div>

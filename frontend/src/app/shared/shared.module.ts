@@ -27,6 +27,7 @@ import { TranslateProjectStatusPipe } from './pipes/translate-project-status/tra
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
+import { FormatTimePipe } from './pipes/format-time/format-time.pipe';
 
 const modules = [
   CommonModule,
@@ -59,7 +60,8 @@ const modules = [
     TranslateRolePipe,
     ConfirmDialogComponent,
     AvatarImageComponent,
-    TranslateProjectStatusPipe
+    TranslateProjectStatusPipe,
+    FormatTimePipe
   ],
   imports: [
     ...modules,
@@ -70,6 +72,7 @@ const modules = [
     FormatDatePipe,
     TranslateRolePipe,
     TranslateProjectStatusPipe,
+    FormatTimePipe,
     ConfirmDialogComponent,
     AvatarImageComponent
   ]

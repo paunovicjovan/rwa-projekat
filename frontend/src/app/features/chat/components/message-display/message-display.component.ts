@@ -7,6 +7,6 @@ import { Message } from '../../models/message.interface';
   styleUrl: './message-display.component.scss'
 })
 export class MessageDisplayComponent {
-  @Input({required: true}) message!: Message;
-
+  @Input({ required: true }) message!: Message;
+  @Input() isOwnMessage: boolean = false;
 }

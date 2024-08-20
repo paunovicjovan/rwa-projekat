@@ -22,15 +22,26 @@
             <ng-container *ngIf="dataFromStore.messages.length > 0; else noMessages">
                 <div class="messages">
                     <span *ngFor="let message of dataFromStore.messages">
-                        <app-message-display [message]="message"></app-message-display>
+                        <app-message-display [message]="message" [isOwnMessage]="dataFromStore.loggedInUser.id === message.user.id"></app-message-display>
                     </span>
                 </div>
             </ng-container>
 
             <ng-template #noMessages>
                 <img src="assets/empty-chat.png" alt="Nema poruka" class="img-fluid">
-                <p class="lead text-center">Nema poruka</p>
+                <p class="lead text-center mb-5">Nema poruka</p>
             </ng-template>
+
+            <form [formGroup]="newMessageForm" (ngSubmit)="sendMessage()">
+                <div class="d-flex gap-2 align-items-end mt-3">
+                    <mat-form-field appearance="fill" class="w-100" subscriptSizing="dynamic">
+                        <textarea matInput placeholder="Poruka" formControlName="text" rows="1" class="message-input" (input)="changeTextareaHeight($event)"></textarea>
+                    </mat-form-field>
+                    <button class="btn bg-purple text-beige send-btn" [disabled]="newMessageForm.invalid" type="submit">
+                        <mat-icon fontIcon="send"></mat-icon>
+                    </button>
+                </div>
+            </form>
 
         </ng-container>
 

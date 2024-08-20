@@ -5,6 +5,8 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.int
 import { Room } from '../models/room.interface';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
 import { CreateRoomDto } from '../models/create-room-dto.interface';
+import { Message } from '../models/message.interface';
+import { CreateMessageDto } from '../models/create-message-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +25,6 @@ export class ChatService {
     this.socket.disconnect();
   }
 
-  getMessage(): Observable<string> {
-    return this.socket.fromEvent('messageResponse')
-  }
-
-  getRooms(): Observable<PaginatedResponse<Room>> {
-    return this.socket.fromEvent<PaginatedResponse<Room>>('rooms');
-  }
-
   loadRooms(paginationOptions: PaginationParameters) {
     this.socket.emit('loadRooms', {page: paginationOptions.page, limit: paginationOptions.limit});
   }
@@ -38,4 +32,29 @@ export class ChatService {
   createRoom(room: CreateRoomDto) {
     this.socket.emit('createRoom', room);
   }
+
+  joinRoom(room: Room) {
+    this.socket.emit('joinRoom', room);
+  }
+
+  leaveRoom() {
+    this.socket.emit('leaveRoom');
+  }
+
+  sendMessage(message: CreateMessageDto) {
+    this.socket.emit('addMessage', message);
+  }
+
+  receiveMessages(): Observable<PaginatedResponse<Message>> {
+    return this.socket.fromEvent<PaginatedResponse<Message>>('messages');
+  }
+
+  receiveRooms(): Observable<PaginatedResponse<Room>> {
+    return this.socket.fromEvent<PaginatedResponse<Room>>('rooms');
+  }
+
+  receiveNewMessage(): Observable<Message> {
+    return this.socket.fromEvent<Message>('newMessage');
+  }
+
 }

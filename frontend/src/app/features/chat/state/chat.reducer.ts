@@ -30,16 +30,28 @@ export const chatsReducer = createReducer(
             ...state,
         }
     }),
-    on(chatsActions.loadRoomsSuccess, (state, action) => {
+    on(chatsActions.receiveRoomsSuccess, (state, action) => {
         return chatsAdapter.setAll(action.paginatedRooms.items, {
             ...state,
             paginationMetadata: action.paginatedRooms.meta
         });
     }),
+    on(chatsActions.receiveMessagesSuccess, (state, action) => {
+        return {
+            ...state,
+            messages: action.paginatedMessages.items
+        };
+    }),
     on(chatsActions.chooseRoom, (state, action) => {
         return {
             ...state,
             chosenRoomId: action.roomId
+        }
+    }),
+    on(chatsActions.receiveNewMessageSuccess, (state, action) => {
+        return {
+            ...state,
+            messages: [...state.messages, action.message]
         }
     })
 )

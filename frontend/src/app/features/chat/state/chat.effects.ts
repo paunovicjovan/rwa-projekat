@@ -12,6 +12,7 @@ import { noOperation } from "../../../shared/state/shared.actions";
 import { RoomDialogData } from "../models/room-dialog-data.interface";
 import { CreateRoomDto } from "../models/create-room-dto.interface";
 import * as authActions from '../../auth/state/auth.actions';
+import { Message } from "../models/message.interface";
 
 export const connect$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService), authService = inject(AuthService)) => {
@@ -49,17 +50,106 @@ export const loadRooms$ = createEffect(
     {functional: true, dispatch: false}
 )
 
+
+export const createRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.createRoom),
+            tap(({createRoomDto}) =>
+                chatsService.createRoom(createRoomDto)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const joinRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.joinRoom),
+            tap(({room}) =>
+                chatsService.joinRoom(room)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const leaveRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.leaveRoom),
+            tap(() =>
+                chatsService.leaveRoom()
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const sendMessage$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.sendMessage),
+            tap(({createMessageDto}) =>
+                chatsService.sendMessage(createMessageDto)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
 export const receiveRooms$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
             mergeMap(() =>
-                chatsService.getRooms().pipe(
+                chatsService.receiveRooms().pipe(
                     map((paginatedRooms: PaginatedResponse<Room>) => {
-                        return chatsActions.loadRoomsSuccess({ paginatedRooms })
+                        return chatsActions.receiveRoomsSuccess({ paginatedRooms })
                     }),
                     catchError(() => {
-                        return of(chatsActions.loadRoomsFailure())
+                        return of(chatsActions.receiveRoomsFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const receiveMessages$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.connect),
+            mergeMap(() =>
+                chatsService.receiveMessages().pipe(
+                    map((paginatedMessages: PaginatedResponse<Message>) => {
+                        return chatsActions.receiveMessagesSuccess({ paginatedMessages })
+                    }),
+                    catchError(() => {
+                        return of(chatsActions.receiveMessagesFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const receiveNewMessage$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.connect),
+            mergeMap(() =>
+                chatsService.receiveNewMessage().pipe(
+                    map((message: Message) => {
+                        return chatsActions.receiveNewMessageSuccess({ message })
+                    }),
+                    catchError(() => {
+                        return of(chatsActions.receiveNewMessageFailure())
                     }
                     )
                 )
@@ -106,16 +196,4 @@ export const openRoomDialog$ = createEffect(
         )
     },
     {functional: true}
-)
-
-export const createRoom$ = createEffect(
-    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
-        return action$.pipe(
-            ofType(chatsActions.createRoom),
-            tap(({createRoomDto}) =>
-                chatsService.createRoom(createRoomDto)
-            )
-        )
-    },
-    {functional: true, dispatch: false}
 )

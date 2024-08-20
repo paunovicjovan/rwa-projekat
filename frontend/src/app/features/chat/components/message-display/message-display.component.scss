@@ -1,0 +1,28 @@
+.message {
+    background-color: #7d7d7d;
+    color: #FEFAF6;
+    max-width: 500px;
+    border-radius: 8px 8px 8px 0px;
+
+    .timestamp {
+        justify-content: flex-start;
+    }
+}
+
+.ownMessage {
+    justify-content: flex-end;
+
+    .message-author {
+        display: none;
+    }
+
+    .message {
+        background-color: #756AB6;
+        color: #FEFAF6;
+        border-radius: 8px 8px 0px 8px;
+
+        .timestamp {
+            justify-content: flex-end;
+        }
+    }
+}
