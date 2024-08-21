@@ -8,6 +8,7 @@ import { CreateMessageDto } from "../models/create-message-dto.interface";
 import { Message } from "../models/message.interface";
 import { User } from "../../users/models/user.interface";
 import { UpdateRoomDto } from "../models/update-room-dto.interface";
+import { MoreMessagesDto } from "../models/more-messages-dto.interface";
 
 
 export const connect = createAction(
@@ -66,6 +67,11 @@ export const sendMessage = createAction(
     props<{ createMessageDto: CreateMessageDto }>()
 )
 
+export const loadMoreMessages = createAction(
+    '[Chats] Load More Messages',
+    props<{ request: MoreMessagesDto }>()
+);
+
 export const receiveMessagesSuccess = createAction(
     '[Chats] Receive Messages Success',
     props<{ paginatedMessages: PaginatedResponse<Message> }>()
@@ -73,6 +79,15 @@ export const receiveMessagesSuccess = createAction(
 
 export const receiveMessagesFailure = createAction(
     '[Chats] Receive Messages Failure'
+)
+
+export const receiveMoreMessagesSuccess = createAction(
+    '[Chats] Receive More Messages Success',
+    props<{ paginatedMessages: PaginatedResponse<Message> }>()
+)
+
+export const receiveMoreMessagesFailure = createAction(
+    '[Chats] Receive More Messages Failure'
 )
 
 export const receiveNewMessageSuccess = createAction(

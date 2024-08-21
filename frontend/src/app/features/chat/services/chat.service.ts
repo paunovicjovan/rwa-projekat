@@ -9,6 +9,7 @@ import { Message } from '../models/message.interface';
 import { CreateMessageDto } from '../models/create-message-dto.interface';
 import { User } from '../../users/models/user.interface';
 import { UpdateRoomDto } from '../models/update-room-dto.interface';
+import { MoreMessagesDto } from '../models/more-messages-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -51,8 +52,16 @@ export class ChatService {
     this.socket.emit('addMessage', message);
   }
 
+  loadMoreMessages(request: MoreMessagesDto) {
+    this.socket.emit('loadMoreMessages', request);
+  }
+
   receiveMessages(): Observable<PaginatedResponse<Message>> {
     return this.socket.fromEvent<PaginatedResponse<Message>>('messages');
+  }
+
+  receiveMoreMessages(): Observable<PaginatedResponse<Message>> {
+    return this.socket.fromEvent<PaginatedResponse<Message>>('moreMessages');
   }
 
   receiveRooms(): Observable<PaginatedResponse<Room>> {

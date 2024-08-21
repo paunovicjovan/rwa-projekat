@@ -52,6 +52,17 @@ export const loadRooms$ = createEffect(
     {functional: true, dispatch: false}
 )
 
+export const loadMoreMessages$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.loadMoreMessages),
+            tap(({request}) =>
+                chatsService.loadMoreMessages(request)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
 
 export const createRoom$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
@@ -120,7 +131,6 @@ export const receiveRooms$ = createEffect(
             mergeMap(() =>
                 chatsService.receiveRooms().pipe(
                     map((paginatedRooms: PaginatedResponse<Room>) => {
-                        console.log(paginatedRooms);
                         return chatsActions.receiveRoomsSuccess({ paginatedRooms })
                     }),
                     catchError(() => {
@@ -145,6 +155,26 @@ export const receiveMessages$ = createEffect(
                     }),
                     catchError(() => {
                         return of(chatsActions.receiveMessagesFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const receiveMoreMessages$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.connect),
+            mergeMap(() =>
+                chatsService.receiveMoreMessages().pipe(
+                    map((paginatedMessages: PaginatedResponse<Message>) => {
+                        return chatsActions.receiveMoreMessagesSuccess({ paginatedMessages })
+                    }),
+                    catchError(() => {
+                        return of(chatsActions.receiveMoreMessagesFailure())
                     }
                     )
                 )

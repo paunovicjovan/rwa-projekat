@@ -10,6 +10,7 @@ import { JoinedRoomResponseDto } from 'src/chat/dto/joined-room/joined-room-resp
 import { JoinedRoomDto } from 'src/chat/dto/joined-room/joined-room.dto';
 import { CreateMessageDto } from 'src/chat/dto/message/create-message.dto';
 import { MessageResponseDto } from 'src/chat/dto/message/message-response.dto';
+import { MoreMessagesDto } from 'src/chat/dto/message/more-messages.dto';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
@@ -132,11 +133,16 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('addMessage')
   async onAddMessage(socket: Socket, message: CreateMessageDto) {
     const createdMessage: MessageResponseDto = await this.messagesService.create({...message, user: socket.data.user});
-    // const room: RoomResponseDto = await this.roomsService.findRoom(createdMessage.room.id);
     const joinedUsers: JoinedRoomResponseDto[] = await this.joinedRoomsService.findByRoomId(message.room.id);
 
     for(const user of joinedUsers) {
       await this.server.to(user.socketId).emit('newMessage', createdMessage);
     }
+  }
+
+  @SubscribeMessage('loadMoreMessages')
+  async onLoadMoreMessages(socket: Socket, request: MoreMessagesDto) {
+    const messages = await this.messagesService.findMessagesForRoom(request.roomId, { page: request.page, limit: request.limit });
+    await this.server.to(socket.id).emit('moreMessages', messages);
   }
 }

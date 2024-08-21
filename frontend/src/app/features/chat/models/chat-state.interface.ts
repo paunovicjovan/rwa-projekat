@@ -4,7 +4,8 @@ import { PaginationMetadata } from "../../../shared/models/pagination-metadata.i
 import { Message } from "primeng/api";
 
 export interface ChatState extends EntityState<Room> {
-    paginationMetadata: PaginationMetadata;
+    roomsPaginationMetadata: PaginationMetadata;
     chosenRoomId: number | null;
     messages: Message[];
+    messagesPaginationMetadata: PaginationMetadata;
 }

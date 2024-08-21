@@ -18,7 +18,12 @@
             <hr>
 
             <ng-container *ngIf="dataFromStore.messages.length > 0; else noMessages">
-                <div #messages class="messages">
+                <div #messages class="messages bg-light">
+                    <div class="d-flex justify-content-center" *ngIf="dataFromStore.messagesPaginationMetadata.totalPages > dataFromStore.messagesPaginationMetadata.currentPage">
+                        <button mat-icon-button class="mx-auto" (click)="loadMoreMessages(dataFromStore.messagesPaginationMetadata)">
+                            <mat-icon fontIcon="add"></mat-icon>
+                        </button>
+                    </div>
                     <span *ngFor="let message of dataFromStore.messages">
                         <app-message-display [message]="message" [isOwnMessage]="dataFromStore.loggedInUser.id === message.user.id"></app-message-display>
                     </span>
@@ -31,11 +36,11 @@
             </ng-template>
 
             <form [formGroup]="newMessageForm" (ngSubmit)="sendMessage()">
-                <div class="d-flex gap-2 align-items-end mt-3">
+                <div class="d-flex gap-2 align-items-stretch mt-3">
                     <mat-form-field appearance="fill" class="w-100" subscriptSizing="dynamic">
-                        <textarea matInput placeholder="Poruka" formControlName="text" rows="1" class="message-input" (input)="changeTextareaHeight($event)"></textarea>
+                        <input matInput placeholder="Poruka" formControlName="text" class="message-input" />
                     </mat-form-field>
-                    <button class="btn bg-purple text-beige send-btn" [disabled]="newMessageForm.invalid" type="submit">
+                    <button class="btn px-3 bg-purple text-beige" [disabled]="newMessageForm.invalid" type="submit">
                         <mat-icon fontIcon="send"></mat-icon>
                     </button>
                 </div>

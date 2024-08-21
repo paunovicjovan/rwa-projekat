@@ -31,7 +31,7 @@ export class ChatsPageComponent {
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       rooms: this.store.select(chatSelectors.selectRooms),
-      paginationMetadata: this.store.select(chatSelectors.selectPaginationMetadata),
+      paginationMetadata: this.store.select(chatSelectors.selectRoomsPaginationMetadata),
       chosenRoom: this.store.select(chatSelectors.selectChosenRoom)
     })
   }

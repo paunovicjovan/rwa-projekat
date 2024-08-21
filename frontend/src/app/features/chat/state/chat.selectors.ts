@@ -12,9 +12,9 @@ export const selectRooms = createSelector(
     (state: ChatState) => state.ids.map(id => state.entities[id])
 )
 
-export const selectPaginationMetadata = createSelector(
+export const selectRoomsPaginationMetadata = createSelector(
     chatsFeature,
-    (state: ChatState) => state.paginationMetadata
+    (state: ChatState) => state.roomsPaginationMetadata
 )
 
 export const selectAllRoomsAsDict = createSelector(
@@ -36,4 +36,9 @@ export const selectChosenRoom = createSelector(
 export const selectMessages = createSelector(
     chatsFeature,
     (state: ChatState) => state.messages
+)
+
+export const selectMessagesPaginationMetadata = createSelector(
+    chatsFeature,
+    (state: ChatState) => state.messagesPaginationMetadata
 )

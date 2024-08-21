@@ -16,9 +16,10 @@ const initialPaginationMetadataState : PaginationMetadata = {
 const initialState: ChatState = {
     ids: [],
     entities: {},
-    paginationMetadata: initialPaginationMetadataState,
+    roomsPaginationMetadata: initialPaginationMetadataState,
     chosenRoomId: null,
-    messages: []
+    messages: [],
+    messagesPaginationMetadata: initialPaginationMetadataState
 }
 
 export const chatsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>();
@@ -33,13 +34,21 @@ export const chatsReducer = createReducer(
     on(chatsActions.receiveRoomsSuccess, (state, action) => {
         return chatsAdapter.setAll(action.paginatedRooms.items, {
             ...state,
-            paginationMetadata: action.paginatedRooms.meta
+            roomsPaginationMetadata: action.paginatedRooms.meta
         });
     }),
     on(chatsActions.receiveMessagesSuccess, (state, action) => {
         return {
             ...state,
-            messages: action.paginatedMessages.items
+            messages: action.paginatedMessages.items,
+            messagesPaginationMetadata: action.paginatedMessages.meta
+        };
+    }),
+    on(chatsActions.receiveMoreMessagesSuccess, (state, action) => {
+        return {
+            ...state,
+            messages: [...action.paginatedMessages.items, ...state.messages],
+            messagesPaginationMetadata: action.paginatedMessages.meta
         };
     }),
     on(chatsActions.chooseRoom, (state, action) => {
@@ -51,7 +60,13 @@ export const chatsReducer = createReducer(
     on(chatsActions.receiveNewMessageSuccess, (state, action) => {
         return {
             ...state,
-            messages: [...state.messages, action.message]
+            messages: [...state.messages, action.message],
+            messagesPaginationMetadata: {
+                ...state.messagesPaginationMetadata,
+                totalItems: state.messagesPaginationMetadata.totalItems + 1,
+                itemCount: state.messagesPaginationMetadata.itemCount + 1,
+                // itemsPerPage: state.messagesPaginationMetadata.itemsPerPage + 1
+            }
         }
     })
 )

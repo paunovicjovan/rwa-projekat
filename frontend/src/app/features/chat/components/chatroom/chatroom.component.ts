@@ -9,6 +9,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as chatsActions from '../../state/chat.actions';
 import { CreateMessageDto } from '../../models/create-message-dto.interface';
 import * as usersSelectors from '../../../users/state/users.selectors';
+import { PaginationMetadata } from '../../../../shared/models/pagination-metadata.interface';
+import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { MoreMessagesDto } from '../../models/more-messages-dto.interface';
 
 @Component({
   selector: 'app-chatroom',
@@ -33,7 +36,8 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.dataFromStore$ = combineLatest({
       messages: this.store.select(chatsSelectors.selectMessages),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
-      roomMembers: this.store.select(usersSelectors.selectUsers)
+      roomMembers: this.store.select(usersSelectors.selectUsers),
+      messagesPaginationMetadata: this.store.select(chatsSelectors.selectMessagesPaginationMetadata)
     })
   }
 
@@ -41,13 +45,6 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.newMessageForm = this.formBuilder.group({
       text: [null, [Validators.required]]
     })
-  }
-
-  changeTextareaHeight(event: any) {
-    let suggestedHeight = event.target.scrollHeight;
-    const maximumTextareaHeightInPx = 75;
-    suggestedHeight = Math.min(suggestedHeight, maximumTextareaHeightInPx);
-    event.target.style.height = suggestedHeight + 'px';
   }
 
   sendMessage() {
@@ -80,12 +77,22 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
       }
     }
   }
-
-  ngOnDestroy(): void {
-    this.store.dispatch(chatsActions.leaveRoom());
-  }
   
   handleEditChatroom() {
     this.editChatroom.emit(this.chatroom!);
   }
+
+  loadMoreMessages(paginationMetadata: PaginationMetadata) {
+    const request: MoreMessagesDto = {
+      roomId: this.chatroom!.id,
+      page: paginationMetadata.currentPage + 1,
+      limit: paginationMetadata.itemsPerPage
+    }
+    this.store.dispatch(chatsActions.loadMoreMessages({ request }));
+  }
+  
+  ngOnDestroy(): void {
+    this.store.dispatch(chatsActions.leaveRoom());
+  }
+  
 }
