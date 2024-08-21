@@ -20,7 +20,7 @@
             <hr>
 
             <ng-container *ngIf="dataFromStore.messages.length > 0; else noMessages">
-                <div class="messages">
+                <div #messages class="messages">
                     <span *ngFor="let message of dataFromStore.messages">
                         <app-message-display [message]="message" [isOwnMessage]="dataFromStore.loggedInUser.id === message.user.id"></app-message-display>
                     </span>

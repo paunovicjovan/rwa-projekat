@@ -14,15 +14,16 @@ export class MessagesService {
   ) {}
 
   async create(message: CreateMessageDto): Promise<MessageResponseDto> {
-    // return await this.messageRepository.save(this.messageRepository.create(message));
     return await this.messageRepository.save(message);
   }
 
   async findMessagesForRoom(roomId: number, options: IPaginationOptions): Promise<Pagination<MessageResponseDto>> {
-    return paginate(this.messageRepository, options, {
+    const paginatedMessages = await paginate(this.messageRepository, options, {
       where: { room: {id: roomId }},
       relations: ['user', 'room'],
-      order: { createdAt: 'ASC' }
+      order: { createdAt: 'DESC' }
     });
+    paginatedMessages.items.reverse();
+    return paginatedMessages;
   }
 }

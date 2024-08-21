@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Room } from '../../models/room.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
@@ -14,11 +14,13 @@ import { CreateMessageDto } from '../../models/create-message-dto.interface';
   templateUrl: './chatroom.component.html',
   styleUrl: './chatroom.component.scss'
 })
-export class ChatroomComponent implements OnInit, OnChanges, OnDestroy {
+export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked {
 
   @Input({required: true}) chatroom!: Room | null;
+  @ViewChild('messages', {static:false}) private messagesScroller!: ElementRef;
   dataFromStore$!: Observable<any>;
   newMessageForm!: FormGroup;
+  previousScrollHeight: number = 0;
 
   constructor(private store: Store<AppState>,
               private formBuilder: FormBuilder
@@ -57,7 +59,22 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(): void {
     this.store.dispatch(chatsActions.leaveRoom());
     if(this.chatroom) {
+      this.previousScrollHeight = 0;
       this.store.dispatch(chatsActions.joinRoom({room: this.chatroom}));
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
+    if(this.messagesScroller && this.messagesScroller.nativeElement) {
+      const currentScrollHeight = this.messagesScroller.nativeElement.scrollHeight;
+      if (currentScrollHeight > this.previousScrollHeight) {
+        this.messagesScroller.nativeElement.scrollTop = this.messagesScroller.nativeElement.scrollHeight;
+        this.previousScrollHeight = currentScrollHeight;
+      }
     }
   }
 

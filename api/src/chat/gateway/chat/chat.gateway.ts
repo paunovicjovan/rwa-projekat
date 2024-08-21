@@ -74,6 +74,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   async handleDisconnect(socket: Socket) {
     await this.connectedUserService.deleteBySocketId(socket.id);
+    await this.joinedRoomsService.deleteBySocketId(socket.id);
     socket.disconnect();
   }
 
