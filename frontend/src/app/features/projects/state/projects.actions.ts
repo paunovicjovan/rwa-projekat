@@ -43,7 +43,7 @@ export const filterProjects = createAction(
 
 export const filterProjectsSuccess = createAction(
     '[Projects] Filter Projects Success',
-    props<{ projects: Project[], paginationMetadata: PaginationMetadata }>()
+    props<{ paginatedProjects: PaginatedResponse<Project> }>()
 );
 
 export const filterProjectsFailure = createAction(

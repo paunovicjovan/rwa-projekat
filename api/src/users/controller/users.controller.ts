@@ -92,12 +92,6 @@ export class UsersController {
         return res.sendFile(absoluteFilePath);
     }
 
-    @UseGuards(JwtAuthGuard)
-    @Get(':username/tags')
-    findTagsForUser(@Param('username') username: string): Promise<TagResponseDto[]> {
-        return this.usersService.findTagsForUser(username);
-    }
-
     @Get('applied-to/:projectId')
     findAppliedUsersForProject(
         @Param('projectId') projectId: number,

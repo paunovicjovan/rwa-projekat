@@ -8,6 +8,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReviewAuthorOrAdminGuard } from '../guards/review-author-or-admin/review-author-or-admin.guard';
 import { UserIsReviewAuthorGuard } from '../guards/user-is-review-author/user-is-review-author.guard';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { ReviewResponseDto } from '../dto/review-response.dto';
 
 @Controller('reviews')
 export class ReviewsController {
@@ -15,7 +16,7 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':revieweeUsername')
-  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewDto> {
+  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewResponseDto> {
     const authorId = req.user.id;
     return this.reviewsService.create(review, +authorId, revieweeUsername);
   }
@@ -37,13 +38,13 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) : Promise<ReviewDto> {
+  findOne(@Param('id') id: string) : Promise<ReviewResponseDto> {
     return this.reviewsService.findOneById(+id);
   }
 
   @UseGuards(JwtAuthGuard, UserIsReviewAuthorGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewDto> {
+  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewResponseDto> {
     return this.reviewsService.update(+id, reviewData);
   }
 

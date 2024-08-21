@@ -10,6 +10,7 @@ import { UsersService } from 'src/users/service/users.service';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { UserDto } from 'src/users/dto/user.dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { ReviewResponseDto } from '../dto/review-response.dto';
 
 @Injectable()
 export class ReviewsService {
@@ -19,7 +20,7 @@ export class ReviewsService {
       private usersService: UsersService
     ) {}
 
-  async create(review: CreateReviewDto, authorId: number, revieweeUsername: string) : Promise<ReviewDto> {
+  async create(review: CreateReviewDto, authorId: number, revieweeUsername: string) : Promise<ReviewResponseDto> {
     const author = await this.usersService.findOneById(authorId);
     const reviewee = await this.usersService.findOneByUsername(revieweeUsername);
     const reviewEntity = this.createReviewEntity(review, author, reviewee);
@@ -38,7 +39,7 @@ export class ReviewsService {
     return reviewEntity;
   }
 
-  async findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Promise<Pagination<ReviewDto>> {
+  async findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Promise<Pagination<ReviewResponseDto>> {
     return paginate<ReviewDto>(
         this.reviewsRepository, 
         options, 
@@ -50,14 +51,14 @@ export class ReviewsService {
     );
 }
 
-  async findOneById(id: number) : Promise<ReviewDto> {
+  async findOneById(id: number) : Promise<ReviewResponseDto> {
     return this.reviewsRepository.findOne({
       where: {id}, 
       relations: ['author', 'reviewee']
     });
   }
 
-  async update(id: number, reviewData: UpdateReviewDto) : Promise<ReviewDto> {
+  async update(id: number, reviewData: UpdateReviewDto) : Promise<ReviewResponseDto> {
     await this.reviewsRepository.update(id, reviewData);
     return await this.findOneById(id);
   }

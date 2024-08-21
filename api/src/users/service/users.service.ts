@@ -91,17 +91,6 @@ export class UsersService {
         return user;
     }
 
-    async findTagsForUser(username: string): Promise<TagResponseDto[]> {
-        if(username === '')
-            return [];
-
-        const user = await this.usersRepository.findOne({
-            where: {username},
-            relations: ['tags']
-        });
-        return user.tags;
-    }
-
     async findTagsIdsForUser(userId: number): Promise<number[]> {
         const user = await this.usersRepository.findOne({
             where: {id: userId},

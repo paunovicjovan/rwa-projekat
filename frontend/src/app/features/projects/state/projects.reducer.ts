@@ -52,10 +52,10 @@ export const projectsReducer = createReducer(
         }
     }),
     on(projectsActions.filterProjectsSuccess, (state, action) => {
-        return projectsAdapter.setAll(action.projects, {
+        return projectsAdapter.setAll(action.paginatedProjects.items, {
             ...state,
             isLoading: false, 
-            paginationMetadata: action.paginationMetadata
+            paginationMetadata: action.paginatedProjects.meta
         })
     }),
     on(projectsActions.filterProjectsFailure, (state) => {

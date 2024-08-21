@@ -72,8 +72,8 @@ export const filterProjects$ = createEffect(
             ofType(projectsActions.filterProjects),
             switchMap(({filterProjectsRequest}) =>
                 projectsService.filterProjects(filterProjectsRequest).pipe(
-                    map((response: PaginatedResponse<Project>) => {
-                        return projectsActions.filterProjectsSuccess({projects: response.items, paginationMetadata: response.meta})
+                    map((paginatedProjects: PaginatedResponse<Project>) => {
+                        return projectsActions.filterProjectsSuccess({paginatedProjects})
                     }),
                     catchError(() => {
                         return of(projectsActions.filterProjectsFailure())
