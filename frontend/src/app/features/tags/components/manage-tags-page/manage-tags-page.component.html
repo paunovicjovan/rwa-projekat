@@ -36,7 +36,7 @@
             <div class="col-md-7">
                 <mat-card appearance="outlined" class="p-3">
                     <h6 class="text-center">Pretražite tagove</h6>
-                    <app-tag-viewer [tags]="dataFromStore.tags" (addTag)="showTag($event)" (removeTag)="deleteTag($event)" (clickTag)="switchToEditMode($event)"></app-tag-viewer>
+                    <app-tag-viewer [tags]="dataFromStore.tags" [maxTags]="100" (addTag)="showTag($event)" (removeTag)="deleteTag($event)" (clickTag)="switchToEditMode($event)"></app-tag-viewer>
                 </mat-card>
             </div>
         </div>

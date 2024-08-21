@@ -10,9 +10,13 @@
                 </mat-autocomplete>
             </mat-form-field>
 
-            <button mat-icon-button type="button" [disabled]="!selectedTag" (click)="handleAddTag()" class="ms-2">
-                <mat-icon>add</mat-icon>
-            </button>
+            <div [matTooltip]="'Možete izabrati do ' + maxTags + ' tagova'" [matTooltipDisabled]="tags.length < maxTags">
+                <button mat-icon-button type="button" 
+                    [disabled]="!selectedTag || tags.length >= maxTags" 
+                    (click)="handleAddTag()" class="ms-2">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
         </div>
     </ng-container>
 

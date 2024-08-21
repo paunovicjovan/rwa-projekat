@@ -14,8 +14,9 @@ import * as tagsSelectors from '../../state/tags.selectors';
 })
 export class TagViewerComponent implements OnDestroy {
 
-  @Input({required: true}) tags!: Tag[] | null;
+  @Input({required: true}) tags!: Tag[];
   @Input() readonly: boolean = false;
+  @Input() maxTags: number = 10;
   @Output() addTag: EventEmitter<Tag> = new EventEmitter();
   @Output() removeTag: EventEmitter<number> = new EventEmitter();
   @Output() clickTag: EventEmitter<Tag> = new EventEmitter();
