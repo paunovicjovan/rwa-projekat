@@ -13,6 +13,7 @@ import { UserPreviewComponent } from './components/user-preview/user-preview.com
 import { ReviewsModule } from '../reviews/reviews.module';
 import { TagsModule } from "../tags/tags.module";
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
+import { RoleChangeDialogComponent } from './components/role-change-dialog/role-change-dialog.component';
 
 
 
@@ -24,6 +25,7 @@ import { UserViewerComponent } from './components/user-viewer/user-viewer.compon
     UsersSearchFiltersComponent,
     UserPreviewComponent,
     UserViewerComponent,
+    RoleChangeDialogComponent,
   ],
   imports: [
     SharedModule,

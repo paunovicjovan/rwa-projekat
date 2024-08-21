@@ -8,6 +8,10 @@ import { PaginatedResponse } from "../../../shared/models/paginated-response.int
 import { Router } from "@angular/router";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { MatDialog } from "@angular/material/dialog";
+import { RoleChangeDialogComponent } from "../components/role-change-dialog/role-change-dialog.component";
+import { RoleChangeDialogData } from "../models/role-change-dialog-data.interface";
+import { noOperation } from "../../../shared/state/shared.actions";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -43,6 +47,27 @@ export const filterUsers$ = createEffect(
                     }
                     )
                 )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const openRoleChangeDialog$ = createEffect(
+    (action$ = inject(Actions), dialog = inject(MatDialog)) => {
+        return action$.pipe(
+            ofType(usersActions.openRoleChangeDialog),
+            exhaustMap(({ dialogData }) => {
+                const dialogRef = dialog.open(RoleChangeDialogComponent, { width: '600px', data: dialogData });
+                return dialogRef.afterClosed().pipe(
+                    concatMap((dialogResult: RoleChangeDialogData) => {
+                        if (dialogResult === undefined) 
+                            return of(noOperation());
+
+                        return of(usersActions.changeUserRole({ userId: dialogResult.userId, newRole: dialogResult.role }))
+                    })
+                );
+            }
             )
         )
     },
@@ -90,6 +115,18 @@ export const updateUserData$ = createEffect(
     {functional: true}
 )
 
+export const redirectAfterUsernameUpdateSuccess$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(usersActions.updateUserDataSuccess),
+        tap(({user}) => {
+            router.navigateByUrl('/users/'+user.username)
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
+})
+
 export const deleteUserAccount$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
@@ -126,8 +163,8 @@ export const changeUserProfileImage$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.changeUserProfileImage),
-            exhaustMap(({ formData }) =>
-                usersService.changeUserProfileImage(formData).pipe(
+            exhaustMap(({ newImage }) =>
+                usersService.changeUserProfileImage(newImage).pipe(
                     map((user: User) => {
                         return usersActions.changeUserProfileImageSuccess({ user })
                     }),

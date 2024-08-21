@@ -2,12 +2,12 @@
     <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading; else loadedProfile"></mat-spinner>
 
     <ng-template #loadedProfile>
-        <mat-card *ngIf="userProfile" appearance="outlined" class="w-100 h-100">
+        <mat-card *ngIf="dataFromStore.userProfile" appearance="outlined" class="w-100 h-100">
             <mat-card-header class="d-flex justify-content-center">
                 <div class="profile-image position-relative mb-3">
-                    <app-avatar-image [rounded]="true" [imageUrl]="userProfile.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
+                    <app-avatar-image [rounded]="true" [imageUrl]="dataFromStore.userProfile.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
                     <button class="btn btn-sm bg-green text-beige rounded-circle btn-change-image" 
-                        *ngIf="userProfile.id === dataFromStore.loggedInUser.id"
+                        *ngIf="dataFromStore.userProfile.id === dataFromStore.loggedInUser.id"
                         (click)="imageUploadControl.click()">
                         <mat-icon fontIcon="camera_enhance"></mat-icon>
                     </button>
@@ -20,33 +20,33 @@
             <mat-card-content>
                 <ng-container *ngIf="!isEditing; else editingForm">
                     <mat-card-title>
-                        <h6 class="text-center">{{userProfile.username}}</h6>
+                        <h6 class="text-center">{{dataFromStore.userProfile.username}}</h6>
                     </mat-card-title>
                     <mat-card-subtitle>
-                        <p class="text-center text-bold lead">{{userProfile.firstName}} {{userProfile.lastName}}</p>
+                        <p class="text-center text-bold lead">{{dataFromStore.userProfile.firstName}} {{dataFromStore.userProfile.lastName}}</p>
                     </mat-card-subtitle>
 
-                    <div *ngIf="userProfile.id === dataFromStore.loggedInUser.id" class="d-flex justify-content-center">
-                        <button class="btn bg-purple text-beige mx-auto" (click)="switchToEditingMode()">Izmeni podatke</button>
+                    <div *ngIf="dataFromStore.userProfile.id === dataFromStore.loggedInUser.id" class="d-flex justify-content-center">
+                        <button class="btn bg-purple text-beige mx-auto" (click)="switchToEditingMode(dataFromStore.userProfile)">Izmeni podatke</button>
                     </div>
                 </ng-container>
                     
                 <ng-template #editingForm>
-                    <form [formGroup]="userDataForm" (ngSubmit)="saveUserDataChanges()">
+                    <form [formGroup]="userDataForm" (ngSubmit)="saveUserDataChanges(dataFromStore.userProfile.id)">
                         <mat-form-field subscriptSizing="dynamic" appearance="fill" class="w-100 mb-2">
                             <mat-label>Korisničko ime</mat-label>
                             <input matInput placeholder="Korisničko ime" formControlName="username">
-                            <mat-hint *ngIf="userDataForm.controls['username'].touched && userDataForm.controls['username'].errors">Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.</mat-hint>
+                            <mat-hint *ngIf="formUsername.touched && formUsername.errors">Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.</mat-hint>
                         </mat-form-field>
                         <mat-form-field subscriptSizing="dynamic" appearance="fill" class="w-100 mb-2">
                             <mat-label>Ime</mat-label>
                             <input matInput placeholder="Ime" formControlName="firstName">
-                            <mat-hint *ngIf="userDataForm.controls['firstName'].touched && userDataForm.controls['firstName'].errors">Ime je obavezno</mat-hint>
+                            <mat-hint *ngIf="formFirstName.touched && formFirstName.errors">Ime je obavezno</mat-hint>
                         </mat-form-field>
                         <mat-form-field subscriptSizing="dynamic" appearance="fill" class="w-100 mb-2">
                             <mat-label>Prezime</mat-label>
                             <input matInput placeholder="Prezime" formControlName="lastName">
-                            <mat-hint *ngIf="userDataForm.controls['lastName'].touched && userDataForm.controls['lastName'].errors">Prezime je obavezno</mat-hint>
+                            <mat-hint *ngIf="formLastName.touched && formLastName.errors">Prezime je obavezno</mat-hint>
                         </mat-form-field>
 
                         <div class="d-flex justify-content-end">
@@ -71,44 +71,29 @@
                     </div>
                 </ng-container>
                 <hr>
-                <p>Korisnik aplikacije od: <span class="text-bold">{{userProfile.createdAt | formatDate}}</span></p>
+                <p>Korisnik aplikacije od: <span class="text-bold">{{dataFromStore.userProfile.createdAt | formatDate}}</span></p>
 
-                <app-tag-viewer [readonly]="dataFromStore.loggedInUser.id !== userProfile.id" [tags]="dataFromStore.tags"
+                <app-tag-viewer [readonly]="dataFromStore.loggedInUser.id !== dataFromStore.userProfile.id" [tags]="dataFromStore.tags"
                                 (addTag)="addTag($event)" (removeTag)="removeTag($event)">
                 </app-tag-viewer>
                 
-                <a [routerLink]="'../../user-projects/' + username" class="w-100 my-3 btn bg-brown text-beige">
+                <a [routerLink]="'../../user-projects/' + dataFromStore.userProfile.username" class="w-100 my-3 btn bg-brown text-beige">
                     Pogledaj projekte
                 </a>
+                
+                <p>Uloga: <span class="text-bold">{{dataFromStore.userProfile.role | translateRole }}</span></p>
 
-                <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && userProfile.id !== dataFromStore.loggedInUser.id; else nonAdminView">
-                    <div class="d-flex align-items-center my-3">
-                        <mat-form-field class="d-flex align-items-center" subscriptSizing="dynamic">
-                            <mat-label>Uloga</mat-label>
-                            <mat-select [(value)]="selectedRole">
-                                <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        
-                        <button (click)="changeUserRole()"
-                            [disabled]="userProfile.role === selectedRole" mat-icon-button class="ms-2">
-                            <mat-icon fontIcon="check"></mat-icon>
-                        </button>
-                    </div>
+                <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && dataFromStore.userProfile.id !== dataFromStore.loggedInUser.id">
+                    <hr>
+                    <button class="btn bg-purple text-beige me-2" (click)="showRoleChangeDialog(dataFromStore.userProfile)">
+                        Promeni ulogu
+                    </button>
 
-                    <button class="btn bg-red text-beige" (click)="deleteUserAccount()">
-                        <mat-icon fontIcon="delete"></mat-icon>
+                    <button class="btn bg-red text-beige" (click)="deleteUserAccount(dataFromStore.userProfile.id)">
+                        Obriši nalog
                     </button>
                 </ng-container>
-
-                <ng-template #nonAdminView>
-                    <p>Uloga: <span class="text-bold">{{userProfile.role | translateRole }}</span></p>
-                </ng-template>
-
-
-
             </mat-card-content>
-
         </mat-card>
     </ng-template>
 

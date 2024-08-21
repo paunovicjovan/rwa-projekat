@@ -1,0 +1,19 @@
+<mat-dialog-content>
+    <mat-card appearance="outlined" class="p-3">
+        <form [formGroup]="roleForm">
+            <mat-form-field class="d-flex align-items-center" subscriptSizing="dynamic">
+                <mat-label>Uloga</mat-label>
+                <mat-select [(value)]="roleForm.controls['role'].value">
+                    <mat-option *ngFor="let role of roles" [value]="role">{{role | translateRole}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </mat-card>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div class="d-flex justify-content-end mt-3">
+        <button class="btn bg-brown text-beige me-3" (click)="handleCancelForm()" cdkFocusInitial>Otkaži</button>
+        <button class="btn bg-green text-beige" (click)="handleSubmitForm()" [disabled]="roleForm.invalid || dialogData.role == roleForm.controls['role'].value">Sačuvaj</button>
+    </div>
+</mat-dialog-actions>

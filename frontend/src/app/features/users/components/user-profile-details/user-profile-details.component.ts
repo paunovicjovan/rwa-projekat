@@ -13,26 +13,23 @@ import * as sharedActions from '../../../../shared/state/shared.actions';
 import * as tagsSelectors from '../../../tags/state/tags.selectors';
 import * as tagsActions from '../../../tags/state/tags.actions';
 import { Tag } from '../../../tags/models/tag.interface';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UpdateUserDto } from '../../models/update-user-dto.interface';
+import { RoleChangeDialogData } from '../../models/role-change-dialog-data.interface';
 
 @Component({
   selector: 'app-user-profile-details',
   templateUrl: './user-profile-details.component.html',
   styleUrl: './user-profile-details.component.scss'
 })
-export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges {
+export class UserProfileDetailsComponent implements OnInit, OnChanges {
   @Input({required: true}) username!: string;
   @ViewChild("imageUploadControl", {static:false}) imageUploadControl!:ElementRef;
 
   dataFromStore$!: Observable<any>;
-  userProfile: User | null = null;
-  chosenUserSubscription?: Subscription;
   isEditing: boolean = false;
   userDataForm!: FormGroup;
 
-  roles: string[] = Object.values(UserRoles);
-  selectedRole!: UserRoles;
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
 
@@ -63,22 +60,13 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     })
   }
 
-    
   selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
+      userProfile: this.store.select(usersSelectors.selectChosenUserProfile),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
       tags: this.store.select(tagsSelectors.selectLoadedTags)
     });
-
-    this.chosenUserSubscription = this.store.select(usersSelectors.selectChosenUserProfile).pipe(
-      filter((user: User | null) => user !== null)
-    ).subscribe(
-      (user: User | null) => {
-        this.userProfile = user;
-        this.selectedRole = user!.role;
-      }
-    )
   }
 
   ngOnChanges(): void {
@@ -107,19 +95,21 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
       return;
 
     const croppedImageFile = new File([this.croppedImage], 'profile-image.png', { type: 'image/png' });
-    const formData = new FormData();
-    formData.append('file', croppedImageFile);
-    this.store.dispatch(usersActions.changeUserProfileImage({ formData }))
+    this.store.dispatch(usersActions.changeUserProfileImage({ newImage: croppedImageFile }))
   }
 
-  changeUserRole() {
-    this.store.dispatch(usersActions.changeUserRole({userId: this.userProfile!.id, newRole: this.selectedRole}))
+  showRoleChangeDialog(user: User) {
+    const dialogData: RoleChangeDialogData = {
+      userId: user.id,
+      role: user.role
+    }
+    this.store.dispatch(usersActions.openRoleChangeDialog({dialogData}))
   }
 
-  deleteUserAccount() {
+  deleteUserAccount(userId: number) {
     this.store.dispatch(sharedActions.openConfirmationDialog({
       message: "Da li sigurno želite da obrišete ovaj nalog?",
-      actionToDispatch: usersActions.deleteUserAccount({userId: this.userProfile!.id})
+      actionToDispatch: usersActions.deleteUserAccount({userId})
     }))
   }
 
@@ -131,25 +121,33 @@ export class UserProfileDetailsComponent implements OnInit, OnDestroy, OnChanges
     this.store.dispatch(tagsActions.removeTagFromUser({ tagId }));
   }
 
-  switchToEditingMode() {
+  switchToEditingMode(user: User) {
     this.isEditing = true;
-    this.userDataForm.patchValue({...this.userProfile});
+    this.userDataForm.patchValue({...user});
   }
 
   cancelUserDataChanges() {
     this.isEditing = false;
   }
 
-  saveUserDataChanges() {
+  saveUserDataChanges(userId: number) {
     const userData: UpdateUserDto = {
-      id: this.userProfile!.id,
+      id: userId,
       ...this.userDataForm.getRawValue()
     }
     this.store.dispatch(usersActions.updateUserData({userData}));
     this.isEditing = false;
   }
 
-  ngOnDestroy(): void {
-    this.chosenUserSubscription?.unsubscribe();
+  get formUsername() {
+    return this.userDataForm.get('username') as FormControl;
+  }
+
+  get formFirstName() {
+    return this.userDataForm.get('firstName') as FormControl;
+  }
+
+  get formLastName() {
+    return this.userDataForm.get('lastName') as FormControl;
   }
 }

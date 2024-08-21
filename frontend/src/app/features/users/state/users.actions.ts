@@ -5,6 +5,7 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.int
 import { UserRoles } from '../models/user-roles.enum';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
 import { UpdateUserDto } from '../models/update-user-dto.interface';
+import { RoleChangeDialogData } from '../models/role-change-dialog-data.interface';
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
@@ -33,6 +34,11 @@ export const filterUsersSuccess = createAction(
 export const filterUsersFailure = createAction(
   '[Users] Load Users Failure'
 )
+
+export const openRoleChangeDialog = createAction(
+  '[Users] Open Role Change Dialog',
+  props<{ dialogData: RoleChangeDialogData }>()
+);
 
 export const changeUserRole = createAction(
   '[Users] Change User Role',
@@ -78,7 +84,7 @@ export const deleteUserAccountFailure = createAction(
 
 export const changeUserProfileImage = createAction(
   '[Users] Change User Profile Image',
-  props<{formData: FormData}>()
+  props<{newImage: File}>()
 )
 
 export const changeUserProfileImageSuccess = createAction(
