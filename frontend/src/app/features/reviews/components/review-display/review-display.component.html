@@ -1,6 +1,6 @@
 <mat-card class="mx-auto mb-3 p-1 col-12 w-100" appearance="outlined">
     <mat-card-header>
-        <div class="d-flex flex-row align-items-center justify-content-between w-100">
+        <div class="d-flex flex-column flex-sm-row gap-3 gap-sm-0 align-items-center justify-content-between w-100 mb-3">
 
             <div class="d-flex flex-row align-items-center">
                 <div class="profile-image d-flex align-items-center">
@@ -8,7 +8,7 @@
                 </div>
                 <div class="ms-3">
                     <mat-card-title>
-                        <h6 [routerLink]="'../' + review.author.username" class="cursor-pointer">{{review.author.username}}</h6>
+                        <h6 [routerLink]="'../' + review.author.username" class="cursor-pointer text-dark">{{review.author.username}}</h6>
                     </mat-card-title>
                     <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
                 </div>

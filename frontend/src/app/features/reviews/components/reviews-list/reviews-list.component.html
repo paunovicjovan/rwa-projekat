@@ -1,9 +1,9 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <mat-card appearance="outlined" class="p-3 w-100 h-100">
-        <div class="d-flex justify-content-between flex-column flex-sm-row">
-            <h5 class="mb-3">Ocene korisnika</h5>
+        <div class="d-flex justify-content-between flex-column flex-sm-row align-items-center mb-3">
+            <h6>Ocene korisnika</h6>
             <button *ngIf="dataFromStore.loggedInUser.username !== revieweeUsername"
-                class="btn bg-green text-beige h-50 mb-3 mb-sm-0" (click)="showNewReviewForm()">
+                class="btn bg-green text-beige mb-3 mb-sm-0" (click)="showNewReviewForm()">
                 Dodaj ocenu
             </button>
         </div>

@@ -3,40 +3,43 @@
         <a class="navbar-brand" routerLink="/">
             <img src="assets/full-logo.png" alt="logo" class="logo-img logo" />
         </a>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#n-bar">
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex justify-content-end" id="n-bar">
-            <ul class="navbar-nav d-flex align-items-lg-center justify-content-end">
+        <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex align-items-end justify-content-end justify-content-lg-end" id="navbar">
+            <ul class="navbar-nav d-flex align-items-end align-items-lg-center">
                 <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-                    <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item text-end me-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="chats"><mat-icon fontIcon="chats"></mat-icon></a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" [routerLink]="'user-projects/'+currentUser.username">MOJI PROJEKTI</a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
-                    <li class="nav-item text-end me-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
+                    <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item me-lg-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
+                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="chats">PORUKE</a></li>
+                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
+                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
 
+                    <li class="nav-item dropdown cursor-pointer">
+                        <div class="d-flex flex-column align-items-end">
 
-                    <li class="nav-item dropdown text-end cursor-pointer">
-                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <span class="me-2 username">{{currentUser.username | uppercase}}</span>
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                <span class="me-2 username">{{currentUser.username | uppercase}}</span>
                             <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + currentUser.profileImage" alt="">
                             <ng-template #defaultProfileImage>
                                 <img src="assets/default-profile-image.jpg" alt="">
                             </ng-template>
-                        </a>
-
-                        <div class="dropdown-menu">
-                            <a [routerLink]="'/users/'+ currentUser.username" class="dropdown-item">MOJ PROFIL</a>
-                            <div class="dropdown-divider"></div>
-                            <a (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</a>
+                            </a>
+                            
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a [routerLink]="'/users/'+ currentUser.username" class="dropdown-item">MOJ PROFIL</a>
+                                <a [routerLink]="'user-projects/'+currentUser.username" class="dropdown-item">MOJI PROJEKTI</a>
+                                <div class="dropdown-divider"></div>
+                                <button (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</button>
+                            </div>
+                            
                         </div>
                     </li>
                 </ng-container>
 
                 <ng-template #notLoggedIn>
                     <li class="nav-item text-end"><a class="nav-link me-lg-4" routerLink="login">PRIJAVA</a></li>
-                    <li class="nav-item text-end"><a class="nav-link btn bg-purple text-beige" routerLink="register">REGISTRACIJA</a></li>
+                    <li class="nav-item text-end"><a class="nav-link btn px-3 bg-purple text-beige" routerLink="register">REGISTRACIJA</a></li>
                 </ng-template>
             </ul>
         </div>
