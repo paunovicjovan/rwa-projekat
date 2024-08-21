@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Room } from '../../models/room.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
@@ -18,6 +18,7 @@ import * as usersSelectors from '../../../users/state/users.selectors';
 export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterViewChecked {
 
   @Input({required: true}) chatroom!: Room | null;
+  @Output() editChatroom: EventEmitter<Room> = new EventEmitter();
   @ViewChild('messages', {static:false}) private messagesScroller!: ElementRef;
   dataFromStore$!: Observable<any>;
   newMessageForm!: FormGroup;
@@ -84,4 +85,7 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.store.dispatch(chatsActions.leaveRoom());
   }
   
+  handleEditChatroom() {
+    this.editChatroom.emit(this.chatroom!);
+  }
 }

@@ -9,6 +9,7 @@ export class RoomDto {
   users: UserDto[];
   createdAt: Date;
   updatedAt: Date;
+  createdBy: UserDto;
   joinedUsers: JoinedRoomDto[];
   messages: MessageDto[];
 }

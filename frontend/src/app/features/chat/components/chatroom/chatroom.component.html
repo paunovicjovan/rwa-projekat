@@ -3,14 +3,9 @@
         <ng-container *ngIf="chatroom; else noChosenRoom">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <span class="lead text-bold">{{chatroom.name}}</span>
-                <div>
-                    <button class="btn btn-sm bg-brown text-beige me-2">
-                        <mat-icon fontIcon="edit"></mat-icon>
-                    </button>
-                    <button class="btn btn-sm bg-red text-beige">
-                        <mat-icon fontIcon="exit_to_app"></mat-icon>
-                    </button>
-                </div>
+                <button class="btn btn-sm bg-brown text-beige me-2" (click)="handleEditChatroom()" *ngIf="dataFromStore.loggedInUser.id === chatroom.createdBy.id">
+                    <mat-icon fontIcon="edit"></mat-icon>
+                </button>
             </div>
             <div class="d-flex align-items-center mb-2" *ngIf="chatroom.description">
                 <mat-icon fontIcon="description" class="me-2"></mat-icon>
@@ -31,7 +26,7 @@
             </ng-container>
 
             <ng-template #noMessages>
-                <img src="assets/empty-chat.png" alt="Nema poruka" class="img-fluid">
+                <img src="assets/no-messages.png" alt="Nema poruka" class="w-50 mx-auto">
                 <p class="lead text-center mb-5">Nema poruka</p>
             </ng-template>
 

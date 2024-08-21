@@ -4,6 +4,7 @@ import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginat
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
+import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
@@ -14,19 +15,27 @@ export class RoomsService {
 
   constructor(
     @InjectRepository(RoomEntity)
-    private roomsRepository: Repository<RoomEntity>,
-    private usersService: UsersService
+    private roomsRepository: Repository<RoomEntity>
   ) {}
 
   async createRoom(room: CreateRoomDto, creator: UserDto): Promise<RoomResponseDto> {
     room.users.push(creator);
+    room.createdBy = creator;
     return await this.roomsRepository.save(room);
+  }
+
+  async updateRoom(updateRoomDto: UpdateRoomDto): Promise<RoomResponseDto> {
+    await this.roomsRepository.update(updateRoomDto.id, updateRoomDto);
+    return await this.roomsRepository.findOne({
+      where: { id: updateRoomDto.id },
+      relations: ['users', 'createdBy']
+    })
   }
 
   async findRoom(roomId: number): Promise<RoomResponseDto> {
     return await this.roomsRepository.findOne({
       where: {id: roomId},
-      relations: ['users']
+      relations: ['users', 'createdBy']
     });
   }
 
@@ -35,7 +44,7 @@ export class RoomsService {
         where: {
             users: { id: userId }
         },
-        relations: ['users'],
+        relations: ['users', 'createdBy'],
         order: {updatedAt: 'DESC'}
     });
   }

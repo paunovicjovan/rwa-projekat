@@ -4,4 +4,5 @@ export class CreateRoomDto {
     name: string;
     description: string | null;
     users: UserDto[];
+    createdBy: UserDto;
 }

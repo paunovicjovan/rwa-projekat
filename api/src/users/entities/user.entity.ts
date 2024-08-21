@@ -65,6 +65,9 @@ export class UserEntity {
     @ManyToMany(() => RoomEntity, room => room.users)
     rooms: RoomEntity[]
 
+    @OneToMany(() => RoomEntity, room => room.createdBy)
+    createdRooms: RoomEntity[]
+
     @OneToMany(() => JoinedRoomEntity, joinedRoom => joinedRoom.user)
     joinedRooms: JoinedRoomEntity[]
 

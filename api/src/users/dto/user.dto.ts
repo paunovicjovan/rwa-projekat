@@ -25,6 +25,7 @@ export class UserDto {
     acceptedIn: ProjectDto[];
     connections: ConnectedUserDto[]
     rooms: RoomDto[]
+    createdRooms: RoomDto[]
     joinedRooms: JoinedRoomDto[]
     messages: MessageDto[]
 }

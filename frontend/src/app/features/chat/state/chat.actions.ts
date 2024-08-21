@@ -7,6 +7,7 @@ import { CreateRoomDto } from "../models/create-room-dto.interface";
 import { CreateMessageDto } from "../models/create-message-dto.interface";
 import { Message } from "../models/message.interface";
 import { User } from "../../users/models/user.interface";
+import { UpdateRoomDto } from "../models/update-room-dto.interface";
 
 
 export const connect = createAction(
@@ -30,6 +31,11 @@ export const openRoomDialog = createAction(
 export const createRoom = createAction(
     '[Chats] Create Room',
     props<{ createRoomDto: CreateRoomDto }>()
+);
+
+export const updateRoom = createAction(
+    '[Chats] Update Room',
+    props<{ updateRoomDto: UpdateRoomDto }>()
 );
 
 export const receiveRoomsSuccess = createAction(

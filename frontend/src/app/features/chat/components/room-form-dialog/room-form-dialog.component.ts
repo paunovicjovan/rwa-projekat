@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RoomDialogData } from '../../models/room-dialog-data.interface';
@@ -9,12 +9,12 @@ import { User } from '../../../users/models/user.interface';
   templateUrl: './room-form-dialog.component.html',
   styleUrl: './room-form-dialog.component.scss'
 })
-export class RoomFormDialogComponent {
+export class RoomFormDialogComponent implements OnInit {
   roomForm!: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
               private dialogRef: MatDialogRef<RoomFormDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) private dialogData: RoomDialogData
+              @Inject(MAT_DIALOG_DATA) private dialogData: RoomDialogData | undefined
   ) {}
 
   ngOnInit(): void {
@@ -23,13 +23,13 @@ export class RoomFormDialogComponent {
 
   initializeForm() {
     this.roomForm = this.formBuilder.group({
-      id: [null],
-      name: [null, [Validators.required]],
-      description: [null, [
+      id: [this.dialogData?.id],
+      name: [this.dialogData?.name, [Validators.required]],
+      description: [this.dialogData?.description, [
         Validators.maxLength(100)
       ]],
       users: this.formBuilder.array([], [
-        Validators.required
+        this.dialogData?.id ? Validators.nullValidator : Validators.required
       ])
     });
   }

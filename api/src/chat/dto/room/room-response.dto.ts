@@ -7,4 +7,5 @@ export class RoomResponseDto {
     users: UserResponseDto[]
     createdAt: Date;
     updatedAt: Date;
+    createdBy: UserResponseDto;
 }

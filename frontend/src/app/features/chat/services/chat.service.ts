@@ -8,6 +8,7 @@ import { CreateRoomDto } from '../models/create-room-dto.interface';
 import { Message } from '../models/message.interface';
 import { CreateMessageDto } from '../models/create-message-dto.interface';
 import { User } from '../../users/models/user.interface';
+import { UpdateRoomDto } from '../models/update-room-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class ChatService {
 
   createRoom(room: CreateRoomDto) {
     this.socket.emit('createRoom', room);
+  }
+
+  updateRoom(room: UpdateRoomDto) {
+    this.socket.emit('updateRoom', room);
   }
 
   joinRoom(room: Room) {

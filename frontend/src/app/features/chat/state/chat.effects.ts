@@ -14,6 +14,7 @@ import { CreateRoomDto } from "../models/create-room-dto.interface";
 import * as authActions from '../../auth/state/auth.actions';
 import { Message } from "../models/message.interface";
 import { User } from "../../users/models/user.interface";
+import { UpdateRoomDto } from "../models/update-room-dto.interface";
 
 export const connect$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService), authService = inject(AuthService)) => {
@@ -58,6 +59,18 @@ export const createRoom$ = createEffect(
             ofType(chatsActions.createRoom),
             tap(({createRoomDto}) =>
                 chatsService.createRoom(createRoomDto)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const updateRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.updateRoom),
+            tap(({updateRoomDto}) =>
+                chatsService.updateRoom(updateRoomDto)
             )
         )
     },
@@ -202,15 +215,13 @@ export const openRoomDialog$ = createEffect(
                             return of(chatsActions.createRoom({ createRoomDto }))
                         }
                         else {
-                            // const updateReviewDto: UpdateReviewDto = {
-                            //     id: dialogResult.id,
-                            //     content: dialogResult.content!,
-                            //     rating: dialogResult.rating!
-                            // }
-                            // return of(reviewsActions.updateReview({updateReviewDto}));
-                            return of(noOperation()); //privremeno
+                            const updateRoomDto: UpdateRoomDto = {
+                                id: dialogResult.id,
+                                name: dialogResult.name!,
+                                description: dialogResult.description!
+                            }
+                            return of(chatsActions.updateRoom({updateRoomDto}));
                         }
-                      
                     })
                 );
             }

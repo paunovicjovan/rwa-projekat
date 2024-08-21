@@ -1,5 +1,5 @@
 import { UserEntity } from "src/users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { JoinedRoomEntity } from "./joined-room.entity";
 import { MessageEntity } from "./message.entity";
 
@@ -24,6 +24,9 @@ export class RoomEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => UserEntity, user => user.createdRooms)
+  createdBy: UserEntity;
 
   @OneToMany(() => JoinedRoomEntity, joinedUser => joinedUser.room)
   joinedUsers: JoinedRoomEntity[]

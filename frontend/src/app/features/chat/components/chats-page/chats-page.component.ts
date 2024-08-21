@@ -9,6 +9,7 @@ import { Room } from '../../models/room.interface';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { RoomDialogData } from '../../models/room-dialog-data.interface';
 
 @Component({
   selector: 'app-chats-page',
@@ -50,5 +51,9 @@ export class ChatsPageComponent {
 
   openNewRoomDialog() {
     this.store.dispatch(chatActions.openRoomDialog({dialogData: undefined}));
+  }
+
+  openEditRoomDialog(room: Room) {
+    this.store.dispatch(chatActions.openRoomDialog({dialogData: room}))
   }
 }

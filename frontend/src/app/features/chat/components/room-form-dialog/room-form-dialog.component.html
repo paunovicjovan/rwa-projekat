@@ -18,7 +18,7 @@
                     Opis može sadržati do 100 karaktera
                 </mat-hint>
             </mat-form-field>
-            <app-user-viewer [users]="users.value" (addUser)="addUserToForm($event)" (removeUser)="removeUserFromForm($event)"></app-user-viewer>
+            <app-user-viewer *ngIf="!roomForm.controls['id'].value"  [users]="users.value" (addUser)="addUserToForm($event)" (removeUser)="removeUserFromForm($event)"></app-user-viewer>
         </form>
     </mat-card>
 </mat-dialog-content>

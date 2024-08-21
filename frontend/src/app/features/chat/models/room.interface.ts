@@ -7,4 +7,5 @@ export interface Room {
     users: User[]
     createdAt: Date;
     updatedAt: Date;
+    createdBy: User;
 }

@@ -12,7 +12,7 @@
                                 <span>
                                     {{room.name}}
                                 </span>
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center justify-content-between date-container">
                                     <mat-icon fontIcon="calendar_today" class="me-2"></mat-icon>
                                     <span>
                                         {{room.createdAt | formatDate}}
@@ -32,7 +32,7 @@
                 </mat-card>
             </div>
             <div class="col-md-7">
-                <app-chatroom [chatroom]="dataFromStore.chosenRoom"></app-chatroom>
+                <app-chatroom [chatroom]="dataFromStore.chosenRoom" (editChatroom)="openEditRoomDialog($event)"></app-chatroom>
             </div>
         </div>
     </div>

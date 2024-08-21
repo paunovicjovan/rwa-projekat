@@ -13,10 +13,12 @@ import { MessageResponseDto } from 'src/chat/dto/message/message-response.dto';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
+import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
 import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.service';
 import { MessagesService } from 'src/chat/service/messages/messages.service';
 import { RoomsService } from 'src/chat/service/rooms/rooms.service';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 
@@ -82,7 +84,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   async onCreateRoom(socket: Socket, room: CreateRoomDto) {
     const createdRoom = await this.roomsService.createRoom(room, socket.data.user);
 
-    for (const user of createdRoom.users) {
+    await this.sendRoomsToConnectedMembers(createdRoom.users);
+  }
+
+  @SubscribeMessage('updateRoom')
+  async onUpdateRoom(socket: Socket, room: UpdateRoomDto) {
+    const updatedRoom = await this.roomsService.updateRoom(room);
+    await this.sendRoomsToConnectedMembers(updatedRoom.users);
+  }
+
+  async sendRoomsToConnectedMembers(users: UserResponseDto[]) {
+    for (const user of users) {
       const rooms = await this.roomsService.findRoomsForUser(user.id, { page: 1, limit: 10 });
       const connections: ConnectedUserDto[] = await this.connectedUserService.findByUserId(user.id);
       for (const connection of connections) {
