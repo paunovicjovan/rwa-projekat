@@ -158,4 +158,10 @@ export class UsersService {
         user.acceptedIn.push(project);
         return await this.usersRepository.save(user);
     }
+
+    async findAllUsersForRoom(roomId: number): Promise<UserDto[]> {
+        return await this.usersRepository.find({
+            where: {rooms: {id: roomId }}
+        })
+    }
 }

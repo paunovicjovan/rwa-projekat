@@ -6,6 +6,7 @@ import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
 import { UserDto } from 'src/users/dto/user.dto';
+import { UsersService } from 'src/users/service/users.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -14,6 +15,7 @@ export class RoomsService {
   constructor(
     @InjectRepository(RoomEntity)
     private roomsRepository: Repository<RoomEntity>,
+    private usersService: UsersService
   ) {}
 
   async createRoom(room: CreateRoomDto, creator: UserDto): Promise<RoomResponseDto> {

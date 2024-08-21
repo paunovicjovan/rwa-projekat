@@ -1,4 +1,4 @@
-import { OnModuleInit, UnauthorizedException } from '@nestjs/common';
+import { Logger, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import {Socket, Server} from 'socket.io'
@@ -101,13 +101,15 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('joinRoom')
   async onJoinRoom(socket: Socket, room: RoomDto) {
     const messages = await this.messagesService.findMessagesForRoom(room.id, { page:1, limit: 20 });
+    const members = await this.usersService.findAllUsersForRoom(room.id);
     const createJoinedRoomDto: CreateJoinedRoomDto = {
       socketId: socket.id,
       room: room,
       user: socket.data.user
     }
     await this.joinedRoomsService.create(createJoinedRoomDto);
-    return this.server.to(socket.id).emit('messages', messages);
+    await this.server.to(socket.id).emit('messages', messages);
+    await this.server.to(socket.id).emit('members', members);
   }
 
   @SubscribeMessage('leaveRoom')

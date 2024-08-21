@@ -13,10 +13,13 @@
                 </div>
             </div>
             <div class="d-flex align-items-center mb-2" *ngIf="chatroom.description">
-                <mat-icon fontIcon="description"></mat-icon>
+                <mat-icon fontIcon="description" class="me-2"></mat-icon>
                 <span>{{chatroom.description}}</span>
             </div>
-            <span>Korisnici:</span>
+            <div class="d-flex align-items-center mb-2">
+                <mat-icon fontIcon="people" class="me-2"></mat-icon>
+                <app-user-viewer [readonly]="true" [users]="dataFromStore.roomMembers"></app-user-viewer>
+            </div>
             <hr>
 
             <ng-container *ngIf="dataFromStore.messages.length > 0; else noMessages">
@@ -47,7 +50,9 @@
 
         <ng-template #noChosenRoom>
             <p class="lead text-center">Izaberite chat</p>
-            <img src="assets/no-chat-selected.png" class="img-fluid" alt="Nije izabran chat">
+            <div class="d-flex align-items-center h-100">
+                <img src="assets/no-chat-selected.png" class="img-fluid" alt="Nije izabran chat">
+            </div>
         </ng-template>
     </mat-card>
 </ng-container>

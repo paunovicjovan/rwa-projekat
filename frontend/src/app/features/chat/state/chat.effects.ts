@@ -13,6 +13,7 @@ import { RoomDialogData } from "../models/room-dialog-data.interface";
 import { CreateRoomDto } from "../models/create-room-dto.interface";
 import * as authActions from '../../auth/state/auth.actions';
 import { Message } from "../models/message.interface";
+import { User } from "../../users/models/user.interface";
 
 export const connect$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService), authService = inject(AuthService)) => {
@@ -106,6 +107,7 @@ export const receiveRooms$ = createEffect(
             mergeMap(() =>
                 chatsService.receiveRooms().pipe(
                     map((paginatedRooms: PaginatedResponse<Room>) => {
+                        console.log(paginatedRooms);
                         return chatsActions.receiveRoomsSuccess({ paginatedRooms })
                     }),
                     catchError(() => {
@@ -150,6 +152,26 @@ export const receiveNewMessage$ = createEffect(
                     }),
                     catchError(() => {
                         return of(chatsActions.receiveNewMessageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const receiveRoomMembers$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.connect),
+            mergeMap(() =>
+                chatsService.receiveRoomMembers().pipe(
+                    map((members: User[]) => {
+                        return chatsActions.receiveRoomMembersSuccess({ members })
+                    }),
+                    catchError(() => {
+                        return of(chatsActions.receiveRoomMembersFailure())
                     }
                     )
                 )

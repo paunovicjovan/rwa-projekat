@@ -8,6 +8,7 @@ import * as chatsSelectors from '../../state/chat.selectors';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as chatsActions from '../../state/chat.actions';
 import { CreateMessageDto } from '../../models/create-message-dto.interface';
+import * as usersSelectors from '../../../users/state/users.selectors';
 
 @Component({
   selector: 'app-chatroom',
@@ -30,7 +31,8 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.initializeForm();
     this.dataFromStore$ = combineLatest({
       messages: this.store.select(chatsSelectors.selectMessages),
-      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser)
+      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
+      roomMembers: this.store.select(usersSelectors.selectUsers)
     })
   }
 

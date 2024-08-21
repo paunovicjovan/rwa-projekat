@@ -7,6 +7,7 @@ import { PaginationParameters } from '../../../shared/models/pagination-paramete
 import { CreateRoomDto } from '../models/create-room-dto.interface';
 import { Message } from '../models/message.interface';
 import { CreateMessageDto } from '../models/create-message-dto.interface';
+import { User } from '../../users/models/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,10 @@ export class ChatService {
 
   receiveNewMessage(): Observable<Message> {
     return this.socket.fromEvent<Message>('newMessage');
+  }
+
+  receiveRoomMembers(): Observable<User[]> {
+    return this.socket.fromEvent<User[]>('members');
   }
 
 }

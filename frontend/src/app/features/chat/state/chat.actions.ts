@@ -6,6 +6,7 @@ import { RoomDialogData } from "../models/room-dialog-data.interface";
 import { CreateRoomDto } from "../models/create-room-dto.interface";
 import { CreateMessageDto } from "../models/create-message-dto.interface";
 import { Message } from "../models/message.interface";
+import { User } from "../../users/models/user.interface";
 
 
 export const connect = createAction(
@@ -75,4 +76,13 @@ export const receiveNewMessageSuccess = createAction(
 
 export const receiveNewMessageFailure = createAction(
     '[Chats] Receive New Message Failure'
+)
+
+export const receiveRoomMembersSuccess = createAction(
+    '[Chats] Receive Room Members Success',
+    props<{ members: User[] }>()
+)
+
+export const receiveRoomMembersFailure = createAction(
+    '[Chats] Receive Room Members Failure'
 )

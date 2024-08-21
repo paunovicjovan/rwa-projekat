@@ -4,6 +4,7 @@ import * as usersActions from './users.actions'
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { User } from "../models/user.interface";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
+import * as chatsActions from '../../chat/state/chat.actions';
 
 const initialPaginationMetadataState : PaginationMetadata = {
     totalItems: 0,
@@ -189,4 +190,7 @@ export const usersReducer = createReducer(
             }
         });
     }),
+    on(chatsActions.receiveRoomMembersSuccess, (state, action)=>{
+        return usersAdapter.setAll(action.members, state);
+    })
 )
