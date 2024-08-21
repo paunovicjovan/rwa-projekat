@@ -32,7 +32,10 @@ body {
 .mat-typography button,
 .mat-typography input,
 .mat-typography input::placeholder,
-.mat-typography a
+.mat-typography a,
+.mat-typography label,
+.mat-typography mat-error,
+.mat-typography mat-hint
  {
   font-family: 'Manrope' !important;
 }

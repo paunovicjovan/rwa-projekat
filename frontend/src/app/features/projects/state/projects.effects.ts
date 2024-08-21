@@ -19,7 +19,7 @@ export const createProject$ = createEffect(
             ofType(projectsActions.createProject),
             concatMap(({image, createProjectDto}) =>
                 projectsService.create(createProjectDto, image).pipe(
-                    map((project: Project) => {
+                    map(() => {
                         return projectsActions.createProjectSuccess()
                     }),
                     catchError(() => {

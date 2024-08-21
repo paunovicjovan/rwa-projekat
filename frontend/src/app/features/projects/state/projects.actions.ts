@@ -15,7 +15,7 @@ export const createProject = createAction(
 );
 
 export const createProjectSuccess = createAction(
-    '[Projects] Create Project Success', //dodaj props?
+    '[Projects] Create Project Success',
 );
 
 export const createProjectFailure = createAction(
