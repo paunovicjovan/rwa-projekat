@@ -8,4 +8,5 @@ export interface ChatState extends EntityState<Room> {
     chosenRoomId: number | null;
     messages: Message[];
     messagesPaginationMetadata: PaginationMetadata;
+    isLoading: boolean;
 }

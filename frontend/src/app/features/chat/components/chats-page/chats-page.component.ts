@@ -24,7 +24,6 @@ export class ChatsPageComponent {
 
   ngOnInit(): void {
     this.store.dispatch(chatActions.connect());
-    // this.store.dispatch(chatActions.loadRooms({paginationOptions: {page: 1, limit: 10}}));
     this.selectDataFromStore();
   }
 

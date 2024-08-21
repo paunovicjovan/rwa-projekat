@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { ProjectsState } from "../models/projects-state.interface";
 import { Features } from "../../features.enum";
+import { Project } from "../models/project.interface";
 
 
 export const projectsFeature = createFeatureSelector<ProjectsState>(Features.Projects);
@@ -13,6 +14,8 @@ export const selectIsLoading = createSelector(
 export const selectProjects = createSelector(
     projectsFeature,
     (state: ProjectsState) => state.ids.map(id => state.entities[id])
+                                       .filter(project => project != undefined)
+                                       .map(project => project as Project)
 )
 
 export const selectPaginationMetadata = createSelector(

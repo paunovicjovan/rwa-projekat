@@ -37,7 +37,8 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
       messages: this.store.select(chatsSelectors.selectMessages),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
       roomMembers: this.store.select(usersSelectors.selectUsers),
-      messagesPaginationMetadata: this.store.select(chatsSelectors.selectMessagesPaginationMetadata)
+      messagesPaginationMetadata: this.store.select(chatsSelectors.selectMessagesPaginationMetadata),
+      isLoading: this.store.select(chatsSelectors.selectIsLoading)
     })
   }
 
@@ -65,10 +66,10 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
   }
 
   ngAfterViewChecked(): void {
-    this.scrollToBottom();
+    this.scrollToNewMessages();
   }
 
-  scrollToBottom() {
+  scrollToNewMessages() {
     if(this.messagesScroller && this.messagesScroller.nativeElement) {
       const currentScrollHeight = this.messagesScroller.nativeElement.scrollHeight;
       if (currentScrollHeight > this.previousScrollHeight) {

@@ -19,7 +19,8 @@ const initialState: ChatState = {
     roomsPaginationMetadata: initialPaginationMetadataState,
     chosenRoomId: null,
     messages: [],
-    messagesPaginationMetadata: initialPaginationMetadataState
+    messagesPaginationMetadata: initialPaginationMetadataState,
+    isLoading: false
 }
 
 export const chatsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>();
@@ -41,7 +42,14 @@ export const chatsReducer = createReducer(
         return {
             ...state,
             messages: action.paginatedMessages.items,
-            messagesPaginationMetadata: action.paginatedMessages.meta
+            messagesPaginationMetadata: action.paginatedMessages.meta,
+            isLoading: false
+        };
+    }),
+    on(chatsActions.receiveMessagesFailure, (state, action) => {
+        return {
+            ...state,
+            isLoading: false
         };
     }),
     on(chatsActions.receiveMoreMessagesSuccess, (state, action) => {
@@ -54,7 +62,8 @@ export const chatsReducer = createReducer(
     on(chatsActions.chooseRoom, (state, action) => {
         return {
             ...state,
-            chosenRoomId: action.roomId
+            chosenRoomId: action.roomId,
+            isLoading: true
         }
     }),
     on(chatsActions.receiveNewMessageSuccess, (state, action) => {
@@ -64,8 +73,7 @@ export const chatsReducer = createReducer(
             messagesPaginationMetadata: {
                 ...state.messagesPaginationMetadata,
                 totalItems: state.messagesPaginationMetadata.totalItems + 1,
-                itemCount: state.messagesPaginationMetadata.itemCount + 1,
-                // itemsPerPage: state.messagesPaginationMetadata.itemsPerPage + 1
+                itemCount: state.messagesPaginationMetadata.itemCount + 1
             }
         }
     })

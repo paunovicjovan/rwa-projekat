@@ -10,6 +10,8 @@ export const chatsFeature = createFeatureSelector<ChatState>(Features.Chats);
 export const selectRooms = createSelector(
     chatsFeature,
     (state: ChatState) => state.ids.map(id => state.entities[id])
+                                   .filter(room => room != undefined)
+                                   .map(room => room as Room)
 )
 
 export const selectRoomsPaginationMetadata = createSelector(
@@ -41,4 +43,9 @@ export const selectMessages = createSelector(
 export const selectMessagesPaginationMetadata = createSelector(
     chatsFeature,
     (state: ChatState) => state.messagesPaginationMetadata
+)
+
+export const selectIsLoading = createSelector(
+    chatsFeature,
+    (state: ChatState) => state.isLoading
 )
