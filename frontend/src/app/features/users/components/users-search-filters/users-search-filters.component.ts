@@ -25,9 +25,7 @@ export class UsersSearchFiltersComponent implements OnInit, OnDestroy {
   filtersSubscription?: Subscription;
   @Output() onFilterChange: EventEmitter<UsersFilters> = new EventEmitter<UsersFilters>();
 
-  constructor(private formBuilder: FormBuilder,
-              private store: Store<AppState>
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.initializeForm();

@@ -4,6 +4,7 @@ import { TagsService } from "../services/tags.service"
 import * as tagsActions from '../state/tags.actions';
 import { catchError, concatMap, exhaustMap, map, of, switchMap } from "rxjs";
 import { Tag } from "../models/tag.interface";
+import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
 
 export const searchTags$ = createEffect(
     (action$ = inject(Actions), tagsService = inject(TagsService)) => {
@@ -106,12 +107,13 @@ export const removeTagFromProject$ = createEffect(
 )
 
 export const createTag$ = createEffect(
-    (action$ = inject(Actions), tagsService = inject(TagsService)) => {
+    (action$ = inject(Actions), tagsService = inject(TagsService), snackbarService = inject(SnackbarService)) => {
         return action$.pipe(
             ofType(tagsActions.createTag),
             exhaustMap(({tag}) =>
                 tagsService.create(tag).pipe(
                     map((tag: Tag) => {
+                        snackbarService.openSnackBar('Uspešno je kreiran novi tag.')
                         return tagsActions.createTagSuccess({ tag })
                     }),
                     catchError(() => {

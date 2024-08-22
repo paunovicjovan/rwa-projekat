@@ -29,7 +29,7 @@ export class NewProjectComponent implements OnInit {
       title: [null, [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(30)]
+        Validators.maxLength(20)]
       ],
       description: [null, [
         Validators.required,

@@ -81,7 +81,19 @@
                     Pogledaj projekte
                 </a>
                 
-                <p>Uloga: <span class="text-bold">{{dataFromStore.userProfile.role | translateRole }}</span></p>
+                <div class="d-flex align-items-center">
+                    <p class="my-0">Uloga: <span class="text-bold">{{dataFromStore.userProfile.role | translateRole }}</span></p>
+                    <mat-icon *ngIf="dataFromStore.userProfile.role === 'moderator'" 
+                              fontIcon="info" 
+                              class="ms-2 text-green" 
+                              matTooltip="Moderatori pored funkcionalnosti korisnika mogu još da upravljaju tagovima ili da brišu ocene korisnika.">
+                    </mat-icon>
+                    <mat-icon *ngIf="dataFromStore.userProfile.role === 'admin'" 
+                              fontIcon="info" 
+                              class="ms-2 text-green" 
+                              matTooltip="Administratori pored funkcionalnosti korisnika mogu još da upravljaju tagovima, brišu ocene korisnika, projekte ili korisnike">
+                    </mat-icon>
+                </div>
 
                 <ng-container *ngIf="dataFromStore.loggedInUser.role === 'admin' && dataFromStore.userProfile.id !== dataFromStore.loggedInUser.id">
                     <hr>
