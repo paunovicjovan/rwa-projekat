@@ -11,6 +11,8 @@ import { ProjectResponseDto } from '../dto/project-response.dto';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import * as path from 'path';
 import { ProjectStatus } from '../enums/project-status.enum';
+import { ProjectAuthorOrAdminGuard } from '../guards/project-author-or-admin/project-author-or-admin.guard';
+import { UserIsProjectAuthorGuard } from '../guards/user-is-project-author/user-is-project-author.guard';
 
 @Controller('projects')
 export class ProjectsController {
@@ -19,49 +21,52 @@ export class ProjectsController {
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post()
-  create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Promise<ProjectDto> {
+  async create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Promise<ProjectDto> {
     const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
-    return this.projectsService.create(file?.filename, createProjectDto, req.user.id);
+    return await this.projectsService.create(file?.filename, createProjectDto, +req.user.id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('suggested-projects')
-  findSuggestedProjectsForUser(@Request() req): Promise<ProjectResponseDto[]> {
+  async findSuggestedProjectsForUser(@Request() req): Promise<ProjectResponseDto[]> {
     const userId = req.user.id;
-    return this.projectsService.findSuggestedProjectsForUser(userId);
+    return await this.projectsService.findSuggestedProjectsForUser(+userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('filter-projects')
-  findManyPaginated(
+  async findManyPaginated(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
     @Body() searchFilters: SearchProjectsFilters 
   ) {
     limit = Math.min(100, limit);
-    return this.projectsService.findManyPaginated({ page, limit }, searchFilters);
+    return await this.projectsService.findManyPaginated({ page, limit }, searchFilters);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<ProjectResponseDto> {
-    return this.projectsService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<ProjectResponseDto> {
+    return await this.projectsService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard, UserIsProjectAuthorGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
-    return this.projectsService.update(+id, updateProjectDto);
+  async update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
+    return await this.projectsService.update(+id, updateProjectDto);
   }
 
+  @UseGuards(JwtAuthGuard, ProjectAuthorOrAdminGuard)
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return this.projectsService.deleteOne(+id);
+  async delete(@Param('id') id: number) {
+    return await this.projectsService.deleteOne(+id);
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post('upload-project-image/:id')
-  uploadProfileImage(@UploadedFile() file, @Param('id') id: number) : Promise<ProjectResponseDto> {
-      return this.projectsService.updateProjectImage(id, file.filename);
+  async uploadProjectImage(@UploadedFile() file, @Param('id') id: number) : Promise<ProjectResponseDto> {
+      return await this.projectsService.updateProjectImage(+id, file.filename);
   }
 
   @Get('project-image/:imageName')
@@ -71,36 +76,39 @@ export class ProjectsController {
       return res.sendFile(absoluteFilePath);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('applied-by/:username')
-  findAppliedProjectsForUser(@Param('username') username: string,
+  async findAppliedProjectsForUser(@Param('username') username: string,
                              @Query('page') page: number = 1, 
                              @Query('limit') limit: number = 10
   ) {
-    return this.projectsService.findAppliedProjectsForUser(username, { page, limit });
+    return await this.projectsService.findAppliedProjectsForUser(username, { page, limit });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('accepted-user/:username/:isCompleted')
-  findAcceptedProjectsForUser(@Param('username') username: string,
+  async findAcceptedProjectsForUser(@Param('username') username: string,
                               @Param('isCompleted') isCompleted: string,
                               @Query('page') page: number = 1, 
                               @Query('limit') limit: number = 10
   ) {
-    return this.projectsService.findAcceptedProjectsForUser(username, isCompleted === 'true', { page, limit });
+    return await this.projectsService.findAcceptedProjectsForUser(username, isCompleted === 'true', { page, limit });
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('created-by/:username/:status')
-  findCreatedProjectsForUser(@Param('username') username: string,
+  async findCreatedProjectsForUser(@Param('username') username: string,
                               @Param('status') status: ProjectStatus,
                               @Query('page') page: number = 1, 
                               @Query('limit') limit: number = 10
   ) {
-    return this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
+    return await this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('can-apply/:projectId')
-  canUserApply(@Param('projectId') projectId: number, @Request() req): Promise<boolean> {
+  async canUserApply(@Param('projectId') projectId: number, @Request() req): Promise<boolean> {
     const userId = req.user.id;
-    return this.projectsService.canUserApply(userId, projectId);
+    return await this.projectsService.canUserApply(+userId, projectId);
   }
 }

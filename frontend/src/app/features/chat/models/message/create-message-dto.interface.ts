@@ -1,4 +1,4 @@
-import { Room } from "./room.interface";
+import { Room } from "../room/room.interface";
 
 export interface CreateMessageDto {
     text: string;

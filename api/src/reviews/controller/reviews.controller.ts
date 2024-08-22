@@ -16,14 +16,14 @@ export class ReviewsController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':revieweeUsername')
-  create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewResponseDto> {
+  async create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewResponseDto> {
     const authorId = req.user.id;
-    return this.reviewsService.create(review, +authorId, revieweeUsername);
+    return await this.reviewsService.create(review, +authorId, revieweeUsername);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':revieweeUsername')
-  findManyPaginated(
+  async findManyPaginated(
       @Param('revieweeUsername') revieweeUsername: string,
       @Query('page') page: number = 1,
       @Query('limit') limit: number = 10,
@@ -33,24 +33,24 @@ export class ReviewsController {
           limit,
           page
       }
-      return this.reviewsService.findManyPaginated(paginateOptions, revieweeUsername);
+      return await this.reviewsService.findManyPaginated(paginateOptions, revieweeUsername);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) : Promise<ReviewResponseDto> {
-    return this.reviewsService.findOneById(+id);
+  async findOne(@Param('id') id: string) : Promise<ReviewResponseDto> {
+    return await this.reviewsService.findOneById(+id);
   }
 
   @UseGuards(JwtAuthGuard, UserIsReviewAuthorGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewResponseDto> {
-    return this.reviewsService.update(+id, reviewData);
+  async update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewResponseDto> {
+    return await this.reviewsService.update(+id, reviewData);
   }
 
   @UseGuards(JwtAuthGuard, ReviewAuthorOrAdminGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) : Promise<any> {
-    return this.reviewsService.deleteOne(+id);
+  async remove(@Param('id') id: number) : Promise<any> {
+    return await this.reviewsService.deleteOne(+id);
   }
 }

@@ -17,59 +17,59 @@ export class TagsController {
   @Roles(UserRoles.MODERATOR, UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
-  create(@Body() createTagDto: CreateTagDto): Promise<TagResponseDto> {
-    return this.tagsService.create(createTagDto);
+  async create(@Body() createTagDto: CreateTagDto): Promise<TagResponseDto> {
+    return await this.tagsService.create(createTagDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  filterByName(@Query('name') name: string = ''): Promise<TagResponseDto[]> {
-    return this.tagsService.filterByName(name);
+  async filterByName(@Query('name') name: string = ''): Promise<TagResponseDto[]> {
+    return await this.tagsService.filterByName(name);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<TagResponseDto> {
-    return this.tagsService.findOne(+id);
+  async findOne(@Param('id') id: number): Promise<TagResponseDto> {
+    return await this.tagsService.findOne(+id);
   }
 
   @Roles(UserRoles.MODERATOR, UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateTagDto: UpdateTagDto): Promise<TagResponseDto> {
-    return this.tagsService.update(+id, updateTagDto);
+  async update(@Param('id') id: number, @Body() updateTagDto: UpdateTagDto): Promise<TagResponseDto> {
+    return await this.tagsService.update(+id, updateTagDto);
   }
 
   @Roles(UserRoles.MODERATOR, UserRoles.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
-  remove(@Param('id') id: number): Promise<any> {
-    return this.tagsService.deleteOne(+id);
+  async remove(@Param('id') id: number): Promise<any> {
+    return await this.tagsService.deleteOne(+id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('add-tag-to-user/:tagId')
-  addTagToUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
+  async addTagToUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
       const userId = req.user.id;
-      return this.tagsService.addTagToUser(+userId, +tagId);
+      return await this.tagsService.addTagToUser(+userId, +tagId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove-tag-from-user/:tagId')
-  removeTagFromUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
+  async removeTagFromUser(@Param('tagId') tagId: number, @Request() req): Promise<TagResponseDto> {
       const userId = req.user.id;
-      return this.tagsService.removeTagFromUser(+userId, +tagId);
+      return await this.tagsService.removeTagFromUser(+userId, +tagId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('add-tag-to-project/:tagId/:projectId')
-  addTagToProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
-      return this.tagsService.addTagToProject(+projectId, +tagId);
+  async addTagToProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
+      return await this.tagsService.addTagToProject(+projectId, +tagId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('remove-tag-from-project/:tagId/:projectId')
-  removeTagFromProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
-      return this.tagsService.removeTagFromProject(+projectId, +tagId);
+  async removeTagFromProject(@Param('tagId') tagId: number, @Param('projectId') projectId: number): Promise<TagResponseDto> {
+      return await this.tagsService.removeTagFromProject(+projectId, +tagId);
   }
 }

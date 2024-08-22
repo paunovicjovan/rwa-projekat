@@ -7,7 +7,7 @@ import { Not, Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
-import { IPaginationOptions, paginate, paginateRawAndEntities, Pagination } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import { ProjectStatus } from '../enums/project-status.enum';
 import * as fs from 'fs';
@@ -150,10 +150,10 @@ export class ProjectsService {
       where: {id: projectId},
       relations: ['createdBy', 'appliedBy', 'acceptedUsers']
     });
-    const isUserApplied = project.appliedBy.some((user: UserDto) => user.id == userId);
+    const hasUserApplied = project.appliedBy.some((user: UserDto) => user.id == userId);
     const isUserAccepted = project.acceptedUsers.some((user: UserDto) => user.id == userId);
     const isUserAuthor = project.createdBy.id === userId;
-    const canApply = !isUserApplied && !isUserAccepted && !isUserAuthor;
+    const canApply = !hasUserApplied && !isUserAccepted && !isUserAuthor;
     return canApply;
   }
 

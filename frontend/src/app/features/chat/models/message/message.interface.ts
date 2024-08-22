@@ -1,5 +1,5 @@
-import { User } from "../../users/models/user.interface";
-import { Room } from "./room.interface";
+import { User } from "../../../users/models/user.interface";
+import { Room } from "../room/room.interface";
 
 export interface Message {
     id: number;

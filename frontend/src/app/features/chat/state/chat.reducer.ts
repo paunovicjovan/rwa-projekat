@@ -2,7 +2,7 @@ import { createReducer, on } from "@ngrx/store";
 import * as chatsActions from './chat.actions';
 import { ChatState } from "../models/chat-state.interface";
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
-import { Room } from "../models/room.interface";
+import { Room } from "../models/room/room.interface";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
 
 const initialPaginationMetadataState : PaginationMetadata = {

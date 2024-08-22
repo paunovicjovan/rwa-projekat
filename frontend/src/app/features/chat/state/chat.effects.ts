@@ -4,17 +4,17 @@ import * as chatsActions from './chat.actions';
 import { catchError, concatMap, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { ChatService } from "../services/chat.service";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
-import { Room } from "../models/room.interface";
+import { Room } from "../models/room/room.interface";
 import { AuthService } from "../../auth/services/auth.service";
 import { MatDialog } from "@angular/material/dialog";
 import { RoomFormDialogComponent } from "../components/room-form-dialog/room-form-dialog.component";
 import { noOperation } from "../../../shared/state/shared.actions";
-import { RoomDialogData } from "../models/room-dialog-data.interface";
-import { CreateRoomDto } from "../models/create-room-dto.interface";
+import { RoomDialogData } from "../models/room/room-dialog-data.interface";
+import { CreateRoomDto } from "../models/room/create-room-dto.interface";
 import * as authActions from '../../auth/state/auth.actions';
-import { Message } from "../models/message.interface";
+import { Message } from "../models/message/message.interface";
 import { User } from "../../users/models/user.interface";
-import { UpdateRoomDto } from "../models/update-room-dto.interface";
+import { UpdateRoomDto } from "../models/room/update-room-dto.interface";
 
 export const connect$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService), authService = inject(AuthService)) => {

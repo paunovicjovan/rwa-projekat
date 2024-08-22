@@ -1,5 +1,5 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { Room } from '../../models/room.interface';
+import { Room } from '../../models/room/room.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
 import { combineLatest, Observable } from 'rxjs';
@@ -7,11 +7,11 @@ import * as authSelectors from '../../../auth/state/auth.selectors';
 import * as chatsSelectors from '../../state/chat.selectors';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as chatsActions from '../../state/chat.actions';
-import { CreateMessageDto } from '../../models/create-message-dto.interface';
+import { CreateMessageDto } from '../../models/message/create-message-dto.interface';
 import * as usersSelectors from '../../../users/state/users.selectors';
 import { PaginationMetadata } from '../../../../shared/models/pagination-metadata.interface';
 import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
-import { MoreMessagesDto } from '../../models/more-messages-dto.interface';
+import { MoreMessagesDto } from '../../models/message/more-messages-dto.interface';
 
 @Component({
   selector: 'app-chatroom',

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { RoomDialogData } from '../../models/room-dialog-data.interface';
+import { RoomDialogData } from '../../models/room/room-dialog-data.interface';
 import { User } from '../../../users/models/user.interface';
 
 @Component({

@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { Features } from "../../features.enum";
 import { ChatState } from "../models/chat-state.interface";
 import { Dictionary } from "@ngrx/entity";
-import { Room } from "../models/room.interface";
+import { Room } from "../models/room/room.interface";
 
 
 export const chatsFeature = createFeatureSelector<ChatState>(Features.Chats);

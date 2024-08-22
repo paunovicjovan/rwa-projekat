@@ -2,21 +2,20 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { CustomSocket } from '../sockets/custom-socket';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
-import { Room } from '../models/room.interface';
+import { Room } from '../models/room/room.interface';
 import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
-import { CreateRoomDto } from '../models/create-room-dto.interface';
-import { Message } from '../models/message.interface';
-import { CreateMessageDto } from '../models/create-message-dto.interface';
+import { CreateRoomDto } from '../models/room/create-room-dto.interface';
+import { Message } from '../models/message/message.interface';
+import { CreateMessageDto } from '../models/message/create-message-dto.interface';
 import { User } from '../../users/models/user.interface';
-import { UpdateRoomDto } from '../models/update-room-dto.interface';
-import { MoreMessagesDto } from '../models/more-messages-dto.interface';
+import { UpdateRoomDto } from '../models/room/update-room-dto.interface';
+import { MoreMessagesDto } from '../models/message/more-messages-dto.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  // constructor(@Inject(CustomSocket) private socket: CustomSocket) { }
   constructor(private socket: CustomSocket) { }
 
   connect(jwt: string | null) {

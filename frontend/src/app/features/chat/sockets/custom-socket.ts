@@ -9,7 +9,6 @@ const config: SocketIoConfig = {
     }
 };
 
-// @Injectable({ providedIn: 'root' })
 export class CustomSocket extends Socket {
   constructor() {
     super(config);

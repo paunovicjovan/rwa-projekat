@@ -5,11 +5,11 @@ import { Store } from '@ngrx/store';
 import * as chatActions from '../../state/chat.actions';
 import * as chatSelectors from '../../state/chat.selectors';
 import { combineLatest, Observable } from 'rxjs';
-import { Room } from '../../models/room.interface';
+import { Room } from '../../models/room/room.interface';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
-import { RoomDialogData } from '../../models/room-dialog-data.interface';
+import { RoomDialogData } from '../../models/room/room-dialog-data.interface';
 
 @Component({
   selector: 'app-chats-page',

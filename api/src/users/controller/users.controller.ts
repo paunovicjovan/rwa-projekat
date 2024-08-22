@@ -12,7 +12,6 @@ import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
-import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 import { UserIsOwnerGuard } from '../guards/user-is-owner/user-is-owner.guard';
 
 @Controller('users')
@@ -24,7 +23,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    findManyPaginated(
+    async findManyPaginated(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
         @Query('username') username: string = '',
@@ -43,13 +42,13 @@ export class UsersController {
             lastName
         }
         const requesterId = req.user.id;
-        return this.usersService.findManyPaginated(paginateOptions, usersFilters, +requesterId);
+        return await this.usersService.findManyPaginated(paginateOptions, usersFilters, +requesterId);
     }
 
     @UseGuards(JwtAuthGuard)
     @Get(':username')
-    findOneByUsername(@Param('username') username: string) : Promise<UserResponseDto> {
-        return this.usersService.findOneByUsername(username);
+    async findOneByUsername(@Param('username') username: string) : Promise<UserResponseDto> {
+        return await this.usersService.findOneByUsername(username);
     }
 
     @UseGuards(JwtAuthGuard, UserIsOwnerGuard)
@@ -66,23 +65,23 @@ export class UsersController {
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('/role/:id')
-    updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
-        return this.usersService.updateOne(id, userData);
+    async updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
+        return await this.usersService.updateOne(id, userData);
     }
 
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
-    deleteOne(@Param('id') id:number) : Promise<any> {
-        return this.usersService.deleteOne(id);
+    async deleteOne(@Param('id') id:number) : Promise<any> {
+        return await this.usersService.deleteOne(id);
     }
 
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
     @Post('upload-profile-image')
-    uploadProfileImage(@UploadedFile() file, @Request() req) : Promise<UserResponseDto> {
+    async uploadProfileImage(@UploadedFile() file, @Request() req) : Promise<UserResponseDto> {
         const user = req.user;
-        return this.usersService.updateProfileImage(user.id, file.filename);
+        return await this.usersService.updateProfileImage(user.id, file.filename);
     }
 
     @Get('profile-image/:imageName')
@@ -92,42 +91,44 @@ export class UsersController {
         return res.sendFile(absoluteFilePath);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('applied-to/:projectId')
-    findAppliedUsersForProject(
+    async findAppliedUsersForProject(
         @Param('projectId') projectId: number,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
         limit = Math.min(limit, 100);
-        return this.usersService.findAppliedUsersForProject(projectId, {page, limit});
+        return await this.usersService.findAppliedUsersForProject(projectId, {page, limit});
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('accepted-in/:projectId')
-    findAcceptedUsersForProject(
+    async findAcceptedUsersForProject(
         @Param('projectId') projectId: number,
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
         limit = Math.min(limit, 100);
-        return this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
+        return await this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('enroll-user-in-project/:projectId')
-    enrollUserInProject(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
+    async enrollUserInProject(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
       const userId = req.user.id;
-      return this.usersService.enrollUserInProject(+userId, +projectId);
+      return await this.usersService.enrollUserInProject(+userId, +projectId);
     }
   
     @UseGuards(JwtAuthGuard)
     @Post('unenroll-user/:projectId/:userId')
-    unenrollUserFromProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-      return this.usersService.unenrollUserFromProject(+userId, +projectId);
+    async unenrollUserFromProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+      return await this.usersService.unenrollUserFromProject(+userId, +projectId);
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('accept-user-in-project/:projectId/:userId')
-    acceptUserInProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-      return this.usersService.acceptUserInProject(+userId, +projectId);
+    async acceptUserInProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+      return await this.usersService.acceptUserInProject(+userId, +projectId);
     }
 }
