@@ -2,24 +2,28 @@
 
     <div class="container py-3">
         <div class="row gap-3 gap-md-0">
+
+            <!-- Add / Update Tag -->
             <div class="col-md-5">
                 <mat-card appearance="outlined" class="p-3">
                     <h6 class="text-center">{{isEditingTag ? 'Izmenite tag' : 'Kreirajte novi tag'}}</h6>
                     <form [formGroup]="tagForm" (ngSubmit)="submitForm()">
                         <div class="d-flex flex-column">
                             
+                            <!-- Name -->
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
                                 <mat-label>Naziv</mat-label>
                                 <input matInput placeholder="Naziv" formControlName="name">
-                                <mat-error *ngIf="tagForm.controls['name'].touched && tagForm.controls['name'].errors">Naziv
+                                <mat-error *ngIf="nameFormControl.touched && nameFormControl.errors">Naziv
                                     taga je obavezan (do 30 karaktera)</mat-error>
                             </mat-form-field>
 
+                            <!-- Description -->
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
                                 <mat-label>Opis</mat-label>
                                 <textarea matInput placeholder="Opis" formControlName="description" rows="3"></textarea>
                                 <mat-error
-                                    *ngIf="tagForm.controls['description'].touched && tagForm.controls['description'].errors">
+                                    *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
                                     Opis taga može sadržati do 100 karaktera
                                 </mat-error>
                             </mat-form-field>
@@ -33,6 +37,8 @@
                     </form>
                 </mat-card>
             </div>
+
+            <!-- Search Tags -->
             <div class="col-md-7">
                 <mat-card appearance="outlined" class="p-3">
                     <h6 class="text-center">Pretražite tagove</h6>

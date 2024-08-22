@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { RoleChangeDialogData } from '../../models/role-change-dialog-data.interface';
 import { UserRoles } from '../../models/user-roles.enum';
@@ -38,5 +38,9 @@ export class RoleChangeDialogComponent {
 
   handleSubmitForm() {
     this.dialogRef.close(this.roleForm.getRawValue());
+  }
+
+  get roleFormControl() {
+    return this.roleForm.get('role') as FormControl;
   }
 }

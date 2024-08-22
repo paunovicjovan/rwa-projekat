@@ -6,6 +6,8 @@
         <mat-card-content>
             <form [formGroup]="projectForm" (ngSubmit)="createProject()">
                 <div class="row">
+
+                    <!-- Project Image -->
                     <div class="col-md-6">
                         <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
                             (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
@@ -31,46 +33,52 @@
                         </ng-container>
                     </div>
 
+
+                    <!-- Project Data -->
                     <div class="col-md-6">
                         <div class="d-flex flex-column">
+
+                            <!-- Title -->
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
                                 <mat-label>Naziv</mat-label>
                                 <input matInput placeholder="Naziv" formControlName="title">
                                 <mat-error
-                                    *ngIf="projectForm.controls['title'].touched && projectForm.controls['title'].errors">Naziv
+                                    *ngIf="titleFormControl.touched && titleFormControl.errors">Naziv
                                     projekta je obavezan (od 2 do 20 karaktera)</mat-error>
                             </mat-form-field>
 
+                            <!-- Description -->
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
                                 <mat-label>Opis</mat-label>
                                 <textarea matInput placeholder="Opis" formControlName="description" rows="5"></textarea>
                                 <mat-error
-                                    *ngIf="projectForm.controls['description'].touched && projectForm.controls['description'].errors">
+                                    *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
                                     Unesite opis projekta (od 5 do 500 karaktera)
                                 </mat-error>
                             </mat-form-field>
 
+                            <!-- Requirements -->
                             <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
                                 <mat-label>Zahtevi</mat-label>
                                 <textarea matInput placeholder="Zahtevi" formControlName="requirements"
                                     rows="5"></textarea>
                                 <mat-error
-                                    *ngIf="projectForm.controls['requirements'].touched && projectForm.controls['requirements'].errors">
+                                    *ngIf="requirementsFormControl.touched && requirementsFormControl.errors">
                                     Zahtevi projekta mogu imati do 500 karaktera
                                 </mat-error>
                             </mat-form-field>
 
-                            <div *ngIf="projectForm.controls['tags'].errors" class="d-flex align-items-center">
+                            <!-- Tags -->
+                            <div *ngIf="tagsFormArray.errors" class="d-flex align-items-center">
                                 <mat-hint>
                                     Projekat mora da ima barem 1 tag
                                 </mat-hint>
                                 <button mat-icon-button type="button"
-                                    matTooltip="Izaberite tehnologije ili oblasti koje se koriste u projektu">
+                                    matTooltip="Izaberite tehnologije ili oblasti na kojima se projekat zasniva">
                                     <mat-icon class="text-green">info</mat-icon>
                                 </button>
                             </div>
-
-                            <app-tag-viewer [tags]="projectForm.get('tags')!.value" (addTag)="addTagToForm($event)" (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
+                            <app-tag-viewer [tags]="tagsFormArray.value" (addTag)="addTagToForm($event)" (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
 
                         </div>
 
@@ -80,7 +88,6 @@
 
                     </div>
                 </div>
-
             </form>
         </mat-card-content>
     </mat-card>

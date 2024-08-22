@@ -1,6 +1,7 @@
-
 <div class="container py-3">
     <div class="row gap-3 gap-lg-0">
+
+        <!-- Filters -->
         <div class="col-lg-4">
             <mat-card class="p-3" appearance="outlined">
                 <h6 class="text-center mb-4">Pretražite projekte</h6>
@@ -40,11 +41,12 @@
             </mat-card>
         </div>
 
+        <!-- Results -->
         <div class="col-lg-8">
             <mat-card class="p-3" appearance="outlined">
                 <h6 class="text-center mb-3">{{hasSearched ? 'Rezultati pretrage' : 'Predloženi projekti'}}</h6>
                 <div class="d-flex justify-content-center">
-                        <app-projects-list (onPaginateChange)="onPaginateChange($event)" [isSuggestedMode]="!hasSearched"></app-projects-list>
+                    <app-projects-list (onPaginateChange)="onPaginateChange($event)" [isSuggestedMode]="!hasSearched"></app-projects-list>
                 </div>
 
             </mat-card>

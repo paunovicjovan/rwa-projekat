@@ -1,13 +1,21 @@
 <div>
+    <!-- Search For Users -->
     <ng-container *ngIf="!readonly">
         <div class="d-flex align-items-center mb-2">
+
+            <!-- Input with Autocomplete -->
             <mat-form-field subscriptSizing="dynamic">
                 <input matInput placeholder="Pretraži korisnike" [matAutocomplete]="auto" [formControl]="searchUserControl">
+
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUser" (optionSelected)="setSelectedUser($event.option.value)">
                     <mat-option *ngFor="let user of filteredUsers$ | async" [value]="user">
                         <div class="d-flex justify-content between align-items-center w-100">
                             <div class="profile-image me-3">
-                                <app-avatar-image [rounded]="true" [imageUrl]="user?.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
+                                <app-avatar-image [rounded]="true" 
+                                                  [imageUrl]="user?.profileImage" 
+                                                  route="users/profile-image" 
+                                                  defaultImageUrl="assets/default-profile-image.jpg">
+                                </app-avatar-image>
                             </div>
                             <span>{{user?.username}}</span>
                         </div>
@@ -15,12 +23,15 @@
                 </mat-autocomplete>
             </mat-form-field>
 
+            <!-- Add User -->
             <button mat-icon-button type="button" [disabled]="!selectedUser" (click)="handleAddUser()" class="ms-2">
                 <mat-icon>add</mat-icon>
             </button>
+
         </div>
     </ng-container>
 
+    <!-- Show Users -->
     <mat-chip-listbox *ngIf="users">
         <mat-chip *ngFor="let user of users" (removed)="handleRemoveUser(user)">
             {{user.username}}

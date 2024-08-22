@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
 import { combineLatest, Observable } from 'rxjs';
@@ -82,5 +82,13 @@ export class ManageTagsPageComponent implements OnInit {
       message: "Da li sigurno želite da obrišete ovaj tag?",
       actionToDispatch: tagsActions.deleteTag({ tagId })
     }));
+  }
+
+  get nameFormControl() {
+    return this.tagForm.get('name') as FormControl;
+  }
+
+  get descriptionFormControl() {
+    return this.tagForm.get('description') as FormControl;
   }
 }

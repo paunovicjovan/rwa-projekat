@@ -19,8 +19,8 @@ export const createProject$ = createEffect(
             ofType(projectsActions.createProject),
             concatMap(({image, createProjectDto}) =>
                 projectsService.create(createProjectDto, image).pipe(
-                    map(() => {
-                        return projectsActions.createProjectSuccess()
+                    map((createdProject: Project) => {
+                        return projectsActions.createProjectSuccess({createdProject})
                     }),
                     catchError(() => {
                         return of(projectsActions.createProjectFailure())
@@ -37,8 +37,8 @@ export const redirectAfterProjectCreation$ = createEffect(
     (actions$ = inject(Actions), router = inject(Router))=>{
     return actions$.pipe(
         ofType(projectsActions.createProjectSuccess),
-        tap(() => {
-            router.navigateByUrl('/projects');
+        tap(({createdProject}) => {
+            router.navigateByUrl('/projects/' + createdProject.id);
         })
     )
 }, {

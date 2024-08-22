@@ -1,5 +1,7 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    
     <mat-spinner class="mx-auto" *ngIf="dataFromStore.isLoading" diameter="50"></mat-spinner>
+
     <ng-container *ngIf="!dataFromStore.isLoading">
         <div *ngIf="dataFromStore.projects.length > 0; else noResults" class="d-flex flex-wrap gap-3 justify-content-center">
             <app-project-preview *ngFor="let project of dataFromStore.projects" [project]="project"></app-project-preview>
@@ -11,10 +13,12 @@
             </div>
         </ng-template>
     </ng-container>
+
     <mat-paginator class="mt-2" *ngIf="!isSuggestedMode" [hidden]="dataFromStore.projects?.length === 0" [length]="dataFromStore.paginationMetadata.totalItems"
         [pageSize]="dataFromStore.paginationMetadata.itemsPerPage"
         [pageSizeOptions]="[5, 10, 25, 50]"
         [showFirstLastButtons]="true"
         (page)="handlePaginateChange($event)">
     </mat-paginator>
+
 </ng-container>

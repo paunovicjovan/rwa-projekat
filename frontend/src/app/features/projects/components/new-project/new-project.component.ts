@@ -59,21 +59,17 @@ export class NewProjectComponent implements OnInit {
       return;
 
     const newTagFormControl = new FormControl({...tag});
-    this.formTags.push(newTagFormControl);
+    this.tagsFormArray.push(newTagFormControl);
   }
 
   removeTagFromForm(tagId: number) {
     const tagIndex = this.findTagIndexInForm(tagId);
-    this.formTags.removeAt(tagIndex);
+    this.tagsFormArray.removeAt(tagIndex);
   }
 
   findTagIndexInForm(tagId: number): number {
-    const tagIndex = this.formTags.value.findIndex((tag: Tag) => tag.id === tagId);
+    const tagIndex = this.tagsFormArray.value.findIndex((tag: Tag) => tag.id === tagId);
     return tagIndex;
-  }
-
-  get formTags() {
-    return this.projectForm.get('tags') as FormArray;
   }
 
   selectedImageChanged(event: Event) {
@@ -83,5 +79,21 @@ export class NewProjectComponent implements OnInit {
   onImageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.blob;
     this.croppedImageUrl = URL.createObjectURL(event.blob!);
+  }
+
+  get titleFormControl() {
+    return this.projectForm.get('title') as FormControl;
+  }
+  
+  get descriptionFormControl() {
+    return this.projectForm.get('description') as FormControl;
+  }
+
+  get requirementsFormControl() {
+    return this.projectForm.get('requirements') as FormControl;
+  }
+
+  get tagsFormArray() {
+    return this.projectForm.get('tags') as FormArray;
   }
 }

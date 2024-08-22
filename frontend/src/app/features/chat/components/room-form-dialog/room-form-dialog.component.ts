@@ -51,28 +51,28 @@ export class RoomFormDialogComponent implements OnInit {
       return;
 
     const newUserFormControl = new FormControl({...user});
-    this.users.push(newUserFormControl);
+    this.usersFormArray.push(newUserFormControl);
   }
 
   removeUserFromForm(userId: number) {
     const userIndex = this.findUserIndexInForm(userId);
-    this.users.removeAt(userIndex);
+    this.usersFormArray.removeAt(userIndex);
   }
 
   findUserIndexInForm(userId: number): number {
-    const userIndex = this.users.value.findIndex((user: User) => user.id === userId);
+    const userIndex = this.usersFormArray.value.findIndex((user: User) => user.id === userId);
     return userIndex;
   }
 
-  get name(): FormControl {
+  get nameFormControl(): FormControl {
     return this.roomForm.get('name') as FormControl;
   }
 
-  get description(): FormControl {
+  get descriptionFormControl(): FormControl {
     return this.roomForm.get('description') as FormControl;
   }
 
-  get users(): FormArray {
+  get usersFormArray(): FormArray {
     return this.roomForm.get('users') as FormArray;
   }
 }

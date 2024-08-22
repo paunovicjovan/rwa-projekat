@@ -2,7 +2,6 @@ import { createAction, props } from "@ngrx/store";
 import { CreateProjectDto } from "../models/create-project-dto.interface";
 import { Project } from "../models/project.interface";
 import { FilterProjectsRequest } from "../models/filter-projects-request.interface";
-import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
 import { UpdateProjectDto } from "../models/update-project-dto.interface";
 import { PaginationParameters } from "../../../shared/models/pagination-parameters.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
@@ -16,6 +15,7 @@ export const createProject = createAction(
 
 export const createProjectSuccess = createAction(
     '[Projects] Create Project Success',
+    props<{ createdProject: Project }>()
 );
 
 export const createProjectFailure = createAction(

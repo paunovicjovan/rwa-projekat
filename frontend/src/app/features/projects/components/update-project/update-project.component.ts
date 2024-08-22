@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UpdateProjectDto } from '../../models/update-project-dto.interface';
 
@@ -51,5 +51,17 @@ export class UpdateProjectComponent {
       ...this.projectForm.getRawValue()
     }
     this.dialogRef.close(dialogResult);
+  }
+
+  get titleFormControl() {
+    return this.projectForm.get('title') as FormControl;
+  }
+  
+  get descriptionFormControl() {
+    return this.projectForm.get('description') as FormControl;
+  }
+
+  get requirementsFormControl() {
+    return this.projectForm.get('requirements') as FormControl;
   }
 }

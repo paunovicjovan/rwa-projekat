@@ -18,7 +18,6 @@ import { PageEvent } from '@angular/material/paginator';
 export class ProjectsPageComponent implements OnInit {
 
   filtersForm!: FormGroup;
-  // dataFromStore$!: Observable<any>;
   hasSearched: boolean = false;
   pageEvent!: PageEvent;
 

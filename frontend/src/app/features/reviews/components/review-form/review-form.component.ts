@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReviewDialogData } from '../../models/review-dialog-data.interface';
 
@@ -41,10 +41,18 @@ export class ReviewFormComponent implements OnInit {
   handleSubmitForm() {
     const dialogResult: ReviewDialogData = {
       id: this.dialogData?.id,
-      rating: this.reviewForm.get('rating')!.value,
-      content: this.reviewForm.get('content')!.value,
+      rating: this.ratingFormControl!.value,
+      content: this.contentFormControl!.value,
       revieweeUsername: this.dialogData.revieweeUsername
     }
     this.dialogRef.close(dialogResult);
+  }
+
+  get ratingFormControl() {
+    return this.reviewForm.get('rating') as FormControl;
+  }
+
+  get contentFormControl() {
+    return this.reviewForm.get('content') as FormControl;
   }
 }

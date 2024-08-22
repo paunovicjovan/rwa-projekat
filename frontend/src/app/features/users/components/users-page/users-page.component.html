@@ -1,11 +1,16 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
     <div class="container d-flex flex-column align-items-center py-5">
         <h3 class="text-center">Pretraga korisnika</h3>
+
+        <!-- Filters -->
         <div class="row">
             <app-users-search-filters class="mb-3 mx-auto col-12 col-md-12 col-lg-12" (onFilterChange)="onFilterChange($event)"></app-users-search-filters>
         </div>
+
+        <!-- Spinner -->
         <mat-spinner class="my-2" diameter="50" *ngIf="dataFromStore.isLoading"></mat-spinner>
 
+        <!-- Users List -->
         <ng-container *ngIf="!dataFromStore.isLoading">
             <div class="row w-100">
                 <app-user-preview class="col-12 col-md-12 col-lg-9 col-xl-8 mx-auto" *ngFor="let user of dataFromStore.filteredUsers" [user]="user"></app-user-preview>

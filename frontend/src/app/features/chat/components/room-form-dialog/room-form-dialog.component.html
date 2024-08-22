@@ -7,18 +7,20 @@
             <mat-form-field appearance="fill" class="w-100 mt-3" subscriptSizing="dynamic">
                 <mat-label>Naziv</mat-label>
                 <input matInput placeholder="Naziv" formControlName="name" />
-                <mat-hint *ngIf="roomForm.controls['name'].touched && roomForm.controls['name'].errors">
+                <mat-hint *ngIf="nameFormControl.touched && nameFormControl.errors">
                     Naziv je obavezan
                 </mat-hint>
             </mat-form-field>
+
             <mat-form-field appearance="fill" class="w-100 my-3" subscriptSizing="dynamic">
                 <mat-label>Opis</mat-label>
                 <textarea matInput placeholder="Opis" formControlName="description"></textarea>
-                <mat-hint *ngIf="roomForm.controls['description'].touched && roomForm.controls['description'].errors">
+                <mat-hint *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
                     Opis može sadržati do 100 karaktera
                 </mat-hint>
             </mat-form-field>
-            <app-user-viewer *ngIf="!roomForm.controls['id'].value"  [users]="users.value" (addUser)="addUserToForm($event)" (removeUser)="removeUserFromForm($event)"></app-user-viewer>
+            
+            <app-user-viewer *ngIf="!roomForm.controls['id'].value"  [users]="usersFormArray.value" (addUser)="addUserToForm($event)" (removeUser)="removeUserFromForm($event)"></app-user-viewer>
         </form>
     </mat-card>
 </mat-dialog-content>

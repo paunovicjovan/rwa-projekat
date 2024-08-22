@@ -5,7 +5,7 @@
             <mat-form-field appearance="fill" class="w-100 mt-3">
                 <mat-label>Sadržaj</mat-label>
                 <textarea matInput placeholder="Sadržaj" formControlName="content"></textarea>
-                <mat-hint *ngIf="reviewForm.controls['content'].touched && reviewForm.controls['content'].errors">
+                <mat-hint *ngIf="contentFormControl.touched && contentFormControl.errors">
                     Unesite sadržaj (do 1000 karaktera)
                 </mat-hint>
             </mat-form-field>

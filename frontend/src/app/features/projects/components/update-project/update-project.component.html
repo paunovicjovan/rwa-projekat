@@ -3,30 +3,34 @@
         <form [formGroup]="projectForm">
             <p *ngIf="dialogData.status === 'completed'" class="text-bold">Možete još jednom da izmenite podatke projekta pre nego što bude sačuvan kao završen.</p>
 
+            <!-- Title -->
             <mat-form-field appearance="fill" class="w-100 mt-3">
                 <mat-label>Naziv</mat-label>
                 <input matInput placeholder="Naziv" formControlName="title" />
-                <mat-hint *ngIf="projectForm.controls['title'].touched && projectForm.controls['title'].errors">
+                <mat-hint *ngIf="titleFormControl.touched && titleFormControl.errors">
                     Unesite naziv projekta
                 </mat-hint>
             </mat-form-field>
 
+            <!-- Description -->
             <mat-form-field appearance="fill" class="w-100 mt-3">
                 <mat-label>Opis</mat-label>
                 <textarea matInput placeholder="Opis" formControlName="description"></textarea>
-                <mat-hint *ngIf="projectForm.controls['description'].touched && projectForm.controls['description'].errors">
+                <mat-hint *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
                     Unesite opis projekta (do 500 karaktera)
                 </mat-hint>
             </mat-form-field>
 
+            <!-- Requirements -->
             <mat-form-field appearance="fill" class="w-100 mt-3">
                 <mat-label>Zahtevi projekta</mat-label>
                 <textarea matInput placeholder="Zahtevi projekta" formControlName="requirements"></textarea>
-                <mat-hint *ngIf="projectForm.controls['requirements'].touched && projectForm.controls['requirements'].errors">
+                <mat-hint *ngIf="requirementsFormControl.touched && requirementsFormControl.errors">
                     Unesite zahteve projekta (do 500 karaktera)
                 </mat-hint>
             </mat-form-field>
 
+            <!-- Optionally add links if status is completed -->
             <ng-container *ngIf="dialogData.status === 'completed'">
                 <hr>
                 <p class="text-bold">Opciono dodajte link aplikacije i/ili repozitorijuma</p>
