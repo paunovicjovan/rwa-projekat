@@ -12,6 +12,10 @@ import { SearchUsersFilters } from '../dto/search-users-filters.dto';
 import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 import { ProjectsService } from 'src/projects/service/projects.service';
 import { ProjectDto } from 'src/projects/dto/project.dto';
+import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.service';
+import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
+import { ReviewsService } from 'src/reviews/service/reviews.service';
+import { MessagesService } from 'src/chat/service/messages/messages.service';
 
 @Injectable()
 export class UsersService {
@@ -19,7 +23,12 @@ export class UsersService {
         @InjectRepository(UserEntity)
         private usersRepository: Repository<UserEntity>,
         @Inject(forwardRef(() => ProjectsService))
-        private projectsService: ProjectsService
+        private projectsService: ProjectsService,
+        private joinedRoomsService: JoinedRoomsService,
+        private connectedUserService: ConnectedUserService,
+        @Inject(forwardRef(() => ReviewsService))
+        private reviewsService: ReviewsService,
+        private messagesService: MessagesService
     ) {}
 
     async create(user: CreateUserDto) : Promise<UserDto> {
@@ -78,7 +87,31 @@ export class UsersService {
     }
 
     async deleteOne(id: number) : Promise<any> {
+        const user = await this.usersRepository.findOne({
+            where: {id},
+            relations: ['rooms', 
+                        'tags', 
+                        'appliedTo', 
+                        'acceptedIn',
+                        'createdRooms'
+            ]
+        })
+        user.rooms = [];
+        user.tags = [];
+        user.appliedTo = [];
+        user.acceptedIn = [];
+        user.createdRooms = [];
+
+        await this.usersRepository.save(user);
+
+        await this.projectsService.deleteManyByAuthorId(id);
+        await this.reviewsService.deleteManyByAuthorId(id);
+        await this.reviewsService.deleteManyByRevieweeId(id);
+        await this.connectedUserService.deleteManyByUserId(id);
+        await this.joinedRoomsService.deleteManyByUserId(id);
+        await this.messagesService.deleteManyByUserId(id);
         await this.deleteProfileImageFromFileSystem(id);
+
         return await this.usersRepository.delete(id);
     }
 

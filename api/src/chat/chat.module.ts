@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ChatGateway } from './gateway/chat/chat.gateway';
 import { ConnectedUserService } from './service/connected-user/connected-user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,8 +16,9 @@ import { MessageEntity } from './entities/message.entity';
   providers: [ChatGateway, ConnectedUserService, RoomsService, JoinedRoomsService, MessagesService],
   imports: [
     TypeOrmModule.forFeature([ConnectedUserEntity, RoomEntity, JoinedRoomEntity, MessageEntity]),
-    AuthModule,
-    UsersModule
-  ]
+    forwardRef(() => AuthModule),
+    forwardRef(() => UsersModule)
+  ],
+  exports: [JoinedRoomsService, ConnectedUserService, MessagesService]
 })
 export class ChatModule {}

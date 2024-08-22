@@ -26,6 +26,10 @@ export class JoinedRoomsService {
     return await this.joinedRoomRepository.delete({ socketId });
   }
 
+  async deleteManyByUserId(userId: number): Promise<any> {
+    return await this.joinedRoomRepository.delete({ user: { id: userId } });
+  }
+
   async deleteAll(): Promise<any> {
     return await this.joinedRoomRepository.clear();
   }

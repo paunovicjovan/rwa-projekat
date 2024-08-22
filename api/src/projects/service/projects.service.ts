@@ -104,6 +104,24 @@ export class ProjectsService {
     return await this.projectsRepository.delete(id);
   }
 
+  async deleteManyByAuthorId(userId: number): Promise<any> {
+    const projectsToDelete = await this.projectsRepository.find({
+      where: {
+        createdBy: {
+          id: userId
+        }
+      }
+    });
+    projectsToDelete.forEach(project => {
+      project.tags = [];
+      project.appliedBy = [];
+      project.acceptedUsers = [];
+    })
+
+    await this.projectsRepository.save(projectsToDelete);
+    return await this.projectsRepository.remove(projectsToDelete);
+  }
+
   private async deleteProjectImageFromFileSystem(projectId: number): Promise<ProjectResponseDto> {
     const project = await this.findOne(projectId);
     if(project.image !== null) {

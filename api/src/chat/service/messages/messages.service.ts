@@ -26,4 +26,8 @@ export class MessagesService {
     paginatedMessages.items.reverse();
     return paginatedMessages;
   }
+
+  async deleteManyByUserId(userId: number): Promise<any> {
+    return await this.messageRepository.delete({user: { id: userId }})
+  }
 }

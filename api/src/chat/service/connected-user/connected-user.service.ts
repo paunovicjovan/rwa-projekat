@@ -28,6 +28,10 @@ export class ConnectedUserService {
     return await this.connectedUserRepository.delete({ socketId });
   }
 
+  async deleteManyByUserId(userId: number) {
+    return await this.connectedUserRepository.delete({ user: { id: userId } });
+  }
+
   async deleteAll() {
     await await this.connectedUserRepository.clear();
   }

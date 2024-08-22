@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
 import { Repository } from 'typeorm';
@@ -17,6 +17,7 @@ export class ReviewsService {
   constructor(
     @InjectRepository(ReviewEntity)
       private reviewsRepository: Repository<ReviewEntity>,
+      @Inject(forwardRef(() => UsersService))
       private usersService: UsersService
     ) {}
 
@@ -40,7 +41,7 @@ export class ReviewsService {
   }
 
   async findManyPaginated(options: IPaginationOptions, revieweeUsername: string) : Promise<Pagination<ReviewResponseDto>> {
-    return paginate<ReviewDto>(
+    return await paginate<ReviewDto>(
         this.reviewsRepository, 
         options, 
         {
@@ -52,7 +53,7 @@ export class ReviewsService {
 }
 
   async findOneById(id: number) : Promise<ReviewResponseDto> {
-    return this.reviewsRepository.findOne({
+    return await this.reviewsRepository.findOne({
       where: {id}, 
       relations: ['author', 'reviewee']
     });
@@ -64,6 +65,14 @@ export class ReviewsService {
   }
 
   async deleteOne(id: number) : Promise<any> {
-    return this.reviewsRepository.delete(id);
+    return await this.reviewsRepository.delete(id);
+  }
+
+  async deleteManyByAuthorId(userId: number): Promise<any> {
+    return await this.reviewsRepository.delete({author: {id: userId}});
+  }
+
+  async deleteManyByRevieweeId(userId: number): Promise<any> {
+    return await this.reviewsRepository.delete({reviewee: {id: userId}});
   }
 }
