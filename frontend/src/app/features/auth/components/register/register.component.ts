@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisterRequest } from '../../models/register-request.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
@@ -68,5 +68,29 @@ export class RegisterComponent implements OnInit {
   onRegisterFormSubmit() {
     const registerData: RegisterRequest = this.registerForm.getRawValue();
     this.store.dispatch(register({ registerRequest: registerData }));
+  }
+
+  get firstNameFormControl() {
+    return this.registerForm.get('firstName') as FormControl;
+  }
+
+  get lastNameFormControl() {
+    return this.registerForm.get('lastName') as FormControl;
+  }
+
+  get usernameFormControl() {
+    return this.registerForm.get('username') as FormControl;
+  }
+
+  get emailFormControl() {
+    return this.registerForm.get('email') as FormControl;
+  }
+
+  get passwordFormControl() {
+    return this.registerForm.get('password') as FormControl;
+  }
+
+  get passwordConfirmFormControl() {
+    return this.registerForm.get('passwordConfirm') as FormControl;
   }
 }
