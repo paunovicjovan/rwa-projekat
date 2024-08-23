@@ -10,7 +10,7 @@ import * as chatsActions from '../../state/chat.actions';
 import { CreateMessageDto } from '../../models/message/create-message-dto.interface';
 import * as usersSelectors from '../../../users/state/users.selectors';
 import { PaginationMetadata } from '../../../../shared/models/pagination-metadata.interface';
-import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../../shared/models/pagination-options.interface';
 import { MoreMessagesDto } from '../../models/message/more-messages-dto.interface';
 
 @Component({

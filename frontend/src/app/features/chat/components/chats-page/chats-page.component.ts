@@ -8,7 +8,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { Room } from '../../models/room/room.interface';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../../shared/models/pagination-options.interface';
 import { RoomDialogData } from '../../models/room/room-dialog-data.interface';
 
 @Component({
@@ -41,7 +41,7 @@ export class ChatsPageComponent {
   }
 
   onPaginateChange(event: PageEvent) {
-    const paginationOptions: PaginationParameters = {
+    const paginationOptions: PaginationOptions = {
       page: event.pageIndex + 1,
       limit: event.pageSize
     }

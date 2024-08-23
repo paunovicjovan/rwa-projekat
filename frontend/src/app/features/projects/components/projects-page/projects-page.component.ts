@@ -7,7 +7,7 @@ import { combineLatest, Observable } from 'rxjs';
 import * as projectsSelectors from '../../state/projects.selectors';
 import * as projectsActions from '../../state/projects.actions';
 import { FilterProjectsRequest } from '../../models/filter-projects-request.interface';
-import { PaginationParameters } from '../../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../../shared/models/pagination-options.interface';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({

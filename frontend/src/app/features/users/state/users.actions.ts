@@ -3,7 +3,7 @@ import { User } from '../models/user.interface';
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { UserRoles } from '../models/user-roles.enum';
-import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../shared/models/pagination-options.interface';
 import { UpdateUserDto } from '../models/update-user-dto.interface';
 import { RoleChangeDialogData } from '../models/role-change-dialog-data.interface';
 
@@ -98,7 +98,7 @@ export const changeUserProfileImageFailure = createAction(
 
 export const loadAppliedUsersForProject = createAction(
   '[Users] Load Applied Users For Project',
-  props<{ projectId: number, paginationOptions: PaginationParameters }>()
+  props<{ projectId: number, paginationOptions: PaginationOptions }>()
 )
 
 export const loadAppliedUsersForProjectSuccess = createAction(
@@ -112,7 +112,7 @@ export const loadAppliedUsersForProjectFailure = createAction(
 
 export const loadAcceptedUsersForProject = createAction(
   '[Users] Load Accepted Users For Project',
-  props<{ projectId: number, paginationOptions: PaginationParameters }>()
+  props<{ projectId: number, paginationOptions: PaginationOptions }>()
 )
 
 export const loadAcceptedUsersForProjectSuccess = createAction(

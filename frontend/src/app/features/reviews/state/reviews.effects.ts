@@ -1,6 +1,6 @@
 import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
-import { catchError, concatMap, exhaustMap, from, map, Observable, of } from "rxjs"
+import { catchError, concatMap, exhaustMap, from, map, Observable, of, switchMap } from "rxjs"
 import { ReviewsService } from "../services/reviews.service";
 import * as reviewsActions from './reviews.actions';
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
@@ -17,7 +17,7 @@ export const loadReviewsOfUser$ = createEffect(
     (action$ = inject(Actions), reviewsService = inject(ReviewsService)) => {
         return action$.pipe(
             ofType(reviewsActions.loadReviewsOfUser),
-            exhaustMap(({username, page, limit }) =>
+            switchMap(({username, page, limit }) =>
                 reviewsService.loadReviewsOfUser(username, page, limit).pipe(
                     map(( paginatedReviews: PaginatedResponse<Review>) => {
                         return reviewsActions.loadReviewsOfUserSuccess({ paginatedReviews })

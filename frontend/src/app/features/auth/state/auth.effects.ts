@@ -2,7 +2,6 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { inject } from '@angular/core'
 import { AuthService } from "../services/auth.service";
 import * as authActions from './auth.actions';
-import * as usersActions from '../../users/state/users.actions'
 import { catchError, exhaustMap, map, of, tap } from "rxjs";
 import { AuthResponse } from "../models/auth-response.interface";
 import { HttpErrorResponse } from "@angular/common/http";

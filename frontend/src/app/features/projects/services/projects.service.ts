@@ -8,7 +8,7 @@ import { FilterProjectsRequest } from '../models/filter-projects-request.interfa
 import { ProjectsFilters } from '../models/projects-filters.interface';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { UpdateProjectDto } from '../models/update-project-dto.interface';
-import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../shared/models/pagination-options.interface';
 import { ProjectStatus } from '../enums/project-status.enum';
 
 @Injectable({
@@ -57,7 +57,7 @@ export class ProjectsService {
     return this.http.put<Project>(`${environment.apiUrl}/projects/${updateProjectDto.id}`, updateProjectDto);
   }
 
-  findAppliedProjectsForUser(username: string, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+  findAppliedProjectsForUser(username: string, paginationOptions: PaginationOptions): Observable<PaginatedResponse<Project>> {
     const httpParams = new HttpParams({
       fromObject: {
         ...paginationOptions
@@ -66,7 +66,7 @@ export class ProjectsService {
     return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/applied-by/${username}`, {params: httpParams})
   }
 
-  findAcceptedProjectsForUser(username: string, isCompleted: boolean, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+  findAcceptedProjectsForUser(username: string, isCompleted: boolean, paginationOptions: PaginationOptions): Observable<PaginatedResponse<Project>> {
     const httpParams = new HttpParams({
       fromObject: {
         ...paginationOptions
@@ -75,7 +75,7 @@ export class ProjectsService {
     return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/accepted-user/${username}/${isCompleted}`, {params: httpParams})
   }
 
-  findCreatedProjectsForUser(username: string, status: ProjectStatus, paginationOptions: PaginationParameters): Observable<PaginatedResponse<Project>> {
+  findCreatedProjectsForUser(username: string, status: ProjectStatus, paginationOptions: PaginationOptions): Observable<PaginatedResponse<Project>> {
     const httpParams = new HttpParams({
       fromObject: {
         ...paginationOptions

@@ -3,7 +3,7 @@ import { Observable, tap } from 'rxjs';
 import { CustomSocket } from '../sockets/custom-socket';
 import { PaginatedResponse } from '../../../shared/models/paginated-response.interface';
 import { Room } from '../models/room/room.interface';
-import { PaginationParameters } from '../../../shared/models/pagination-parameters.interface';
+import { PaginationOptions } from '../../../shared/models/pagination-options.interface';
 import { CreateRoomDto } from '../models/room/create-room-dto.interface';
 import { Message } from '../models/message/message.interface';
 import { CreateMessageDto } from '../models/message/create-message-dto.interface';
@@ -27,7 +27,7 @@ export class ChatService {
     this.socket.disconnect();
   }
 
-  loadRooms(paginationOptions: PaginationParameters) {
+  loadRooms(paginationOptions: PaginationOptions) {
     this.socket.emit('loadRooms', {page: paginationOptions.page, limit: paginationOptions.limit});
   }
 

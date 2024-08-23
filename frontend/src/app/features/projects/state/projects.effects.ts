@@ -10,7 +10,6 @@ import { MatDialog } from "@angular/material/dialog"
 import { UpdateProjectComponent } from "../components/update-project/update-project.component"
 import { noOperation } from "../../../shared/state/shared.actions"
 import { UpdateProjectDto } from "../models/update-project-dto.interface"
-import { SnackbarService } from "../../../core/services/snackbar/snackbar.service"
 
 
 export const createProject$ = createEffect(

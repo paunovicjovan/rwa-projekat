@@ -3,7 +3,7 @@ import { CreateProjectDto } from "../models/create-project-dto.interface";
 import { Project } from "../models/project.interface";
 import { FilterProjectsRequest } from "../models/filter-projects-request.interface";
 import { UpdateProjectDto } from "../models/update-project-dto.interface";
-import { PaginationParameters } from "../../../shared/models/pagination-parameters.interface";
+import { PaginationOptions } from "../../../shared/models/pagination-options.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { ProjectStatus } from "../enums/project-status.enum";
 
@@ -85,7 +85,7 @@ export const openProjectDialog = createAction(
 
 export const findCreatedProjectsForUser = createAction(
     '[Projects] Find Created Projects For User',
-    props<{ username: string, status: ProjectStatus, paginationOptions: PaginationParameters }>()
+    props<{ username: string, status: ProjectStatus, paginationOptions: PaginationOptions }>()
 );
 
 export const findCreatedProjectsForUserSuccess = createAction(
@@ -99,7 +99,7 @@ export const findCreatedProjectsForUserFailure = createAction(
 
 export const findAppliedProjectsForUser = createAction(
     '[Projects] Find Applied Projects For User',
-    props<{ username: string, paginationOptions: PaginationParameters }>()
+    props<{ username: string, paginationOptions: PaginationOptions }>()
 );
 
 export const findAppliedProjectsForUserSuccess = createAction(
@@ -113,7 +113,7 @@ export const findAppliedProjectsForUserFailure = createAction(
 
 export const findAcceptedProjectsForUser = createAction(
     '[Projects] Find Accepted Projects For User',
-    props<{ username: string, isCompleted: boolean, paginationOptions: PaginationParameters }>()
+    props<{ username: string, isCompleted: boolean, paginationOptions: PaginationOptions }>()
 );
 
 export const findAcceptedProjectsForUserSuccess = createAction(

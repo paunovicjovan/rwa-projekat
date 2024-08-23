@@ -1,7 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Room } from "../models/room/room.interface";
-import { PaginationParameters } from "../../../shared/models/pagination-parameters.interface";
+import { PaginationOptions } from "../../../shared/models/pagination-options.interface";
 import { RoomDialogData } from "../models/room/room-dialog-data.interface";
 import { CreateRoomDto } from "../models/room/create-room-dto.interface";
 import { CreateMessageDto } from "../models/message/create-message-dto.interface";
@@ -21,7 +21,7 @@ export const disconnect = createAction(
 
 export const loadRooms = createAction(
     '[Chats] Load Rooms',
-    props<{ paginationOptions: PaginationParameters }>()
+    props<{ paginationOptions: PaginationOptions }>()
 );
 
 export const openRoomDialog = createAction(

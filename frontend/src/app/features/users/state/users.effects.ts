@@ -17,7 +17,7 @@ export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.loadUserProfile),
-            exhaustMap(({username}) =>
+            switchMap(({username}) =>
                 usersService.getUser(username).pipe(
                     map((user: User) => {
                         return usersActions.loadUserProfileSuccess({loadedUser: user})

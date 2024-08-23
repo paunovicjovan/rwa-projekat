@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as sharedActions from './shared.actions';
-import { concatMap, exhaustMap, map } from "rxjs";
+import { exhaustMap, map } from "rxjs";
 import { ConfirmDialogComponent } from "../components/confirm-dialog/confirm-dialog.component";
 
 export const openConfirmationDialog$ = createEffect(
