@@ -1,18 +1,21 @@
 <ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+
     <div class="mb-2">
         <mat-tab-group (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Prijavljeni korisnici"></mat-tab>
             <mat-tab label="Prihvaćeni korisnici"></mat-tab>
         </mat-tab-group>
     </div>
+
     <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading" class="mx-auto"></mat-spinner>
+
     <ng-container *ngIf="!dataFromStore.isLoading">
         <div class="row d-flex align-items-center justify-content-center w-100" *ngFor="let user of dataFromStore.users">
             <div class="col-md-10">
                 <app-user-preview class="w-100" [user]="user"></app-user-preview>
             </div>
             <div class="col-md-2 d-flex justify-content-end justify-content-md-center">
-                <button  class="btn btn-sm bg-green text-beige" *ngIf="selectedParticipantsView === 'applied'">
+                <button class="btn btn-sm bg-green text-beige" *ngIf="selectedParticipantsView === 'applied'">
                     <mat-icon fontIcon="check" (click)="acceptUserInProject(user.id)"></mat-icon>
                 </button>
                 <button class="btn btn-sm bg-red text-beige ms-2" >

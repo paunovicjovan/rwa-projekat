@@ -17,15 +17,6 @@ export const searchTagsFailure = createAction(
     '[Tags] Search Tags Failure',
 );
 
-// export const loadTagsSuccess = createAction(
-//     '[Tags] Load Tags Success',
-//     props<{tags: Tag[]}>()
-// );
-
-// export const loadTagsFailure = createAction(
-//     '[Tags] Load Tags Failure'
-// );
-
 export const addTagToUser = createAction(
     '[Tags] Add Tag To User',
     props<{ tagId: number }>()

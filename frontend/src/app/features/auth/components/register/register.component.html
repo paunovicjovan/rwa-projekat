@@ -2,46 +2,61 @@
     <div class="container d-flex justify-content-center align-items-center p-4">
         <div class="row justify-content-center w-100">
             <div class="col-sm-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
-                <div class="py-4 px-5 border rounded shadow-sm bg-light">
+                <mat-card appearance="outlined" class="p-4">
+
                     <h3 class="text-center mb-4 text-green">Registracija</h3>
                     <form [formGroup]="registerForm" (ngSubmit)="onRegisterFormSubmit()">
                         <div class="mb-3">
                             <p class="text-danger" *ngIf="dataFromStore.error">{{dataFromStore.error}}</p>
                         </div>
+                        
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>Ime</mat-label>
                             <input matInput placeholder="Ime" formControlName="firstName">
-                            <mat-error *ngIf="firstNameFormControl.touched && firstNameFormControl.errors">Ime je obavezno</mat-error>
+                            <mat-error *ngIf="firstNameFormControl.touched && firstNameFormControl.errors">
+                                Ime je obavezno
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>Prezime</mat-label>
                             <input matInput placeholder="Prezime" formControlName="lastName">
-                            <mat-error *ngIf="lastNameFormControl.touched && lastNameFormControl.errors">Prezime je obavezno</mat-error>
+                            <mat-error *ngIf="lastNameFormControl.touched && lastNameFormControl.errors">
+                                Prezime je obavezno
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>Korisničko ime</mat-label>
                             <input matInput placeholder="Korisničko ime" formControlName="username">
-                            <mat-error *ngIf="usernameFormControl.touched && usernameFormControl.errors">Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.</mat-error>
+                            <mat-error *ngIf="usernameFormControl.touched && usernameFormControl.errors">
+                                Korisničko ime može sadržati samo mala slova, donju crtu ili tačku.
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>E-mail</mat-label>
                             <input matInput placeholder="E-mail" formControlName="email">
-                            <mat-error *ngIf="emailFormControl.touched && emailFormControl.errors">E-mail je obavezan</mat-error>
+                            <mat-error *ngIf="emailFormControl.touched && emailFormControl.errors">
+                                E-mail je obavezan
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>Lozinka</mat-label>
                             <input matInput type="password" placeholder="Lozinka" formControlName="password">
-                            <mat-error *ngIf="passwordFormControl.touched && passwordFormControl.errors">Lozinka mora da ima bar 5 karaktera, cifru, veliko i malo slovo</mat-error>
+                            <mat-error *ngIf="passwordFormControl.touched && passwordFormControl.errors">
+                                Lozinka mora da ima bar 5 karaktera, cifru, veliko i malo slovo
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-100 mb-3">
                             <mat-label>Potvrdi lozinku</mat-label>
                             <input matInput type="password" placeholder="Potvrdi lozinku" formControlName="passwordConfirm">
-                            <mat-error *ngIf="passwordConfirmFormControl.touched && (passwordConfirmFormControl.errors || registerForm.hasError('passwordsNotMatching'))">Potvrda lozinke je obavezna i mora se slagati sa unetom lozinkom</mat-error>
+                            <mat-error *ngIf="passwordConfirmFormControl.touched && 
+                                             (passwordConfirmFormControl.errors || registerForm.hasError('passwordsNotMatching'))">
+                                            Potvrda lozinke je obavezna i mora se slagati sa unetom lozinkom
+                            </mat-error>
                         </mat-form-field>
                         
                         <mat-spinner diameter="50" *ngIf="dataFromStore.isSubmitting" class="d-block mx-auto"></mat-spinner>
@@ -51,7 +66,8 @@
                         </div>
                         <button [disabled]="registerForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100 btn bg-purple text-beige border-0">Registruj Se</button>
                     </form>
-                </div>
+                </mat-card>
+
             </div>
         </div>
     </div>

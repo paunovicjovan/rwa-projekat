@@ -8,5 +8,4 @@ import { Project } from '../../models/project.interface';
 })
 export class ProjectPreviewComponent {
   @Input({required: true}) project!: Project;
-  
 }

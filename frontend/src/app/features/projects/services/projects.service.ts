@@ -43,7 +43,9 @@ export class ProjectsService {
       ...filterProjectsRequest
     }
 
-    return this.http.post<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/filter-projects`, requestBody, {params: httpParams})
+    return this.http.post<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/filter-projects`, 
+                                                      requestBody, 
+                                                      {params: httpParams})
   }
 
   loadProject(projectId: number): Observable<any> {
@@ -72,7 +74,8 @@ export class ProjectsService {
         ...paginationOptions
       }
     });
-    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/accepted-user/${username}/${isCompleted}`, {params: httpParams})
+    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/accepted-user/${username}/${isCompleted}`, 
+                                                      {params: httpParams})
   }
 
   findCreatedProjectsForUser(username: string, status: ProjectStatus, paginationOptions: PaginationOptions): Observable<PaginatedResponse<Project>> {

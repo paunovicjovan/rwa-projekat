@@ -7,7 +7,6 @@ import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service";
-import { HttpErrorResponse } from "@angular/common/http";
 import { MatDialog } from "@angular/material/dialog";
 import { RoleChangeDialogComponent } from "../components/role-change-dialog/role-change-dialog.component";
 import { RoleChangeDialogData } from "../models/role-change-dialog-data.interface";

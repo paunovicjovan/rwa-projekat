@@ -25,7 +25,7 @@ export class UpdateProjectComponent {
       title: [this.dialogData.title, [
         Validators.required,
         Validators.minLength(2),
-        Validators.maxLength(30)]
+        Validators.maxLength(20)]
       ],
       description: [this.dialogData.description, [
         Validators.required,

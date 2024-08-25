@@ -1,12 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../models/user.interface';
-import { environment } from '../../../../../environments/environment.development';
 import { AppState } from '../../../../state/app-state.interface';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as authSelectors from '../../../auth/state/auth.selectors';
 import * as usersSelectors from '../../state/users.selectors';
 import * as usersActions from '../../state/users.actions';
-import { UserRoles } from '../../models/user-roles.enum';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { combineLatest, filter, Observable, Subscription } from 'rxjs';
 import * as sharedActions from '../../../../shared/state/shared.actions';

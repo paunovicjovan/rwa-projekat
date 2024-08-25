@@ -27,11 +27,6 @@ export const chatsAdapter: EntityAdapter<Room> = createEntityAdapter<Room>();
 
 export const chatsReducer = createReducer(
     initialState,
-    on(chatsActions.connect, (state) => { //obrisi ako nema nista da se doda
-        return {
-            ...state,
-        }
-    }),
     on(chatsActions.receiveRoomsSuccess, (state, action) => {
         return chatsAdapter.setAll(action.paginatedRooms.items, {
             ...state,

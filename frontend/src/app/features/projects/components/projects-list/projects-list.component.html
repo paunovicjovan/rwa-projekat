@@ -9,12 +9,19 @@
         <ng-template #noResults>
             <div class="d-flex flex-column align-items-center">
                 <img src="assets/no-projects.png" class="img w-50" alt="Nema sadrzaja">
-                <p class="lead text-center">{{isSuggestedMode ? 'Nema predloženih projekata, probajte da promenite tagove na svom profilu' : 'Nema projekata'}}</p>
+                <p class="lead text-center">{{isSuggestedMode ? 
+                                            'Nema predloženih projekata, probajte da promenite tagove na svom profilu' : 
+                                            'Nema projekata'}}
+                </p>
             </div>
         </ng-template>
     </ng-container>
 
-    <mat-paginator class="mt-2" *ngIf="!isSuggestedMode" [hidden]="dataFromStore.projects?.length === 0" [length]="dataFromStore.paginationMetadata.totalItems"
+    <mat-paginator 
+        class="mt-2" 
+        *ngIf="!isSuggestedMode" 
+        [hidden]="dataFromStore.projects?.length === 0" 
+        [length]="dataFromStore.paginationMetadata.totalItems"
         [pageSize]="dataFromStore.paginationMetadata.itemsPerPage"
         [pageSizeOptions]="[5, 10, 25, 50]"
         [showFirstLastButtons]="true"

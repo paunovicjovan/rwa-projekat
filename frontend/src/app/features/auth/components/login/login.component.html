@@ -2,7 +2,8 @@
     <div class="container flex-grow-1 d-flex justify-content-center align-items-center py-5">
         <div class="row justify-content-center w-100">
             <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
-                <div class="p-4 border rounded shadow-sm bg-light">
+                <mat-card appearance="outlined" class="p-4">
+
                     <h3 class="text-center mb-4 text-green">Prijava</h3>
                     <form [formGroup]="loginForm" (ngSubmit)="onLoginFormSubmit()">
                         <div class="mb-3">
@@ -27,7 +28,8 @@
                         </div>
                         <button [disabled]="loginForm.invalid || dataFromStore.isSubmitting" type="submit" class="w-100 btn bg-purple text-beige border-0">Prijavi Se</button>
                     </form>
-                </div>
+
+                </mat-card>
             </div>
         </div>
     </div>

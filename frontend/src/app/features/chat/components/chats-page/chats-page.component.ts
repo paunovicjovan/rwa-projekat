@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
 import { AppState } from '../../../../state/app-state.interface';
 import { Store } from '@ngrx/store';
 import * as chatActions from '../../state/chat.actions';
@@ -9,7 +8,6 @@ import { Room } from '../../models/room/room.interface';
 import { MatSelectionListChange } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { PaginationOptions } from '../../../../shared/models/pagination-options.interface';
-import { RoomDialogData } from '../../models/room/room-dialog-data.interface';
 
 @Component({
   selector: 'app-chats-page',

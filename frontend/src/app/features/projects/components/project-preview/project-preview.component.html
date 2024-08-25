@@ -11,10 +11,12 @@
             </p>
         </mat-card-subtitle>
     </mat-card-header>
+
     <mat-card-content>
         <p>Ažurirano: <span class="text-bold text-green">{{project.updatedAt | formatDate}}</span></p>
         <p>Kreirano: <span class="text-bold text-green">{{project.createdAt | formatDate}}</span></p>
     </mat-card-content>
+    
     <mat-card-actions class="mt-2">
         <a class="btn w-100 bg-green text-beige" [routerLink]="'/projects/' + project.id">Pogledaj detalje</a>
     </mat-card-actions>

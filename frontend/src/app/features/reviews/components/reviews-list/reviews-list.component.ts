@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Review } from '../../models/review.interface';
 import { AppState } from '../../../../state/app-state.interface';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import * as reviewsActions from '../../state/reviews.actions'
 import { combineLatest, filter, Observable, tap } from 'rxjs';
 import * as reviewsSelectors from '../../state/reviews.selectors';

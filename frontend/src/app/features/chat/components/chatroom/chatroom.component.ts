@@ -33,18 +33,22 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
 
   ngOnInit(): void {
     this.initializeForm();
+    this.selectDataFromStore();
+  }
+
+  initializeForm() {
+    this.newMessageForm = this.formBuilder.group({
+      text: [null, [Validators.required]]
+    })
+  }
+
+  selectDataFromStore() {
     this.dataFromStore$ = combineLatest({
       messages: this.store.select(chatsSelectors.selectMessages),
       loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
       roomMembers: this.store.select(usersSelectors.selectUsers),
       messagesPaginationMetadata: this.store.select(chatsSelectors.selectMessagesPaginationMetadata),
       isLoading: this.store.select(chatsSelectors.selectIsLoading)
-    })
-  }
-
-  initializeForm() {
-    this.newMessageForm = this.formBuilder.group({
-      text: [null, [Validators.required]]
     })
   }
 
@@ -73,7 +77,7 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     if(this.messagesScroller && this.messagesScroller.nativeElement) {
       const currentScrollHeight = this.messagesScroller.nativeElement.scrollHeight;
       if (currentScrollHeight > this.previousScrollHeight) {
-        this.messagesScroller.nativeElement.scrollTop = this.messagesScroller.nativeElement.scrollHeight;
+        this.messagesScroller.nativeElement.scrollTop = currentScrollHeight;
         this.previousScrollHeight = currentScrollHeight;
       }
     }

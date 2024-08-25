@@ -4,7 +4,11 @@
 
             <div class="d-flex flex-row align-items-center">
                 <div class="profile-image d-flex align-items-center">
-                    <app-avatar-image [rounded]="true" [imageUrl]="review.author.profileImage" route="users/profile-image" defaultImageUrl="assets/default-profile-image.jpg"></app-avatar-image>
+                    <app-avatar-image [rounded]="true" 
+                                      [imageUrl]="review.author.profileImage" 
+                                      route="users/profile-image" 
+                                      defaultImageUrl="assets/default-profile-image.jpg">
+                    </app-avatar-image>
                 </div>
                 <div class="ms-3">
                     <mat-card-title>
@@ -13,6 +17,7 @@
                     <p-rating [(ngModel)]="review.rating" [readonly]="true" [cancel]="false"></p-rating>
                 </div>
             </div>
+
             <div>
                 <button *ngIf="canUpdate" class="btn bg-brown text-beige btn-sm me-2" (click)="handleReviewUpdate()">
                     <mat-icon fontIcon="edit"></mat-icon>
