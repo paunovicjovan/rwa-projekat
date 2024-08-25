@@ -3,11 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
-import { RoomDto } from 'src/chat/dto/room/room.dto';
 import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
 import { UserDto } from 'src/users/dto/user.dto';
-import { UsersService } from 'src/users/service/users.service';
 import { Repository } from 'typeorm';
 
 @Injectable()

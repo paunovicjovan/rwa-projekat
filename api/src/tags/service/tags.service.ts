@@ -1,11 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTagDto } from '../dto/create-tag.dto';
 import { UpdateTagDto } from '../dto/update-tag.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagEntity } from '../entities/tag.entity';
-import { Like, Raw, Repository } from 'typeorm';
-import { filter, forkJoin, from, NotFoundError, Observable, of, switchMap } from 'rxjs';
-import { TagDto } from '../dto/tag.dto';
+import { Raw, Repository } from 'typeorm';
 import { UsersService } from 'src/users/service/users.service';
 import { UserDto } from 'src/users/dto/user.dto';
 import { TagResponseDto } from '../dto/tag-response.dto';

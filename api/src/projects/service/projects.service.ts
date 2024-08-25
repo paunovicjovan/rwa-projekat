@@ -79,7 +79,7 @@ export class ProjectsService {
 
   async findOne(id: number): Promise<ProjectDto> {
     return await this.projectsRepository.findOne({
-      where: {id},
+      where: { id },
       relations: ['createdBy', 'tags']
     })
   }

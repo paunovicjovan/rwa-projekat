@@ -1,18 +1,16 @@
 import { Logger, OnModuleInit, UnauthorizedException } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import {Socket, Server} from 'socket.io'
+import { Socket, Server } from 'socket.io'
 import { AuthService } from 'src/auth/service/auth.service';
 import { ConnectedUserDto } from 'src/chat/dto/connected-user/connected-user.dto';
 import { CreateConnectedUserDto } from 'src/chat/dto/connected-user/create-connected-user.dto';
 import { CreateJoinedRoomDto } from 'src/chat/dto/joined-room/create-joined-room.dto';
 import { JoinedRoomResponseDto } from 'src/chat/dto/joined-room/joined-room-response.dto';
-import { JoinedRoomDto } from 'src/chat/dto/joined-room/joined-room.dto';
 import { CreateMessageDto } from 'src/chat/dto/message/create-message.dto';
 import { MessageResponseDto } from 'src/chat/dto/message/message-response.dto';
 import { MoreMessagesDto } from 'src/chat/dto/message/more-messages.dto';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
-import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
 import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
@@ -48,7 +46,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       const user: UserDto = await this.usersService.findOneById(decodedToken.sub);
       
       if(!user) {
-        return this.disconnect(socket);
+        return this.disconnectWithError(socket);
       }
 
       socket.data.user = user;
@@ -58,8 +56,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       return this.server.to(socket.id).emit('rooms', userRooms);
     }
     catch {
-      return this.disconnect(socket);
+      return this.disconnectWithError(socket);
     }
+  }
+  
+  private disconnectWithError(socket: Socket) {
+    socket.emit('Error', new UnauthorizedException());
+    socket.disconnect();
   }
 
   async createConnectedUser(socket: Socket) {
@@ -68,11 +71,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       user: socket.data.user
     }
     await this.connectedUserService.create(connectedUserDto);
-  }
-  
-  private disconnect(socket: Socket) {
-    socket.emit('Error', new UnauthorizedException());
-    socket.disconnect();
   }
 
   async handleDisconnect(socket: Socket) {

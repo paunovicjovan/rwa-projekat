@@ -1,9 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards, Request } from '@nestjs/common';
 import { TagsService } from '../service/tags.service';
 import { CreateTagDto } from '../dto/create-tag.dto';
 import { UpdateTagDto } from '../dto/update-tag.dto';
-import { Observable } from 'rxjs';
-import { TagDto } from '../dto/tag.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { TagResponseDto } from '../dto/tag-response.dto';
 import { RolesGuard } from 'src/auth/guards/roles.guard';

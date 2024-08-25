@@ -2,8 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, 
 import { ReviewsService } from '../service/reviews.service';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
-import { Observable } from 'rxjs';
-import { ReviewDto } from '../dto/review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { ReviewAuthorOrAdminGuard } from '../guards/review-author-or-admin/review-author-or-admin.guard';
 import { UserIsReviewAuthorGuard } from '../guards/user-is-review-author/user-is-review-author.guard';

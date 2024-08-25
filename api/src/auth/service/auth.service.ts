@@ -1,7 +1,5 @@
-import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { catchError, from, map, Observable, of, switchMap, throwError } from 'rxjs';
-import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { UserDto } from 'src/users/dto/user.dto';
 import { UsersService } from 'src/users/service/users.service';
 import { LoginRequestDto } from '../dto/login-request.dto';

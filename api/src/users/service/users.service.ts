@@ -9,7 +9,6 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import * as fs from 'fs';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../dto/search-users-filters.dto';
-import { TagResponseDto } from 'src/tags/dto/tag-response.dto';
 import { ProjectsService } from 'src/projects/service/projects.service';
 import { ProjectDto } from 'src/projects/dto/project.dto';
 import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.service';
