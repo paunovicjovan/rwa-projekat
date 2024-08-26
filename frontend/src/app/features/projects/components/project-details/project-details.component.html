@@ -52,21 +52,35 @@
                     </p>
 
                     <!-- Own Project Actions -->
-                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id; else notOwnProject">
+                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
                         <ng-container *ngIf="dataFromStore.chosenProject.status === 'opened'">
                             <div class="d-flex align-items-center">
-                                <button class="btn bg-purple text-beige" (click)="disableApplications(dataFromStore.chosenProject.id)">Zatvori prijave</button>
-                                <button mat-icon-button type="button" matTooltip="Zatvaranjem prijava korisnici više neće moći da pronađu ovaj projekat u pretrazi niti da se prijave.">
+                                <button class="btn bg-purple text-beige" (click)="disableApplications(dataFromStore.chosenProject.id)">
+                                    Zatvori prijave
+                                </button>
+                                <button mat-icon-button 
+                                        type="button" 
+                                        matTooltip="Zatvaranjem prijava korisnici više neće moći da pronađu ovaj projekat u pretrazi niti da se prijave.">
                                     <mat-icon class="text-green" fontIcon="info"></mat-icon>
                                 </button>
                             </div>
                         </ng-container>
                         <ng-container *ngIf="dataFromStore.chosenProject.status === 'closed'">
                             <div class="d-flex align-items-center align-items-md-start align-items-lg-center flex-row flex-md-column flex-lg-row gap-2">
-                                <button class="btn bg-purple text-beige" (click)="enableApplications(dataFromStore.chosenProject.id)">Otvori prijave</button>
+                                <button class="btn bg-purple text-beige" 
+                                        (click)="enableApplications(dataFromStore.chosenProject.id)">
+                                        Otvori prijave
+                                </button>
+
                                 <div class="d-flex align-items-center">
-                                    <button class="btn bg-red text-beige" (click)="finishProject(dataFromStore.chosenProject)">Završi projekat</button>
-                                    <button mat-icon-button type="button" matTooltip="Završavanjem projekta prekida se mogućnost vraćanja u stanje otvoren/zatvoren za prijave i mogućnost izmene podataka o projektu. Završen projekat prikazuje se kao portfolio.">
+                                    <button class="btn bg-red text-beige" 
+                                    (click)="finishProject(dataFromStore.chosenProject)">
+                                        Završi projekat
+                                    </button>
+                                    <button mat-icon-button 
+                                            type="button" 
+                                            matTooltip="Završavanjem projekta prekida se mogućnost vraćanja u stanje otvoren/zatvoren za 
+                                                        prijave i mogućnost izmene podataka o projektu. Završen projekat prikazuje se kao portfolio.">
                                         <mat-icon class="text-green" fontIcon="info"></mat-icon>
                                     </button>
                                 </div>
@@ -85,7 +99,8 @@
                     </button>
 
                     <!-- Not Own Project Actions -->
-                    <ng-template #notOwnProject>
+                    <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id !== dataFromStore.loggedInUser.id &&
+                                        dataFromStore.chosenProject.status !== 'completed'">
                         <hr>
                         <ng-container *ngIf="dataFromStore.canUserApply; else notApplied">
                             <button class="btn bg-purple text-beige me-2 w-100" 
@@ -94,9 +109,12 @@
                         
                         <ng-template #notApplied>
                             <p>Prijavili ste se za ovaj projekat</p>
-                            <button class="btn bg-red text-beige w-100" (click)="unenrollFromProject(dataFromStore.chosenProject.id, dataFromStore.loggedInUser.id)">Odjavi se</button>
+                            <button class="btn bg-red text-beige w-100" 
+                                    (click)="unenrollFromProject(dataFromStore.chosenProject.id, dataFromStore.loggedInUser.id)">
+                                    Odjavi se
+                            </button>
                         </ng-template>
-                    </ng-template>
+                    </ng-container>
                     
                 </div>
                 
@@ -115,7 +133,10 @@
                     <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id &&
                                          dataFromStore.chosenProject.status !== 'completed'">
                         <div class="d-flex justify-content-end" >
-                            <button class="btn bg-green text-beige mb-3" (click)="openProjectUpdateDialog(dataFromStore.chosenProject)">Izmeni podatke o projektu</button>
+                            <button class="btn bg-green text-beige mb-3" 
+                                    (click)="openProjectUpdateDialog(dataFromStore.chosenProject)">
+                                Izmeni podatke o projektu
+                            </button>
                         </div>
                     </ng-container>
 
@@ -124,10 +145,20 @@
                         <p>Status projekta: <span class="text-bold">{{dataFromStore.chosenProject.status | translateProjectStatus}}</span></p>
                         <ng-container *ngIf="dataFromStore.chosenProject.status === 'completed'">
                             <p *ngIf="dataFromStore.chosenProject.applicationLink">
-                                Link aplikacije: <a class="text-bold text-decoration-none text-purple" target="_blank" [href]="dataFromStore.chosenProject.applicationLink">{{dataFromStore.chosenProject.applicationLink}}</a>
+                                Link aplikacije: 
+                                <a class="text-bold text-decoration-none text-purple" 
+                                   target="_blank" 
+                                   [href]="dataFromStore.chosenProject.applicationLink">
+                                        {{dataFromStore.chosenProject.applicationLink}}
+                                </a>
                             </p>
                             <p *ngIf="dataFromStore.chosenProject.repositoryLink">
-                                Link repozitorijuma: <a class="text-bold text-decoration-none text-purple" target="_blank" [href]="dataFromStore.chosenProject.repositoryLink">{{dataFromStore.chosenProject.repositoryLink}}</a>
+                                Link repozitorijuma: 
+                                <a class="text-bold text-decoration-none text-purple" 
+                                   target="_blank" 
+                                   [href]="dataFromStore.chosenProject.repositoryLink">
+                                   {{dataFromStore.chosenProject.repositoryLink}}
+                                </a>
                             </p>
                         </ng-container>
                         

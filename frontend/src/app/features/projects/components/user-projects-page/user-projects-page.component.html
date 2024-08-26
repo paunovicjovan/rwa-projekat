@@ -24,9 +24,9 @@
                     </div>
                 </mat-tab>
 
-                <!-- Applied Projects Tab -->
-                <mat-tab label="Moje prijave" *ngIf="loggedInUser.username === username">
-                    <p class="lead text-center mt-4">Projekti za koje ste se prijavili</p>
+                <!-- Completed Collaborations Tab -->
+                <mat-tab label="Završene saradnje">
+                    <p class="lead text-center mt-4">{{loggedInUser.username === username ? 'Projekti na kojima ste učestvovali i završeni su' : 'Projekti na kojima je korisnik učestvovao i završeni su'}}</p>
                 </mat-tab>
 
                 <!-- Current Collaborations Tab -->
@@ -34,10 +34,11 @@
                     <p class="lead text-center mt-4">Projekti na kojima ste prihvaćeni</p>
                 </mat-tab>
 
-                <!-- Completed Collaborations Tab -->
-                <mat-tab label="Završene saradnje">
-                    <p class="lead text-center mt-4">{{loggedInUser.username === username ? 'Projekti na kojima ste učestvovali i završeni su' : 'Projekti na kojima je korisnik učestvovao i završeni su'}}</p>
+                <!-- Applied Projects Tab -->
+                <mat-tab label="Moje prijave" *ngIf="loggedInUser.username === username">
+                    <p class="lead text-center mt-4">Projekti za koje ste se prijavili</p>
                 </mat-tab>
+                
             </mat-tab-group>
 
             <!-- Projects -->

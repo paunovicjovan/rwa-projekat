@@ -62,13 +62,18 @@ export class UserProjectsPageComponent {
                                                                         paginationOptions: {page, limit}}));
         break;
       case 1:
-        this.store.dispatch(projectsActions.findAppliedProjectsForUser({username: this.username, paginationOptions: {page, limit}}));
+        this.store.dispatch(projectsActions.findAcceptedProjectsForUser({username: this.username, 
+                                                                        isCompleted: true, 
+                                                                        paginationOptions: { page, limit }}));
         break;
       case 2:
-        this.store.dispatch(projectsActions.findAcceptedProjectsForUser({username: this.username, isCompleted: false, paginationOptions: { page, limit }}));
+        this.store.dispatch(projectsActions.findAcceptedProjectsForUser({username: this.username, 
+                                                                        isCompleted: false, 
+                                                                        paginationOptions: { page, limit }}));
         break;
       case 3:
-        this.store.dispatch(projectsActions.findAcceptedProjectsForUser({username: this.username, isCompleted: true, paginationOptions: { page, limit }}));
+        this.store.dispatch(projectsActions.findAppliedProjectsForUser({username: this.username, 
+                                                                        paginationOptions: {page, limit}}));
         break;
     }
   }
