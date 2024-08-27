@@ -10,6 +10,7 @@
     <mat-spinner diameter="50" *ngIf="dataFromStore.isLoading" class="mx-auto"></mat-spinner>
 
     <ng-container *ngIf="!dataFromStore.isLoading">
+        <p class="lead text-center mt-4" *ngIf="!dataFromStore.users?.length">Nema korisnika</p>
         <div class="row d-flex align-items-center justify-content-center w-100" *ngFor="let user of dataFromStore.users">
             <div class="col-md-10">
                 <app-user-preview class="w-100" [user]="user"></app-user-preview>

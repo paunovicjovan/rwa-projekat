@@ -4,11 +4,23 @@
         <mat-card appearance="outlined" class="p-3 d-flex justify-content-center">
             <div class="row gap-2 gap-md-0">
                 <div class="col-md-4">
+
                     <!-- Project Image -->
                     <mat-card appearance="outlined" class="project-image mb-3 position-relative">
-                        <app-avatar-image defaultImageUrl="assets/default-project-image.jpg" [imageUrl]="dataFromStore.chosenProject.image" route="projects/project-image"></app-avatar-image>
-                        <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
-                        (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
+                        <app-avatar-image defaultImageUrl="assets/default-project-image.jpg" 
+                                          [imageUrl]="dataFromStore.chosenProject.image" 
+                                          route="projects/project-image">
+                        </app-avatar-image>
+
+                        <input type="file" 
+                               id="imageUploadControl" 
+                               name="imageUploadControl" 
+                               accept="image/*"
+                               (change)="selectedImageChanged($event)" 
+                               class="file-input" 
+                               hidden 
+                               #imageUploadControl />
+                               
                         <button class="btn rounded-circle bg-green text-beige btn-edit-image" 
                                 (click)="imageUploadControl.click()" 
                                 type="button" 

@@ -1,24 +1,24 @@
 <mat-card class="p-4 col-12" appearance="outlined">
     <form [formGroup]="searchForm">
-        <div class="row">
+        <div class="row gap-3 gap-md-0">
 
             <div class="col-12 col-md-4">
-                <mat-form-field subscriptSizing="dynamic" class="w-100 m-2">
+                <mat-form-field subscriptSizing="dynamic" class="w-100">
                     <input matInput placeholder="Korisničko ime" formControlName="username">
                 </mat-form-field>
             </div>
 
             <div class="col-12 col-md-8">
-                <div class="row">
+                <div class="row gap-3 gap-sm-0">
 
                     <div class="col-12 col-sm-6">
-                        <mat-form-field subscriptSizing="dynamic" class="w-100 m-2">
+                        <mat-form-field subscriptSizing="dynamic" class="w-100">
                             <input matInput placeholder="Ime" formControlName="firstName">
                         </mat-form-field>
                     </div>
 
                     <div class="col-12 col-sm-6">
-                        <mat-form-field subscriptSizing="dynamic" class="w-100 m-2">
+                        <mat-form-field subscriptSizing="dynamic" class="w-100">
                             <input matInput placeholder="Prezime" formControlName="lastName">
                         </mat-form-field>
                     </div>
