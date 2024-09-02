@@ -13,6 +13,10 @@ export class JoinedRoomsService {
   ) {}
 
   async create(joinedRoom: CreateJoinedRoomDto): Promise<JoinedRoomResponseDto> {
+    const existingJoinedRoom = await this.joinedRoomRepository.findOne({where: { socketId: joinedRoom.socketId }});
+    if(existingJoinedRoom)
+      return existingJoinedRoom;
+
     return await this.joinedRoomRepository.save(joinedRoom);
   }
 
