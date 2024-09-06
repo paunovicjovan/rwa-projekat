@@ -1,7 +1,7 @@
 import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
 import * as chatsActions from './chat.actions';
-import { catchError, concatMap, exhaustMap, map, mergeMap, of, tap } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { ChatService } from "../services/chat.service";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Room } from "../models/room/room.interface";
@@ -164,7 +164,7 @@ export const receiveRooms$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
-            mergeMap(() =>
+            switchMap(() =>
                 chatsService.receiveRooms().pipe(
                     map((paginatedRooms: PaginatedResponse<Room>) => {
                         return chatsActions.receiveRoomsSuccess({ paginatedRooms })
@@ -184,7 +184,7 @@ export const receiveMessages$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
-            mergeMap(() =>
+            switchMap(() =>
                 chatsService.receiveMessages().pipe(
                     map((paginatedMessages: PaginatedResponse<Message>) => {
                         return chatsActions.receiveMessagesSuccess({ paginatedMessages })
@@ -204,7 +204,7 @@ export const receiveMoreMessages$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
-            mergeMap(() =>
+            switchMap(() =>
                 chatsService.receiveMoreMessages().pipe(
                     map((paginatedMessages: PaginatedResponse<Message>) => {
                         return chatsActions.receiveMoreMessagesSuccess({ paginatedMessages })
@@ -224,7 +224,7 @@ export const receiveNewMessage$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
-            mergeMap(() =>
+            switchMap(() =>
                 chatsService.receiveNewMessage().pipe(
                     map((message: Message) => {
                         return chatsActions.receiveNewMessageSuccess({ message })
@@ -244,7 +244,7 @@ export const receiveRoomMembers$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(
             ofType(chatsActions.connect),
-            mergeMap(() =>
+            switchMap(() =>
                 chatsService.receiveRoomMembers().pipe(
                     map((members: User[]) => {
                         return chatsActions.receiveRoomMembersSuccess({ members })

@@ -63,11 +63,13 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
     this.newMessageForm.get('text')?.setValue(null);
   }
 
-  ngOnChanges(): void {
-    this.store.dispatch(chatsActions.leaveRoom());
-    if(this.chatroom) {
-      this.previousScrollHeight = 0;
-      this.store.dispatch(chatsActions.joinRoom({room: this.chatroom}));
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chatroom'] && changes['chatroom'].currentValue !== changes['chatroom'].previousValue) {
+      this.store.dispatch(chatsActions.leaveRoom());
+      if(this.chatroom) {
+        this.previousScrollHeight = 0;
+        this.store.dispatch(chatsActions.joinRoom({room: this.chatroom}));
+      }
     }
   }
 
