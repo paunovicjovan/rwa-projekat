@@ -8,13 +8,17 @@ import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
 import { UserDto } from 'src/users/dto/user.dto';
 import { Repository } from 'typeorm';
+import { JoinedRoomsService } from '../joined-rooms/joined-rooms.service';
+import { MessagesService } from '../messages/messages.service';
 
 @Injectable()
 export class RoomsService {
 
   constructor(
     @InjectRepository(RoomEntity)
-    private roomsRepository: Repository<RoomEntity>
+    private roomsRepository: Repository<RoomEntity>,
+    private joinedRoomsService: JoinedRoomsService,
+    private messagesService: MessagesService
   ) {}
 
   async createRoom(room: CreateRoomDto, creator: UserDto): Promise<RoomResponseDto> {
@@ -64,14 +68,23 @@ export class RoomsService {
       relations: ['users', 'createdBy']
     });
     room.users = room.users.filter(user => user.id !== dto.user.id);
-    if(room.createdBy.id === dto.user.id)
+    if(room.createdBy && room.createdBy.id === dto.user.id)
       room.createdBy = null;
 
     await this.roomsRepository.save(room);
+    await this.joinedRoomsService.deleteByUserAndRoom(dto);
     return room;
   }
 
   async deleteRoom(roomId: number): Promise<any> {
-    
+    const room = await this.roomsRepository.findOne({
+      where: {id: roomId},
+      relations: ['users']
+    });
+    room.users = [];
+    await this.roomsRepository.save(room);
+    await this.joinedRoomsService.deleteManyByRoomId(roomId);
+    await this.messagesService.deleteManyByRoomId(roomId);
+    return await this.roomsRepository.delete({ id: roomId });
   }
 }

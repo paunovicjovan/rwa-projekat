@@ -48,6 +48,10 @@ export class ChatService {
     this.socket.emit('removeUserFromRoom', dto);
   }
 
+  deleteRoom(roomId: number) {
+    this.socket.emit('deleteRoom', roomId);
+  }
+
   joinRoom(room: Room) {
     this.socket.emit('joinRoom', room);
   }

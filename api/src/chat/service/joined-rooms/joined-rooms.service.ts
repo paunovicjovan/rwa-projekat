@@ -17,7 +17,7 @@ export class JoinedRoomsService {
     const existingJoinedRoom = await this.joinedRoomRepository.findOne({where: { socketId: joinedRoom.socketId }});
     if(existingJoinedRoom)
       return existingJoinedRoom;
-
+   
     return await this.joinedRoomRepository.save(joinedRoom);
   }
 
@@ -34,12 +34,16 @@ export class JoinedRoomsService {
     });
   }
 
-  async deleteBySocketId(socketId: string): Promise<any> {
+  async deleteOneBySocketId(socketId: string): Promise<any> {
     return await this.joinedRoomRepository.delete({ socketId });
   }
 
   async deleteManyByUserId(userId: number): Promise<any> {
     return await this.joinedRoomRepository.delete({ user: { id: userId } });
+  }
+
+  async deleteManyByRoomId(roomId: number): Promise<any> {
+    return await this.joinedRoomRepository.delete({ room: { id: roomId } });
   }
 
   async deleteAll(): Promise<any> {

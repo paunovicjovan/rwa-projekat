@@ -112,6 +112,18 @@ export const removeUserFromRoom$ = createEffect(
     {functional: true, dispatch: false}
 )
 
+export const deleteRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.deleteRoom),
+            tap(({roomId}) =>
+                chatsService.deleteRoom(roomId)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
 export const joinRoom$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(

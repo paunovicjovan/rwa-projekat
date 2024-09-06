@@ -73,6 +73,11 @@ export const removeUserFromRoom = createAction(
     props<{ dto: UpdateRoomMembershipDto }>()
 )
 
+export const deleteRoom = createAction(
+    '[Chats] Delete Room',
+    props<{ roomId: number }>()
+)
+
 export const sendMessage = createAction(
     '[Chats] Send Message',
     props<{ createMessageDto: CreateMessageDto }>()

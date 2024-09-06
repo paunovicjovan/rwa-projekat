@@ -101,7 +101,10 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
   }
 
   handleDeleteChatroom() {
-    console.log('delete');
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: 'Da li sigurno želite da obrišete chat? \nOvime će chat biti obrisan za sve korisnike i ne može se vratiti.',
+      actionToDispatch: chatsActions.deleteRoom({roomId: this.chatroom!.id })
+    }));
   }
 
   handleAddUser(user: User) {

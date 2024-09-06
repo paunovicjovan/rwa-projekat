@@ -76,7 +76,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   async handleDisconnect(socket: Socket) {
     await this.connectedUserService.deleteBySocketId(socket.id);
-    await this.joinedRoomsService.deleteBySocketId(socket.id);
+    await this.joinedRoomsService.deleteOneBySocketId(socket.id);
     socket.disconnect();
   }
 
@@ -102,7 +102,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   async onRemoveUserFromRoom(socket: Socket, dto: UpdateRoomMembershipDto) {
     const oldRoom = await this.roomsService.findRoom(dto.roomId);
     await this.roomsService.removeUserFromRoom(dto);
-    await this.joinedRoomsService.deleteByUserAndRoom(dto);
+    await this.sendRoomsToConnectedMembers(oldRoom.users);
+  }
+
+  @SubscribeMessage('deleteRoom')
+  async onDeleteRoom(socket: Socket, roomId: number) {
+    const oldRoom = await this.roomsService.findRoom(roomId);
+    await this.roomsService.deleteRoom(roomId);
     await this.sendRoomsToConnectedMembers(oldRoom.users);
   }
 
@@ -139,14 +145,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   @SubscribeMessage('leaveRoom')
   async onLeaveRoom(socket: Socket) {
-    await this.joinedRoomsService.deleteBySocketId(socket.id);
+    await this.joinedRoomsService.deleteOneBySocketId(socket.id);
   }
 
   @SubscribeMessage('addMessage')
   async onAddMessage(socket: Socket, message: CreateMessageDto) {
     const createdMessage: MessageResponseDto = await this.messagesService.create({...message, user: socket.data.user});
     const joinedUsers: JoinedRoomResponseDto[] = await this.joinedRoomsService.findByRoomId(message.room.id);
-
+  
     for(const user of joinedUsers) {
       await this.server.to(user.socketId).emit('newMessage', createdMessage);
     }

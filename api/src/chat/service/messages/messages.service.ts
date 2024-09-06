@@ -30,4 +30,8 @@ export class MessagesService {
   async deleteManyByUserId(userId: number): Promise<any> {
     return await this.messageRepository.delete({user: { id: userId }})
   }
+
+  async deleteManyByRoomId(roomId: number): Promise<any> {
+    return await this.messageRepository.delete({room: { id: roomId }})
+  }
 }
