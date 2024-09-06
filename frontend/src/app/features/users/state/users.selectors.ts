@@ -26,3 +26,8 @@ export const selectUsersPaginationMetadata = createSelector(
     usersFeature,
     (state: UsersState) => state.paginationMetadata
 );
+
+export const selectAutocompletedUsers = createSelector(
+    usersFeature,
+    (state: UsersState) => state.autocompletedUsers
+);

@@ -54,8 +54,8 @@ export class RoomFormDialogComponent implements OnInit {
     this.usersFormArray.push(newUserFormControl);
   }
 
-  removeUserFromForm(userId: number) {
-    const userIndex = this.findUserIndexInForm(userId);
+  removeUserFromForm(user: User) {
+    const userIndex = this.findUserIndexInForm(user.id);
     this.usersFormArray.removeAt(userIndex);
   }
 

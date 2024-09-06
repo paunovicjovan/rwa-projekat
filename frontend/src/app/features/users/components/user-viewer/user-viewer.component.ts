@@ -16,7 +16,7 @@ export class UserViewerComponent implements OnDestroy {
   @Input({required: true}) users!: User[] | null;
   @Input() readonly: boolean = false;
   @Output() addUser: EventEmitter<User> = new EventEmitter();
-  @Output() removeUser: EventEmitter<number> = new EventEmitter();
+  @Output() removeUser: EventEmitter<User> = new EventEmitter();
 
   searchUserControl = new FormControl();
   selectedUser: User | null = null;
@@ -44,13 +44,13 @@ export class UserViewerComponent implements OnDestroy {
           page: 1,
           limit: 10
         }
-        this.store.dispatch(usersActions.filterUsers({filterData}));
+        this.store.dispatch(usersActions.autocompleteUsers({filterData}));
       })
     ).subscribe();
   }
 
   selectDataFromStore() {
-    this.filteredUsers$ = this.store.select(usersSelectors.selectUsers)
+    this.filteredUsers$ = this.store.select(usersSelectors.selectAutocompletedUsers)
   }
 
   handleAddUser() {
@@ -60,7 +60,7 @@ export class UserViewerComponent implements OnDestroy {
   }
 
   handleRemoveUser(user: User) {
-    this.removeUser.emit(user.id);
+    this.removeUser.emit(user);
   }
 
   setSelectedUser(user: User) {

@@ -12,6 +12,7 @@ import { MessageResponseDto } from 'src/chat/dto/message/message-response.dto';
 import { MoreMessagesDto } from 'src/chat/dto/message/more-messages.dto';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomDto } from 'src/chat/dto/room/room.dto';
+import { UpdateRoomMembershipDto } from 'src/chat/dto/room/update-room-membership.dto';
 import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
 import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.service';
@@ -82,7 +83,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('createRoom')
   async onCreateRoom(socket: Socket, room: CreateRoomDto) {
     const createdRoom = await this.roomsService.createRoom(room, socket.data.user);
-
     await this.sendRoomsToConnectedMembers(createdRoom.users);
   }
 
@@ -90,6 +90,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   async onUpdateRoom(socket: Socket, room: UpdateRoomDto) {
     const updatedRoom = await this.roomsService.updateRoom(room);
     await this.sendRoomsToConnectedMembers(updatedRoom.users);
+  }
+
+  @SubscribeMessage('addUserToRoom')
+  async onAddUserToRoom(socket: Socket, dto: UpdateRoomMembershipDto) {
+    const updatedRoom = await this.roomsService.addUserToRoom(dto);
+    await this.sendRoomsToConnectedMembers(updatedRoom.users);
+  }
+
+  @SubscribeMessage('removeUserFromRoom')
+  async onRemoveUserFromRoom(socket: Socket, dto: UpdateRoomMembershipDto) {
+    const oldRoom = await this.roomsService.findRoom(dto.roomId);
+    await this.roomsService.removeUserFromRoom(dto);
+    await this.joinedRoomsService.deleteByUserAndRoom(dto);
+    await this.sendRoomsToConnectedMembers(oldRoom.users);
   }
 
   async sendRoomsToConnectedMembers(users: UserResponseDto[]) {

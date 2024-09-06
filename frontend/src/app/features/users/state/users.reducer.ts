@@ -17,6 +17,7 @@ const initialPaginationMetadataState : PaginationMetadata = {
 export const initialState: UsersState = {
     ids: [],
     entities: {},
+    autocompletedUsers: [],
     isLoading: false,
     chosenUserProfile: null,
     paginationMetadata: initialPaginationMetadataState
@@ -65,6 +66,19 @@ export const usersReducer = createReducer(
         return {
             ...state,
             isLoading: false
+        }
+    }),
+
+    on(usersActions.autocompleteUsersSuccess, (state, action)=>{
+        return {
+            ...state,
+            autocompletedUsers: action.paginatedUsers.items
+        }
+    }),
+    on(usersActions.autocompleteUsersFailure, (state)=>{
+        return {
+            ...state,
+            autocompletedUsers: []
         }
     }),
     on(usersActions.changeUserRoleSuccess, (state, action) => {

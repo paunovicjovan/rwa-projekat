@@ -35,6 +35,20 @@ export const filterUsersFailure = createAction(
   '[Users] Load Users Failure'
 )
 
+export const autocompleteUsers = createAction(
+  '[Users] Autocomplete Users',
+  props<{ filterData: FilterUsersRequest }>()
+)
+
+export const autocompleteUsersSuccess = createAction(
+  '[Users] Autocomplete Users Success',
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
+)
+
+export const autocompleteUsersFailure = createAction(
+  '[Users] Autocomplete Users Failure'
+)
+
 export const openRoleChangeDialog = createAction(
   '[Users] Open Role Change Dialog',
   props<{ dialogData: RoleChangeDialogData }>()

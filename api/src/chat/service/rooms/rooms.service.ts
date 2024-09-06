@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { CreateRoomDto } from 'src/chat/dto/room/create-room.dto';
 import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
+import { UpdateRoomMembershipDto } from 'src/chat/dto/room/update-room-membership.dto';
 import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
 import { UserDto } from 'src/users/dto/user.dto';
@@ -45,5 +46,32 @@ export class RoomsService {
         relations: ['users', 'createdBy'],
         order: {updatedAt: 'DESC'}
     });
+  }
+
+  async addUserToRoom(dto: UpdateRoomMembershipDto): Promise<RoomResponseDto> {
+    const room = await this.roomsRepository.findOne({
+      where: {id: dto.roomId},
+      relations: ['users', 'createdBy']
+    });
+    room.users.push(dto.user);
+    await this.roomsRepository.save(room);
+    return room;
+  }
+
+  async removeUserFromRoom(dto: UpdateRoomMembershipDto): Promise<RoomResponseDto> {
+    const room = await this.roomsRepository.findOne({
+      where: {id: dto.roomId},
+      relations: ['users', 'createdBy']
+    });
+    room.users = room.users.filter(user => user.id !== dto.user.id);
+    if(room.createdBy.id === dto.user.id)
+      room.createdBy = null;
+
+    await this.roomsRepository.save(room);
+    return room;
+  }
+
+  async deleteRoom(roomId: number): Promise<any> {
+    
   }
 }

@@ -52,6 +52,26 @@ export const filterUsers$ = createEffect(
     {functional: true}
 )
 
+export const autocompleteUsers$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.autocompleteUsers),
+            switchMap(({filterData}) =>
+                usersService.filterUsers(filterData).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.autocompleteUsersSuccess({ paginatedUsers })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.autocompleteUsersFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
 export const openRoleChangeDialog$ = createEffect(
     (action$ = inject(Actions), dialog = inject(MatDialog)) => {
         return action$.pipe(

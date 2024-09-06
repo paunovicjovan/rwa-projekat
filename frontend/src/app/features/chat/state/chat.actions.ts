@@ -9,6 +9,7 @@ import { Message } from "../models/message/message.interface";
 import { User } from "../../users/models/user.interface";
 import { UpdateRoomDto } from "../models/room/update-room-dto.interface";
 import { MoreMessagesDto } from "../models/message/more-messages-dto.interface";
+import { UpdateRoomMembershipDto } from "../models/room/update-room-membership-dto.interface";
 
 
 export const connect = createAction(
@@ -60,6 +61,16 @@ export const joinRoom = createAction(
 
 export const leaveRoom = createAction(
     '[Chats] Leave Room'
+)
+
+export const addUserToRoom = createAction(
+    '[Chats] Add User To Room',
+    props<{ dto: UpdateRoomMembershipDto }>()
+)
+
+export const removeUserFromRoom = createAction(
+    '[Chats] Remove User From Room',
+    props<{ dto: UpdateRoomMembershipDto }>()
 )
 
 export const sendMessage = createAction(

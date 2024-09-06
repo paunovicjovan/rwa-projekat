@@ -10,8 +10,10 @@ import * as chatsActions from '../../state/chat.actions';
 import { CreateMessageDto } from '../../models/message/create-message-dto.interface';
 import * as usersSelectors from '../../../users/state/users.selectors';
 import { PaginationMetadata } from '../../../../shared/models/pagination-metadata.interface';
-import { PaginationOptions } from '../../../../shared/models/pagination-options.interface';
 import { MoreMessagesDto } from '../../models/message/more-messages-dto.interface';
+import { User } from '../../../users/models/user.interface';
+import { UpdateRoomMembershipDto } from '../../models/room/update-room-membership-dto.interface';
+import * as sharedActions from '../../../../shared/state/shared.actions';
 
 @Component({
   selector: 'app-chatroom',
@@ -85,6 +87,40 @@ export class ChatroomComponent implements OnInit, OnChanges, OnDestroy, AfterVie
   
   handleEditChatroom() {
     this.editChatroom.emit(this.chatroom!);
+  }
+
+  handleLeaveChatroom(loggedInUser: User) {
+    const dto: UpdateRoomMembershipDto = {
+      roomId: this.chatroom!.id,
+      user: loggedInUser
+    }
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: 'Da li sigurno želite da napustite chat?',
+      actionToDispatch: chatsActions.removeUserFromRoom({dto})
+    }));
+  }
+
+  handleDeleteChatroom() {
+    console.log('delete');
+  }
+
+  handleAddUser(user: User) {
+    const dto: UpdateRoomMembershipDto = {
+      roomId: this.chatroom!.id,
+      user
+    }
+    this.store.dispatch(chatsActions.addUserToRoom({dto}));
+  }
+
+  handleRemoveUser(user: User) {
+    const dto: UpdateRoomMembershipDto = {
+      roomId: this.chatroom!.id,
+      user
+    }
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: 'Da li sigurno želite da uklonite korisnika iz chat-a?',
+      actionToDispatch: chatsActions.removeUserFromRoom({dto})
+    }));
   }
 
   loadMoreMessages(paginationMetadata: PaginationMetadata) {

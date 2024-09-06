@@ -88,6 +88,30 @@ export const updateRoom$ = createEffect(
     {functional: true, dispatch: false}
 )
 
+export const addUserToRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.addUserToRoom),
+            tap(({dto}) =>
+                chatsService.addUserToRoom(dto)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
+export const removeUserFromRoom$ = createEffect(
+    (action$ = inject(Actions), chatsService = inject(ChatService)) => {
+        return action$.pipe(
+            ofType(chatsActions.removeUserFromRoom),
+            tap(({dto}) =>
+                chatsService.removeUserFromRoom(dto)
+            )
+        )
+    },
+    {functional: true, dispatch: false}
+)
+
 export const joinRoom$ = createEffect(
     (action$ = inject(Actions), chatsService = inject(ChatService)) => {
         return action$.pipe(

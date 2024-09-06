@@ -10,6 +10,7 @@ import { CreateMessageDto } from '../models/message/create-message-dto.interface
 import { User } from '../../users/models/user.interface';
 import { UpdateRoomDto } from '../models/room/update-room-dto.interface';
 import { MoreMessagesDto } from '../models/message/more-messages-dto.interface';
+import { UpdateRoomMembershipDto } from '../models/room/update-room-membership-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,14 @@ export class ChatService {
 
   updateRoom(room: UpdateRoomDto) {
     this.socket.emit('updateRoom', room);
+  }
+
+  addUserToRoom(dto: UpdateRoomMembershipDto) {
+    this.socket.emit('addUserToRoom', dto);
+  }
+
+  removeUserFromRoom(dto: UpdateRoomMembershipDto) {
+    this.socket.emit('removeUserFromRoom', dto);
   }
 
   joinRoom(room: Room) {
@@ -74,5 +83,6 @@ export class ChatService {
   receiveRoomMembers(): Observable<User[]> {
     return this.socket.fromEvent<User[]>('members');
   }
+
 
 }
