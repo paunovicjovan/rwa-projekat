@@ -182,7 +182,7 @@ export class UsersService {
 
     async findAllUsersForRoom(roomId: number): Promise<UserDto[]> {
         return await this.usersRepository.find({
-            where: {rooms: {id: roomId }}
+            where: { rooms: { id: roomId }}
         })
     }
 }

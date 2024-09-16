@@ -8,7 +8,9 @@
         </div>
         <ng-template #noResults>
             <div class="d-flex flex-column align-items-center">
-                <img src="assets/no-projects.png" class="img w-50" alt="Nema sadrzaja">
+                <div class="row w-100">
+                    <img src="assets/no-projects.png" class="img col-11 col-xs-10 col-sm-8 col-md-6 col-lg-4 mx-auto" alt="Nema sadrzaja">
+                </div>
                 <p class="lead text-center">{{isSuggestedMode ? 
                                             'Nema predloženih projekata, probajte da promenite tagove na svom profilu' : 
                                             'Nema projekata'}}

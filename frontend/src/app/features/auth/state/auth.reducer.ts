@@ -63,6 +63,12 @@ export const authReducer = createReducer(
             token: null
         }
     }),
+    on(authActions.clearErrors, (state) => {
+        return {
+            ...state,
+            errorMessage: null
+        }
+    }),
     on(usersActions.changeUserProfileImageSuccess, (state, action) => {
         return {
             ...state,

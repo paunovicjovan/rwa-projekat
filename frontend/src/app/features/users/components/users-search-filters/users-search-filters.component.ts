@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
 import {
   combineLatest,
   debounceTime,
@@ -9,7 +8,6 @@ import {
   startWith,
   Subscription,
 } from 'rxjs';
-import { AppState } from '../../../../state/app-state.interface';
 import { UsersFilters } from '../../models/users-filters.interface';
 
 @Component({

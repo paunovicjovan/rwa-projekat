@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
-import { login } from '../../state/auth.actions';
+import * as authActions from '../../state/auth.actions';
 import { combineLatest, Observable } from 'rxjs';
 import * as authSelectors from '../../state/auth.selectors';
 import { LoginRequest } from '../../models/login-request.interface';
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   initializeForm() {
+    this.store.dispatch(authActions.clearErrors());
     this.loginForm = this.formBuilder.group({
       email: [null, [
         Validators.required,
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
 
   onLoginFormSubmit() {
     const credentials : LoginRequest = this.loginForm.getRawValue();
-    this.store.dispatch(login({loginRequest: credentials}))
+    this.store.dispatch(authActions.login({loginRequest: credentials}))
   }
 
   get emailFormControl() {

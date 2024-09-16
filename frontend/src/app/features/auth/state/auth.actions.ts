@@ -37,3 +37,7 @@ export const registerFailure = createAction(
 export const logout = createAction(
   '[Auth] Logout'
 );
+
+export const clearErrors = createAction(
+  '[Auth] Clear Errors'
+);

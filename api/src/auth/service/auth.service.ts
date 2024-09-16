@@ -38,6 +38,11 @@ export class AuthService {
         }
     }
 
+    async hashPassword(password: string) : Promise<string> {
+        const saltRounds = 10;
+        return bcrypt.hash(password, saltRounds);
+    }
+
     private makeUserEntity(user: CreateUserDto) : UserEntity {
         const userEntity : UserEntity = {
             firstName: user.firstName,
@@ -81,11 +86,6 @@ export class AuthService {
     async generateJWT(user: UserDto) : Promise<string> {
         const payload = { email: user.email, sub: user.id };
         return await this.jwtService.signAsync(payload);
-    }
-
-    async hashPassword(password: string) : Promise<string> {
-        const saltRounds = 10;
-        return bcrypt.hash(password, saltRounds);
     }
 
     async decodeJWT(jwt: string): Promise<any> {

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { RegisterRequest } from '../../models/register-request.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
-import { register } from '../../state/auth.actions';
+import * as authActions from '../../state/auth.actions';
 import { combineLatest, Observable } from 'rxjs';
 import * as authSelectors from '../../state/auth.selectors';
 import { createPasswordStrengthValidator } from '../../custom-form-validators/password-strength.validator';
@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   }
 
   initializeForm() {
+    this.store.dispatch(authActions.clearErrors());
     this.registerForm = this.formBuilder.group(
       {
         firstName: [null, [Validators.required, Validators.minLength(3)]],
@@ -67,7 +68,7 @@ export class RegisterComponent implements OnInit {
 
   onRegisterFormSubmit() {
     const registerData: RegisterRequest = this.registerForm.getRawValue();
-    this.store.dispatch(register({ registerRequest: registerData }));
+    this.store.dispatch(authActions.register({ registerRequest: registerData }));
   }
 
   get firstNameFormControl() {
