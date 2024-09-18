@@ -6,7 +6,7 @@ import * as authActions from '../../state/auth.actions';
 import { combineLatest, Observable } from 'rxjs';
 import * as authSelectors from '../../state/auth.selectors';
 import { LoginRequest } from '../../models/login-request.interface';
-import { OpenaiService } from '../../../../core/services/openai/openai.service';
+import { OpenAIService } from '../../../../core/services/openai/openai.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>,
-              private openaiService: OpenaiService
+              private openaiService: OpenAIService
   ) {}
 
   ngOnInit(): void {

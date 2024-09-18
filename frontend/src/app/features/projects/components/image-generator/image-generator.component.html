@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-end px-2">
+    <ng-container *ngIf="isGenerating; else notGenerating">
+        <mat-spinner diameter="30"></mat-spinner>
+    </ng-container>
+
+    <ng-template #notGenerating>
+        <button (click)="showImageDescriptionForm()" type="button"
+            class="btn bg-purple text-beige mb-3 d-flex align-items-center" *ngIf="!isImageDescriptionVisible">
+            Generiši sliku
+            <mat-icon fontIcon="stars" class="ms-1"></mat-icon>
+        </button>
+
+        <ng-container *ngIf="isImageDescriptionVisible">
+            <form [formGroup]="form" class="w-100" (ngSubmit)="generateImage()">
+                <mat-form-field appearance="fill" class="mb-3 w-100" subscriptSizing="dynamic">
+                    <mat-label>Opis</mat-label>
+                    <textarea matInput placeholder="npr. aplikacija za pronalazenje saradnika za projekte" formControlName="imageDescription" rows="4"></textarea>
+                    <mat-error *ngIf="imageDescriptionControl.touched && imageDescriptionControl.errors">
+                        Unesite opis slike od 10 do 100 karaktera
+                    </mat-error>
+                </mat-form-field>
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn bg-red text-beige me-2" (click)="hideImageDescriptionForm()">Otkaži</button>
+                    <button type="submit" class="btn bg-green text-beige" [disabled]="form.invalid">Generiši</button>
+                </div>
+            </form>
+        </ng-container>
+    </ng-template>
+
+</div>

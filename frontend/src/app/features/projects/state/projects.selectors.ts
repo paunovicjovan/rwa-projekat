@@ -32,3 +32,8 @@ export const selectCanUserApply = createSelector(
     projectsFeature,
     (state: ProjectsState) => state.canUserApplyToProject
 )
+
+export const selectGeneratedImage = createSelector(
+    projectsFeature,
+    (state: ProjectsState) => state.generatedImage
+)

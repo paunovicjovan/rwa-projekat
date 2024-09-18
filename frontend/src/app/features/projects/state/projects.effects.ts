@@ -10,6 +10,9 @@ import { MatDialog } from "@angular/material/dialog"
 import { UpdateProjectComponent } from "../components/update-project/update-project.component"
 import { noOperation } from "../../../shared/state/shared.actions"
 import { UpdateProjectDto } from "../models/update-project-dto.interface"
+import { OpenAIService } from "../../../core/services/openai/openai.service"
+import { ImagesResponse } from "openai/resources/images.mjs"
+import { SnackbarService } from "../../../core/services/snackbar/snackbar.service"
 
 
 export const createProject$ = createEffect(
@@ -249,6 +252,29 @@ export const changeProjectImage$ = createEffect(
                     }),
                     catchError(() => {
                         return of(projectsActions.changeProjectImageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const generateImage$ = createEffect(
+    (action$ = inject(Actions), openaiService = inject(OpenAIService), snackbarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(projectsActions.generateImage),
+            exhaustMap(({imageDescription}) =>
+                openaiService.generateImage(imageDescription).pipe(
+                    map((response: ImagesResponse) => {
+                        console.log(response);
+                        return projectsActions.generateImageSuccess({ base64Image: response.data[0].b64_json! })
+                    }),
+                    catchError((err) => {
+                        console.error(err);
+                        snackbarService.openSnackBar('Došlo je do greške prilikom generisanja slike');
+                        return of(projectsActions.generateImageFailure())
                     }
                     )
                 )

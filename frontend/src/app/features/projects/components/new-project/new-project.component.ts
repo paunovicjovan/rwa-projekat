@@ -18,6 +18,7 @@ export class NewProjectComponent implements OnInit {
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
   croppedImageUrl: string = '';
+  generatedBase64Image: string = '';
   @ViewChild("imageUploadControl", {static:false}) imageUploadControl!:ElementRef;
 
   constructor(private formBuilder: FormBuilder,
@@ -42,7 +43,7 @@ export class NewProjectComponent implements OnInit {
       tags: this.formBuilder.array([], [
         Validators.required
       ])
-    });  
+    });
   }
 
   createProject() {
@@ -73,12 +74,21 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectedImageChanged(event: Event) {
+    this.generatedBase64Image = '';
     this.imageChangedEvent = event;
   }
 
   onImageCropped(event: ImageCroppedEvent) {
     this.croppedImage = event.blob;
     this.croppedImageUrl = URL.createObjectURL(event.blob!);
+  }
+
+  applyGeneratedImage(base64Image: string | null) {
+    if(base64Image) {
+      console.log(base64Image)
+      this.imageChangedEvent = null;
+      this.generatedBase64Image = base64Image;
+    }
   }
 
   get titleFormControl() {

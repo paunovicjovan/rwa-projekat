@@ -16,6 +16,7 @@ import { ProjectParticipantsComponent } from './components/project-participants/
 import { UsersModule } from '../users/users.module';
 import { UpdateProjectComponent } from './components/update-project/update-project.component';
 import { UserProjectsPageComponent } from './components/user-projects-page/user-projects-page.component';
+import { ImageGeneratorComponent } from './components/image-generator/image-generator.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { UserProjectsPageComponent } from './components/user-projects-page/user-
     ProjectDetailsComponent,
     ProjectParticipantsComponent,
     UpdateProjectComponent,
-    UserProjectsPageComponent
+    UserProjectsPageComponent,
+    ImageGeneratorComponent
   ],
   imports: [
     SharedModule,

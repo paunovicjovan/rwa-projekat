@@ -152,3 +152,17 @@ export const changeProjectImageSuccess = createAction(
 export const changeProjectImageFailure = createAction(
     '[Projects] Change Project Image Failure'
 );
+
+export const generateImage = createAction(
+    '[Projects] Generate Image',
+    props<{ imageDescription: string }>()
+);
+
+export const generateImageSuccess = createAction(
+    '[Projects] Generate Image Success',
+    props<{ base64Image: string }>()
+);
+
+export const generateImageFailure = createAction(
+    '[Projects] Generate Image Failure'
+);

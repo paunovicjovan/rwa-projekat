@@ -7,4 +7,5 @@ export interface ProjectsState extends EntityState<Project> {
     paginationMetadata: PaginationMetadata;
     chosenProject: Project | null;
     canUserApplyToProject: boolean;
+    generatedImage: string | null;
 }

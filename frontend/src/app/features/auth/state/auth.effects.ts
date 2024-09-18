@@ -7,7 +7,7 @@ import { AuthResponse } from "../models/auth-response.interface";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { User } from "../../users/models/user.interface";
-import { OpenaiService } from "../../../core/services/openai/openai.service";
+import { OpenAIService } from "../../../core/services/openai/openai.service";
 
 export const login$ = createEffect(
     (action$ = inject(Actions), authService = inject(AuthService)) => {
@@ -75,7 +75,7 @@ export const redirectAfterLogout$ = createEffect((actions$ = inject(Actions), ro
 })
 
 export const test$ = createEffect(
-    (action$ = inject(Actions), openaiService = inject(OpenaiService)) => {
+    (action$ = inject(Actions), openaiService = inject(OpenAIService)) => {
         return action$.pipe(
             ofType(authActions.test),
             exhaustMap(() =>
