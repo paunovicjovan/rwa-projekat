@@ -41,3 +41,15 @@ export const logout = createAction(
 export const clearErrors = createAction(
   '[Auth] Clear Errors'
 );
+
+export const test = createAction(
+  '[Auth] Test'
+)
+
+export const testSuccess = createAction(
+  '[Auth] Test Success'
+)
+
+export const testFailure = createAction(
+  '[Auth] Test Failure'
+)

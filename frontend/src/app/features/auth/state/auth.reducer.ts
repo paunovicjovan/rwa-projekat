@@ -74,5 +74,11 @@ export const authReducer = createReducer(
             ...state,
             currentLoggedInUser: action.user
         }
+    }),
+    on(usersActions.updateUserDataSuccess, (state, action) => {
+        return {
+            ...state,
+            currentLoggedInUser: action.user
+        }
     })
 )
