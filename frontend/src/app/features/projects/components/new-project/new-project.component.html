@@ -29,7 +29,7 @@
                         <app-image-generator (imageGenerated)="applyGeneratedImage($event)"></app-image-generator>
 
                         <ng-container *ngIf="imageUploadControl.value">
-                            <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" [imageBase64]="generatedBase64Image" format="png"
+                            <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" format="png"
                                 (imageCropped)="onImageCropped($event)" [aspectRatio]="3/2">
                             </image-cropper>
                         </ng-container>

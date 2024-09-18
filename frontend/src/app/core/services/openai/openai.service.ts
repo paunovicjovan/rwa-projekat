@@ -29,10 +29,10 @@ export class OpenAIService {
 
   generateImage(imageDescription: string): Observable<ImagesResponse> {
     return from(openai.images.generate({
-      model: "dall-e-2",
+      model: "dall-e-3",
       prompt: imageDescription,
       n: 1,
-      size: "256x256",
+      size: "1792x1024",
       response_format: 'b64_json'
     }))
   }

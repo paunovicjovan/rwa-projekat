@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import * as projectsActions from '../../state/projects.actions';
 import { CreateProjectDto } from '../../models/create-project-dto.interface';
+import { Image } from 'openai/resources/images.mjs';
 
 @Component({
   selector: 'app-new-project',
@@ -18,7 +19,6 @@ export class NewProjectComponent implements OnInit {
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
   croppedImageUrl: string = '';
-  generatedBase64Image: string = '';
   @ViewChild("imageUploadControl", {static:false}) imageUploadControl!:ElementRef;
 
   constructor(private formBuilder: FormBuilder,
@@ -74,7 +74,6 @@ export class NewProjectComponent implements OnInit {
   }
 
   selectedImageChanged(event: Event) {
-    this.generatedBase64Image = '';
     this.imageChangedEvent = event;
   }
 
@@ -85,10 +84,40 @@ export class NewProjectComponent implements OnInit {
 
   applyGeneratedImage(base64Image: string | null) {
     if(base64Image) {
-      console.log(base64Image)
-      this.imageChangedEvent = null;
-      this.generatedBase64Image = base64Image;
+      const image = new Image();
+      image.src = 'data:image/png;base64,' + base64Image;
+      this.drawAndApplyGeneratedImage(image);
     }
+  }
+
+  drawAndApplyGeneratedImage(image: any) {
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(image, 0, 0);
+      
+      canvas.toBlob((blob) => {
+        if(blob) {
+          const file = this.createFileFromBlob(blob);
+          this.attachFileToInputControl(file);
+        }
+      });
+    };
+  }
+
+  createFileFromBlob(blob: Blob) {
+    return new File([blob], 'generated-image.png', { type: 'image/png' })
+  }
+
+  attachFileToInputControl(file: File) {
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    this.imageUploadControl.nativeElement.files = dataTransfer.files;
+    const event = new Event('change', { bubbles: true });
+    this.imageUploadControl.nativeElement.dispatchEvent(event);
   }
 
   get titleFormControl() {

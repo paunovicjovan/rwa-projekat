@@ -218,7 +218,8 @@ export const projectsReducer = createReducer(
     on(projectsActions.generateImage, (state)=>{
         return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            generatedImage: null
         }
     }),
     on(projectsActions.generateImageSuccess, (state, action)=>{
