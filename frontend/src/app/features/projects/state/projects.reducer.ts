@@ -21,7 +21,8 @@ const initialState: ProjectsState = {
     paginationMetadata: initialPaginationMetadataState,
     chosenProject: null,
     canUserApplyToProject: false,
-    generatedImage: null
+    generatedImage: null,
+    enhancedProjectData: null
 }
 
 export const projectsAdapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -230,6 +231,25 @@ export const projectsReducer = createReducer(
         }
     }),
     on(projectsActions.generateImageFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(projectsActions.enhanceProjectData, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.enhanceProjectDataSuccess, (state, action)=>{
+        return {
+            ...state,
+            isLoading: false,
+            enhancedProjectData: action.newProjectData
+        }
+    }),
+    on(projectsActions.enhanceProjectDataFailure, (state)=>{
         return {
             ...state,
             isLoading: false

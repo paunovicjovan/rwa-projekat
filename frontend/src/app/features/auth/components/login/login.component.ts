@@ -19,17 +19,12 @@ export class LoginComponent implements OnInit {
   dataFromStore$!: Observable<any>;
 
   constructor(private formBuilder: FormBuilder,
-              private store: Store<AppState>,
-              private openaiService: OpenAIService
+              private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
     this.initializeForm();
     this.selectDataFromStore();
-  }
-
-  test() {
-    this.store.dispatch(authActions.test());
   }
 
   initializeForm() {

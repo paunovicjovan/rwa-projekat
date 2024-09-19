@@ -29,7 +29,7 @@ export class UpdateProjectComponent {
       ],
       description: [this.dialogData.description, [
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(20),
         Validators.maxLength(500)
       ]],
       requirements: [this.dialogData.requirements, [

@@ -2,7 +2,7 @@ import { inject } from "@angular/core"
 import { Actions, createEffect, ofType } from "@ngrx/effects"
 import { ProjectsService } from "../services/projects.service"
 import * as projectsActions from './projects.actions'
-import { catchError, concatMap, exhaustMap, map, of, switchMap, tap } from "rxjs"
+import { catchError, concatMap, exhaustMap, map, of, switchMap, tap, throwError } from "rxjs"
 import { Project } from "../models/project.interface"
 import { Router } from "@angular/router"
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface"
@@ -13,6 +13,7 @@ import { UpdateProjectDto } from "../models/update-project-dto.interface"
 import { OpenAIService } from "../../../core/services/openai/openai.service"
 import { ImagesResponse } from "openai/resources/images.mjs"
 import { SnackbarService } from "../../../core/services/snackbar/snackbar.service"
+import { ChatCompletion } from "openai/resources/index.mjs"
 
 
 export const createProject$ = createEffect(
@@ -268,13 +269,39 @@ export const generateImage$ = createEffect(
             exhaustMap(({imageDescription}) =>
                 openaiService.generateImage(imageDescription).pipe(
                     map((response: ImagesResponse) => {
-                        console.log(response);
                         return projectsActions.generateImageSuccess({ base64Image: response.data[0].b64_json! })
                     }),
                     catchError((err) => {
-                        console.error(err);
                         snackbarService.openSnackBar('Došlo je do greške prilikom generisanja slike');
                         return of(projectsActions.generateImageFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const enhanceProjectData$ = createEffect(
+    (action$ = inject(Actions), openaiService = inject(OpenAIService), snackbarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(projectsActions.enhanceProjectData),
+            exhaustMap(({oldProjectData}) =>
+                openaiService.enhanceProjectData(oldProjectData).pipe(
+                    map((response: ChatCompletion) => {
+                        try {
+                            const newProjectData = JSON.parse(response.choices[0].message.content!);
+                            return projectsActions.enhanceProjectDataSuccess({ newProjectData })
+                        }
+                        catch(err) {
+                            throwError(() => new Error('Došlo je do greške prilikom generisanja podataka o projektu'))
+                            return projectsActions.enhanceProjectDataFailure()
+                        }
+                    }),
+                    catchError((err) => {
+                        snackbarService.openSnackBar('Došlo je do greške prilikom generisanja podataka o projektu');
+                        return of(projectsActions.enhanceProjectDataFailure())
                     }
                     )
                 )

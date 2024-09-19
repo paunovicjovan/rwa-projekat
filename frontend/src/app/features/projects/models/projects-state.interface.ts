@@ -1,6 +1,7 @@
 import { EntityState } from "@ngrx/entity";
 import { Project } from "./project.interface";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
+import { EnhanceProjectDto } from "./enhance-project-dto.interface";
 
 export interface ProjectsState extends EntityState<Project> {
     isLoading: boolean;
@@ -8,4 +9,5 @@ export interface ProjectsState extends EntityState<Project> {
     chosenProject: Project | null;
     canUserApplyToProject: boolean;
     generatedImage: string | null;
+    enhancedProjectData: EnhanceProjectDto | null
 }

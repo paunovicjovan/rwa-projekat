@@ -23,9 +23,15 @@
                                 <mat-icon class="text-green" fontIcon="info"></mat-icon>
                             </button>
                             <button (click)="imageUploadControl.click()" type="button"
-                                    class="btn bg-green text-beige mb-3 me-2">Izaberi sliku projekta</button>  
+                                    class="btn bg-green text-beige mb-3 me-2">
+                                    Izaberi sliku projekta
+                            </button>  
+                            <button (click)="clearChosenImage()" type="button"
+                                    class="btn bg-red text-beige mb-3"
+                                    *ngIf="croppedImage">
+                                    Vrati podrazumevanu sliku
+                            </button>
                         </div>
-
                         <app-image-generator (imageGenerated)="applyGeneratedImage($event)"></app-image-generator>
 
                         <ng-container *ngIf="imageUploadControl.value">
@@ -55,7 +61,7 @@
                                 <textarea matInput placeholder="Opis" formControlName="description" rows="5"></textarea>
                                 <mat-error
                                     *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
-                                    Unesite opis projekta (od 5 do 500 karaktera)
+                                    Unesite opis projekta (od 20 do 500 karaktera)
                                 </mat-error>
                             </mat-form-field>
 
@@ -69,6 +75,13 @@
                                     Zahtevi projekta mogu imati do 500 karaktera
                                 </mat-error>
                             </mat-form-field>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn bg-purple text-beige d-flex align-items-center" 
+                                        (click)="enhanceProjectData()" [disabled]="titleFormControl.invalid || descriptionFormControl.invalid">Poboljšaj podatke o projektu
+                                    <mat-icon fontIcon="stars" class="ms-1"></mat-icon>
+                                </button>
+                            </div>
 
                             <!-- Tags -->
                             <div *ngIf="tagsFormArray.errors" class="d-flex align-items-center">

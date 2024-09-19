@@ -7,6 +7,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import * as projectsActions from '../../state/projects.actions';
 import { CreateProjectDto } from '../../models/create-project-dto.interface';
 import { Image } from 'openai/resources/images.mjs';
+import { EnhanceProjectDto } from '../../models/enhance-project-dto.interface';
 
 @Component({
   selector: 'app-new-project',
@@ -34,7 +35,7 @@ export class NewProjectComponent implements OnInit {
       ],
       description: [null, [
         Validators.required,
-        Validators.minLength(5),
+        Validators.minLength(20),
         Validators.maxLength(500)
       ]],
       requirements: [null, [
@@ -118,6 +119,22 @@ export class NewProjectComponent implements OnInit {
     this.imageUploadControl.nativeElement.files = dataTransfer.files;
     const event = new Event('change', { bubbles: true });
     this.imageUploadControl.nativeElement.dispatchEvent(event);
+  }
+
+  clearChosenImage() {
+    this.imageChangedEvent = null;
+    this.croppedImageUrl = '';
+    this.croppedImage = null;
+    this.imageUploadControl.nativeElement.value = null;
+  }
+
+  enhanceProjectData() {
+    const currentData: EnhanceProjectDto = {
+      titles: [this.titleFormControl.value],
+      description: this.descriptionFormControl.value,
+      requirements: this.requirementsFormControl.value
+    };
+    this.store.dispatch(projectsActions.enhanceProjectData({oldProjectData: currentData}))
   }
 
   get titleFormControl() {

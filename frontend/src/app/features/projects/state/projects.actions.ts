@@ -6,6 +6,7 @@ import { UpdateProjectDto } from "../models/update-project-dto.interface";
 import { PaginationOptions } from "../../../shared/models/pagination-options.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { ProjectStatus } from "../enums/project-status.enum";
+import { EnhanceProjectDto } from "../models/enhance-project-dto.interface";
 
 
 export const createProject = createAction(
@@ -165,4 +166,18 @@ export const generateImageSuccess = createAction(
 
 export const generateImageFailure = createAction(
     '[Projects] Generate Image Failure'
+);
+
+export const enhanceProjectData = createAction(
+    '[Projects] Enhance Project Data',
+    props<{ oldProjectData: EnhanceProjectDto }>()
+);
+
+export const enhanceProjectDataSuccess = createAction(
+    '[Projects] Enhance Project Data Success',
+    props<{ newProjectData: EnhanceProjectDto }>()
+);
+
+export const enhanceProjectDataFailure = createAction(
+    '[Projects] Enhance Project Data Failure'
 );
