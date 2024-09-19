@@ -181,3 +181,7 @@ export const enhanceProjectDataSuccess = createAction(
 export const enhanceProjectDataFailure = createAction(
     '[Projects] Enhance Project Data Failure'
 );
+
+export const clearEnhancedProjectData = createAction(
+    '[Projects] Clear Enhanced Project Data'
+);

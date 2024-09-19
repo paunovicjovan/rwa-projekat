@@ -9,5 +9,7 @@ export interface ProjectsState extends EntityState<Project> {
     chosenProject: Project | null;
     canUserApplyToProject: boolean;
     generatedImage: string | null;
-    enhancedProjectData: EnhanceProjectDto | null
+    isGeneratingImage: boolean;
+    enhancedProjectData: EnhanceProjectDto | null;
+    isEnhancingProjectData: boolean;
 }

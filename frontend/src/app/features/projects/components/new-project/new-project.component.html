@@ -1,109 +1,152 @@
-<div class="container py-3">
-    <mat-card appearance="outlined" class="p-3">
-        <mat-card-title>
-            <h6 class="text-center mb-5">Kreiraj projekat</h6>
-        </mat-card-title>
-        <mat-card-content>
-            <form [formGroup]="projectForm" (ngSubmit)="createProject()">
-                <div class="row">
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <div class="container py-3">
+        <mat-card appearance="outlined" class="p-3">
+            <mat-card-title>
+                <h6 class="text-center mb-5">Kreiraj projekat</h6>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="projectForm" (ngSubmit)="createProject()">
+                    <div class="row">
 
-                    <!-- Project Image -->
-                    <div class="col-md-6">
-                        <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
-                            (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
+                        <!-- Project Image -->
+                        <div class="col-md-6">
+                            <input type="file" id="imageUploadControl" name="imageUploadControl" accept="image/*"
+                                (change)="selectedImageChanged($event)" class="file-input" hidden #imageUploadControl />
 
-                        <img [src]="croppedImageUrl" *ngIf="croppedImage; else defaultImage"
-                            class="img-fluid border border-secondary rounded-3 border-2 mb-3" alt="">
-                        <ng-template #defaultImage>
-                            <img src="assets/default-project-image.jpg" class="img-fluid border rounded-3 border-secondary border-2 mb-3" alt="">
-                        </ng-template>
-
-                        <div class="d-flex justify-content-end">
-                            <button mat-icon-button type="button" matTooltip="Ukoliko ne odaberete sliku, biće primenjena podrazumevana slika. Kasnije je možete promeniti.">
-                                <mat-icon class="text-green" fontIcon="info"></mat-icon>
-                            </button>
-                            <button (click)="imageUploadControl.click()" type="button"
-                                    class="btn bg-green text-beige mb-3 me-2">
-                                    Izaberi sliku projekta
-                            </button>  
-                            <button (click)="clearChosenImage()" type="button"
-                                    class="btn bg-red text-beige mb-3"
-                                    *ngIf="croppedImage">
-                                    Vrati podrazumevanu sliku
-                            </button>
-                        </div>
-                        <app-image-generator (imageGenerated)="applyGeneratedImage($event)"></app-image-generator>
-
-                        <ng-container *ngIf="imageUploadControl.value">
-                            <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" format="png"
-                                (imageCropped)="onImageCropped($event)" [aspectRatio]="3/2">
-                            </image-cropper>
-                        </ng-container>
-                    </div>
-
-
-                    <!-- Project Data -->
-                    <div class="col-md-6">
-                        <div class="d-flex flex-column">
-
-                            <!-- Title -->
-                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
-                                <mat-label>Naziv</mat-label>
-                                <input matInput placeholder="Naziv" formControlName="title">
-                                <mat-error
-                                    *ngIf="titleFormControl.touched && titleFormControl.errors">Naziv
-                                    projekta je obavezan (od 2 do 20 karaktera)</mat-error>
-                            </mat-form-field>
-
-                            <!-- Description -->
-                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
-                                <mat-label>Opis</mat-label>
-                                <textarea matInput placeholder="Opis" formControlName="description" rows="5"></textarea>
-                                <mat-error
-                                    *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
-                                    Unesite opis projekta (od 20 do 500 karaktera)
-                                </mat-error>
-                            </mat-form-field>
-
-                            <!-- Requirements -->
-                            <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
-                                <mat-label>Zahtevi</mat-label>
-                                <textarea matInput placeholder="Zahtevi" formControlName="requirements"
-                                    rows="5"></textarea>
-                                <mat-error
-                                    *ngIf="requirementsFormControl.touched && requirementsFormControl.errors">
-                                    Zahtevi projekta mogu imati do 500 karaktera
-                                </mat-error>
-                            </mat-form-field>
+                            <img [src]="croppedImageUrl" *ngIf="croppedImage; else defaultImage"
+                                class="img-fluid border border-secondary rounded-3 border-2 mb-3" alt="">
+                            <ng-template #defaultImage>
+                                <img src="assets/default-project-image.jpg" class="img-fluid border rounded-3 border-secondary border-2 mb-3" alt="">
+                            </ng-template>
 
                             <div class="d-flex justify-content-end">
-                                <button type="button" class="btn bg-purple text-beige d-flex align-items-center" 
-                                        (click)="enhanceProjectData()" [disabled]="titleFormControl.invalid || descriptionFormControl.invalid">Poboljšaj podatke o projektu
-                                    <mat-icon fontIcon="stars" class="ms-1"></mat-icon>
+                                <button mat-icon-button type="button" matTooltip="Ukoliko ne odaberete sliku, biće primenjena podrazumevana slika. Kasnije je možete promeniti.">
+                                    <mat-icon class="text-green" fontIcon="info"></mat-icon>
+                                </button>
+                                <button (click)="imageUploadControl.click()" type="button"
+                                        class="btn bg-green text-beige mb-3 me-2">
+                                        Izaberi sliku projekta
+                                </button>  
+                                <button (click)="clearChosenImage()" type="button"
+                                        class="btn bg-red text-beige mb-3"
+                                        *ngIf="croppedImage">
+                                        Vrati podrazumevanu sliku
                                 </button>
                             </div>
+                            <app-image-generator (imageGenerated)="applyGeneratedImage($event)"></app-image-generator>
 
-                            <!-- Tags -->
-                            <div *ngIf="tagsFormArray.errors" class="d-flex align-items-center">
-                                <mat-hint>
-                                    Projekat mora da ima barem 1 tag
-                                </mat-hint>
-                                <button mat-icon-button type="button"
-                                    matTooltip="Izaberite tehnologije ili oblasti na kojima se projekat zasniva">
-                                    <mat-icon class="text-green">info</mat-icon>
-                                </button>
+                            <ng-container *ngIf="imageUploadControl.value">
+                                <image-cropper class="border border-secondary border-2 my-3" [imageChangedEvent]="imageChangedEvent" format="png"
+                                    (imageCropped)="onImageCropped($event)" [aspectRatio]="3/2">
+                                </image-cropper>
+                            </ng-container>
+                        </div>
+
+
+                        <!-- Project Data -->
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column">
+
+                                <!-- Title -->
+                                <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                    <mat-label>Naziv</mat-label>
+                                    <input matInput placeholder="Naziv" formControlName="title">
+                                    <mat-error
+                                        *ngIf="titleFormControl.touched && titleFormControl.errors">Naziv
+                                        projekta je obavezan (od 2 do 20 karaktera)</mat-error>
+                                </mat-form-field>
+
+                                <!-- Title Suggestions -->
+                                <mat-chip-listbox *ngIf="dataFromStore.enhancedProjectData" class="mb-3">
+                                    <mat-chip class="ai-suggested-content" *ngFor="let title of dataFromStore.enhancedProjectData.titles" 
+                                                (click)="handleClickTitleSuggestion(title)" >
+                                        {{title}}
+                                    </mat-chip>
+                                </mat-chip-listbox>
+                                
+
+                                <!-- Description -->
+                                <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                    <mat-label>Opis</mat-label>
+                                    <textarea matInput placeholder="Opis" formControlName="description" rows="5"></textarea>
+                                    <mat-error
+                                        *ngIf="descriptionFormControl.touched && descriptionFormControl.errors">
+                                        Unesite opis projekta (od 20 do 500 karaktera)
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Suggested Description -->
+                                 <div class="ai-suggested-content d-flex flex-column align-items-end" *ngIf="dataFromStore.enhancedProjectData && dataFromStore.enhancedProjectData.description">
+                                    <button mat-icon-button type="button" (click)="exchangeDescriptions(suggestedDescription)">
+                                        <mat-icon fontIcon="arrow_upward"></mat-icon>
+                                    </button> 
+                                    <mat-form-field appearance="fill" class="mb-3 w-100" subscriptSizing="dynamic">
+                                         <mat-label>Predloženi opis</mat-label>
+                                         <textarea #suggestedDescription matInput placeholder="Predloženi opis" rows="5" [value]="dataFromStore.enhancedProjectData.description"></textarea>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Requirements -->
+                                <mat-form-field appearance="fill" class="mb-3" subscriptSizing="dynamic">
+                                    <mat-label>Zahtevi</mat-label>
+                                    <textarea matInput placeholder="Zahtevi" formControlName="requirements"
+                                        rows="5"></textarea>
+                                    <mat-error
+                                        *ngIf="requirementsFormControl.touched && requirementsFormControl.errors">
+                                        Zahtevi projekta mogu imati do 500 karaktera
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <!-- Suggested Requirements -->
+                                <div class="ai-suggested-content d-flex flex-column align-items-end" *ngIf="dataFromStore.enhancedProjectData && dataFromStore.enhancedProjectData.requirements">
+                                    <button mat-icon-button type="button" (click)="exchangeRequirements(suggestedRequirements)">
+                                        <mat-icon fontIcon="arrow_upward"></mat-icon>
+                                    </button>
+                                    <mat-form-field appearance="fill" class="mb-3 w-100" subscriptSizing="dynamic">
+                                        <mat-label>Predloženi zahtevi</mat-label>
+                                        <textarea #suggestedRequirements matInput placeholder="Predloženi zahtevi" rows="5" [value]="dataFromStore.enhancedProjectData.requirements"></textarea>
+                                   </mat-form-field>
+                               </div>
+
+                                <div class="d-flex justify-content-end align-items-center mb-3">
+                                    <button type="button" 
+                                            class="btn bg-red text-beige d-flex align-items-center me-2" 
+                                            (click)="clearEnhancedProject()" 
+                                            *ngIf="dataFromStore.enhancedProjectData">
+                                            Skloni predloge
+                                    </button>
+                                    <button type="button" 
+                                            class="btn bg-purple text-beige d-flex align-items-center" 
+                                            (click)="enhanceProjectData()" 
+                                            [disabled]="titleFormControl.invalid || descriptionFormControl.invalid || dataFromStore.isEnhancingProjectData">
+                                            Predloži bolje podatke
+                                        <mat-icon fontIcon="stars" class="ms-1"></mat-icon>
+                                    </button>
+                                    <mat-spinner diameter="20" class="ms-2" *ngIf="dataFromStore.isEnhancingProjectData"></mat-spinner>
+                                </div>
+
+                                <!-- Tags -->
+                                <div *ngIf="tagsFormArray.errors" class="d-flex align-items-center">
+                                    <mat-hint>
+                                        Projekat mora da ima barem 1 tag
+                                    </mat-hint>
+                                    <button mat-icon-button type="button"
+                                        matTooltip="Izaberite tehnologije ili oblasti na kojima se projekat zasniva">
+                                        <mat-icon class="text-green">info</mat-icon>
+                                    </button>
+                                </div>
+                                <app-tag-viewer [tags]="tagsFormArray.value" (addTag)="addTagToForm($event)" (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
+
                             </div>
-                            <app-tag-viewer [tags]="tagsFormArray.value" (addTag)="addTagToForm($event)" (removeTag)="removeTagFromForm($event)"></app-tag-viewer>
+
+                            <div class="d-flex justify-content-end mt-3">
+                                <button class="btn btn-lg bg-purple text-beige" type="submit" [disabled]="projectForm.invalid">Kreiraj projekat</button>
+                            </div>
 
                         </div>
-
-                        <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-lg bg-purple text-beige" type="submit" [disabled]="projectForm.invalid">Kreiraj projekat</button>
-                        </div>
-
                     </div>
-                </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
-</div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</ng-container>

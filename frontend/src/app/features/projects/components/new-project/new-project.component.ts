@@ -6,8 +6,9 @@ import { Store } from '@ngrx/store';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import * as projectsActions from '../../state/projects.actions';
 import { CreateProjectDto } from '../../models/create-project-dto.interface';
-import { Image } from 'openai/resources/images.mjs';
 import { EnhanceProjectDto } from '../../models/enhance-project-dto.interface';
+import { combineLatest, Observable } from 'rxjs';
+import * as projectsSelectors from '../../state/projects.selectors';
 
 @Component({
   selector: 'app-new-project',
@@ -20,6 +21,7 @@ export class NewProjectComponent implements OnInit {
   imageChangedEvent: Event | null = null;
   croppedImage: Blob | null | undefined = null;
   croppedImageUrl: string = '';
+  dataFromStore$!: Observable<any>;
   @ViewChild("imageUploadControl", {static:false}) imageUploadControl!:ElementRef;
 
   constructor(private formBuilder: FormBuilder,
@@ -27,6 +29,11 @@ export class NewProjectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForm();
+    this.selectDataFromStore();
+  }
+
+  initializeForm() {
     this.projectForm = this.formBuilder.group({
       title: [null, [
         Validators.required,
@@ -45,6 +52,13 @@ export class NewProjectComponent implements OnInit {
         Validators.required
       ])
     });
+  }
+
+  selectDataFromStore() {
+    this.dataFromStore$ = combineLatest({
+      enhancedProjectData: this.store.select(projectsSelectors.selectEnhancedProjectData),
+      isEnhancingProjectData: this.store.select(projectsSelectors.selectIsEnhancingProjectData)
+    })
   }
 
   createProject() {
@@ -135,6 +149,26 @@ export class NewProjectComponent implements OnInit {
       requirements: this.requirementsFormControl.value
     };
     this.store.dispatch(projectsActions.enhanceProjectData({oldProjectData: currentData}))
+  }
+
+  clearEnhancedProject() {
+    this.store.dispatch(projectsActions.clearEnhancedProjectData());
+  }
+
+  handleClickTitleSuggestion(title: string) {
+    this.titleFormControl.setValue(title);
+  }
+
+  exchangeDescriptions(suggestedDescriptionControl: HTMLTextAreaElement) {
+    const suggestedDescription = suggestedDescriptionControl.value;
+    suggestedDescriptionControl.value = this.descriptionFormControl.value;
+    this.descriptionFormControl.setValue(suggestedDescription);
+  }
+
+  exchangeRequirements(suggestedRequirementsControl: HTMLTextAreaElement) {
+    const suggestedRequirements = suggestedRequirementsControl.value;
+    suggestedRequirementsControl.value = this.requirementsFormControl.value;
+    this.requirementsFormControl.setValue(suggestedRequirements);
   }
 
   get titleFormControl() {

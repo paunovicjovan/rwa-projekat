@@ -22,7 +22,9 @@ const initialState: ProjectsState = {
     chosenProject: null,
     canUserApplyToProject: false,
     generatedImage: null,
-    enhancedProjectData: null
+    isGeneratingImage: false,
+    enhancedProjectData: null,
+    isEnhancingProjectData: false
 }
 
 export const projectsAdapter: EntityAdapter<Project> = createEntityAdapter<Project>();
@@ -219,40 +221,46 @@ export const projectsReducer = createReducer(
     on(projectsActions.generateImage, (state)=>{
         return {
             ...state,
-            isLoading: true,
+            isGeneratingImage: true,
             generatedImage: null
         }
     }),
     on(projectsActions.generateImageSuccess, (state, action)=>{
         return {
             ...state,
-            isLoading: false,
+            isGeneratingImage: false,
             generatedImage: action.base64Image
         }
     }),
     on(projectsActions.generateImageFailure, (state)=>{
         return {
             ...state,
-            isLoading: false
+            isGeneratingImage: false
         }
     }),
     on(projectsActions.enhanceProjectData, (state)=>{
         return {
             ...state,
-            isLoading: true
+            isEnhancingProjectData: true
         }
     }),
     on(projectsActions.enhanceProjectDataSuccess, (state, action)=>{
         return {
             ...state,
-            isLoading: false,
+            isEnhancingProjectData: false,
             enhancedProjectData: action.newProjectData
         }
     }),
     on(projectsActions.enhanceProjectDataFailure, (state)=>{
         return {
             ...state,
-            isLoading: false
+            isEnhancingProjectData: false
+        }
+    }),
+    on(projectsActions.clearEnhancedProjectData, (state)=>{
+        return {
+            ...state,
+            enhancedProjectData: null
         }
     }),
 )

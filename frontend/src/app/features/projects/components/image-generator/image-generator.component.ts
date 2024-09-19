@@ -39,7 +39,7 @@ export class ImageGeneratorComponent implements OnInit, OnDestroy {
   selectDataFromStore() {
     this.storeSubscription = combineLatest({
       generatedImage: this.store.select(projectsSelectors.selectGeneratedImage),
-      isGenerating: this.store.select(projectsSelectors.selectIsLoading)
+      isGenerating: this.store.select(projectsSelectors.selectIsGeneratingImage)
     }).subscribe(
       dataFromStore => {
         this.imageGenerated.emit(dataFromStore.generatedImage);

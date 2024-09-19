@@ -38,7 +38,17 @@ export const selectGeneratedImage = createSelector(
     (state: ProjectsState) => state.generatedImage
 )
 
+export const selectIsGeneratingImage = createSelector(
+    projectsFeature,
+    (state: ProjectsState) => state.isGeneratingImage
+)
+
 export const selectEnhancedProjectData = createSelector(
     projectsFeature,
     (state: ProjectsState) => state.enhancedProjectData
+)
+
+export const selectIsEnhancingProjectData = createSelector(
+    projectsFeature,
+    (state: ProjectsState) => state.isEnhancingProjectData
 )
