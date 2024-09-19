@@ -13,6 +13,7 @@ import { UserProjectsPageComponent } from './features/projects/components/user-p
 import { ManageTagsPageComponent } from './features/tags/components/manage-tags-page/manage-tags-page.component';
 import { adminOrModeratorGuard } from './core/guards/admin-or-moderator-guard/admin-or-moderator.guard';
 import { ChatsPageComponent } from './features/chat/components/chats-page/chats-page.component';
+import { PersonalityTestPageComponent } from './features/users/components/personality-test-page/personality-test-page.component';
 
 const routes: Routes = [
   {
@@ -39,6 +40,11 @@ const routes: Routes = [
         component: UserProfilePageComponent
       }
     ],
+    canActivate: [authGuard]
+  },
+  {
+    path: 'personality-test',
+    component: PersonalityTestPageComponent,
     canActivate: [authGuard]
   },
   {

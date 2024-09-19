@@ -45,8 +45,9 @@
                         <p class="text-center text-bold lead">{{dataFromStore.userProfile.firstName}} {{dataFromStore.userProfile.lastName}}</p>
                     </mat-card-subtitle>
 
-                    <div *ngIf="dataFromStore.userProfile.id === dataFromStore.loggedInUser.id" class="d-flex justify-content-center">
-                        <button class="btn bg-purple text-beige mx-auto" (click)="switchToEditingMode(dataFromStore.userProfile)">Izmeni podatke</button>
+                    <div *ngIf="dataFromStore.userProfile.id === dataFromStore.loggedInUser.id" class="d-flex justify-content-center gap-2">
+                        <a class="btn bg-brown text-beige" [routerLink]="'../../personality-test'">Izmeni osobine</a>
+                        <button class="btn bg-purple text-beige" (click)="switchToEditingMode(dataFromStore.userProfile)">Izmeni podatke</button>
                     </div>
                 </ng-container>
                     

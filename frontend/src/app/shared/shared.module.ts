@@ -28,6 +28,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
 import { FormatTimePipe } from './pipes/format-time/format-time.pipe';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSliderModule } from '@angular/material/slider';
 
 const modules = [
   CommonModule,
@@ -52,7 +54,10 @@ const modules = [
   MatDatepickerModule,
   MatTabsModule,
   MatButtonToggleModule,
-  MatListModule]
+  MatListModule,
+  MatStepperModule,
+  MatSliderModule
+]
 
 @NgModule({
   declarations: [

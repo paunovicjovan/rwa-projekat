@@ -263,4 +263,11 @@ export const projectsReducer = createReducer(
             enhancedProjectData: null
         }
     }),
+    on(projectsActions.createProjectSuccess, (state)=>{
+        return {
+            ...state,
+            enhancedProjectData: null,
+            generatedImage: null
+        }
+    }),
 )

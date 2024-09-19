@@ -15,11 +15,12 @@ import { ReviewsModule } from './features/reviews/reviews.module';
 import { TagsModule } from './features/tags/tags.module';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { ChatModule } from './features/chat/chat.module';
+import { PersonalityTestPageComponent } from './features/users/components/personality-test-page/personality-test-page.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

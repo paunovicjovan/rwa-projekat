@@ -14,6 +14,7 @@ import { ReviewsModule } from '../reviews/reviews.module';
 import { TagsModule } from "../tags/tags.module";
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 import { RoleChangeDialogComponent } from './components/role-change-dialog/role-change-dialog.component';
+import { PersonalityTestPageComponent } from './components/personality-test-page/personality-test-page.component';
 
 
 
@@ -26,6 +27,7 @@ import { RoleChangeDialogComponent } from './components/role-change-dialog/role-
     UserPreviewComponent,
     UserViewerComponent,
     RoleChangeDialogComponent,
+    PersonalityTestPageComponent
   ],
   imports: [
     SharedModule,
