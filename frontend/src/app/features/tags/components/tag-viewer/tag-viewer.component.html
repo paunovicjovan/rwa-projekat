@@ -33,7 +33,14 @@
                   [matTooltip]="tag.description ?? ''" 
                   [matTooltipShowDelay]="500">
             {{tag.name}}
-            <mat-icon matChipRemove *ngIf="!readonly">delete</mat-icon>
+            <mat-icon [disabled]="tags.length <= minTags" 
+                      [matTooltip]="'Broj tagova ne može biti manji od' + minTags"
+                      [matTooltipDisabled]="tags.length > minTags"
+                      [matTooltipPosition]="'above'"
+                      matChipRemove 
+                      *ngIf="!readonly">
+                      delete
+            </mat-icon>
         </mat-chip>
     </mat-chip-listbox>
 </div>

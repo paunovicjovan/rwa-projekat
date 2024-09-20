@@ -178,7 +178,8 @@
                     
                     <mat-card appearance="outlined" class="p-3 mb-3">
                         <p class="lead">Tagovi projekta</p>
-                        <app-tag-viewer [tags]="dataFromStore.tags" 
+                        <app-tag-viewer [tags]="dataFromStore.tags"
+                                        [minTags]="1" 
                                         [readonly]="dataFromStore.chosenProject.createdBy.id !== dataFromStore.loggedInUser.id || 
                                                     dataFromStore.chosenProject.status === 'completed'"
                                         (addTag)="addTag($event, dataFromStore.chosenProject.id)" 

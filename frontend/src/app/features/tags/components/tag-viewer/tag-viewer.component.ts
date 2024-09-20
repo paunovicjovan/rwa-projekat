@@ -17,6 +17,7 @@ export class TagViewerComponent implements OnDestroy {
   @Input({ required: true }) tags!: Tag[];
   @Input() readonly: boolean = false;
   @Input() maxTags: number = 10;
+  @Input() minTags: number = 0;
   @Output() addTag: EventEmitter<Tag> = new EventEmitter();
   @Output() removeTag: EventEmitter<number> = new EventEmitter();
   @Output() clickTag: EventEmitter<Tag> = new EventEmitter();
