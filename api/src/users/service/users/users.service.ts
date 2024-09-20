@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../../entities/user.entity';
-import { Not, Raw, Repository } from 'typeorm';
+import { In, Not, Raw, Repository } from 'typeorm';
 import { CreateUserDto } from '../../dto/user/create-user.dto';
 import { UserDto } from '../../dto/user/user.dto';
 import { UserResponseDto } from '../../dto/user/user-response.dto';
@@ -15,6 +15,7 @@ import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.s
 import { ConnectedUserService } from 'src/chat/service/connected-user/connected-user.service';
 import { ReviewsService } from 'src/reviews/service/reviews.service';
 import { MessagesService } from 'src/chat/service/messages/messages.service';
+import { PersonalityScoreService } from '../personality-score/personality-score.service';
 
 @Injectable()
 export class UsersService {
@@ -27,7 +28,10 @@ export class UsersService {
         private connectedUserService: ConnectedUserService,
         @Inject(forwardRef(() => ReviewsService))
         private reviewsService: ReviewsService,
-        private messagesService: MessagesService
+        private messagesService: MessagesService,
+        @Inject(forwardRef(() => PersonalityScoreService))
+        private personalityScoreService: PersonalityScoreService
+
     ) {}
 
     async create(user: CreateUserDto) : Promise<UserDto> {
@@ -36,7 +40,7 @@ export class UsersService {
         return this.usersRepository.save(user);
     }
 
-    async findManyPaginated(options: IPaginationOptions, filters: SearchUsersFilters, requesterId: number) : Promise<Pagination<UserResponseDto>> {
+    async findManyByName(options: IPaginationOptions, filters: SearchUsersFilters, requesterId: number) : Promise<Pagination<UserResponseDto>> {
         return paginate<UserResponseDto>(
             this.usersRepository, 
             options, 
@@ -50,6 +54,23 @@ export class UsersService {
                 order: { createdAt: 'DESC' }
             }
         )
+    }
+
+    async findManyByTags(options: IPaginationOptions, tagsIds: number[], requesterId: number): Promise<Pagination<UserResponseDto>> {
+        const queryBuilder = this.usersRepository.createQueryBuilder('user')
+                            .leftJoinAndSelect('user.tags', 'tag')
+                            .where('tag.id IN (:...tagsIds)', { tagsIds })
+                            .andWhere('user.id != :requesterId', { requesterId })
+                            .orderBy('user.createdAt', 'DESC');
+
+        return paginate<UserEntity>(queryBuilder, options);
+    }
+
+    async findSimilarUsers(requesterId: number, maxCount: number): Promise<UserResponseDto[]> {
+        const similarUsersIds = await this.personalityScoreService.findSimilarUsersIds(requesterId, maxCount);
+        return this.usersRepository.find({
+            where: {id: In(similarUsersIds) }
+        })
     }
 
     async findOneById(id: number): Promise<UserDto> {

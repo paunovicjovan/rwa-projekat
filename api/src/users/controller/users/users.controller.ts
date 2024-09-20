@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from '../../service/users/users.service';
-import { Observable, of } from 'rxjs';
 import { UserResponseDto } from '../../dto/user/user-response.dto';
 import { UpdateUserDto } from '../../dto/user/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
@@ -10,7 +9,7 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../../enums/user-roles.enum';
-import { IPaginationOptions } from 'nestjs-typeorm-paginate';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../../dto/user/search-users-filters.dto';
 import { UserIsOwnerGuard } from '../../guards/user-is-owner/user-is-owner.guard';
 
@@ -23,7 +22,7 @@ export class UsersController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    async findManyPaginated(
+    async findManyByName(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
         @Query('username') username: string = '',
@@ -32,17 +31,38 @@ export class UsersController {
         @Request() req
     ) {
         limit = Math.min(100, limit);
-        const paginateOptions : IPaginationOptions = {
-            limit,
-            page
-        }
         const usersFilters : SearchUsersFilters = {
             username,
             firstName,
             lastName
         }
         const requesterId = req.user.id;
-        return await this.usersService.findManyPaginated(paginateOptions, usersFilters, +requesterId);
+        return await this.usersService.findManyByName({ page, limit }, usersFilters, +requesterId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('search-by-tags')
+    async findManyByTags(
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10,
+        @Query('tagsIds') tagsIdsSerialized: string = '',
+        @Request() req
+    ) {
+        limit = Math.min(100, limit);
+
+        const tagsIds = tagsIdsSerialized
+                        .split(',')
+                        .map(id => Number(id));
+
+        const requesterId = req.user.id;
+
+        return await this.usersService.findManyByTags({ page, limit }, tagsIds, +requesterId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('find-similar-users')
+    async findSimilarUsers(@Request() req): Promise<UserResponseDto[]> {
+        return await this.usersService.findSimilarUsers(+req.user.id, 10);
     }
 
     @UseGuards(JwtAuthGuard)
