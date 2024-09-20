@@ -4,14 +4,14 @@ import { UpdateProjectDto } from '../dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProjectEntity } from '../entities/project.entity';
 import { Not, Repository } from 'typeorm';
-import { UsersService } from 'src/users/service/users.service';
+import { UsersService } from 'src/users/service/users/users.service';
 import { ProjectDto } from '../dto/project.dto';
 import { ProjectResponseDto } from '../dto/project-response.dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchProjectsFilters } from '../dto/search-projects-filters.dto';
 import { ProjectStatus } from '../enums/project-status.enum';
 import * as fs from 'fs';
-import { UserDto } from 'src/users/dto/user.dto';
+import { UserDto } from 'src/users/dto/user/user.dto';
 
 @Injectable()
 export class ProjectsService {

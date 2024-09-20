@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ProjectsService } from 'src/projects/service/projects.service';
 import { UserRoles } from 'src/users/enums/user-roles.enum';
-import { UsersService } from 'src/users/service/users.service';
+import { UsersService } from 'src/users/service/users/users.service';
 
 @Injectable()
 export class ProjectAuthorOrAdminGuard implements CanActivate {

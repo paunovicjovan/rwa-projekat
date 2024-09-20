@@ -5,8 +5,8 @@ import { Repository } from 'typeorm';
 import { ReviewEntity } from '../entities/review.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ReviewDto } from '../dto/review.dto';
-import { UsersService } from 'src/users/service/users.service';
-import { UserDto } from 'src/users/dto/user.dto';
+import { UsersService } from 'src/users/service/users/users.service';
+import { UserDto } from 'src/users/dto/user/user.dto';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { ReviewResponseDto } from '../dto/review-response.dto';
 

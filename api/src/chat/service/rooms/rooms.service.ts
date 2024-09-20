@@ -6,7 +6,7 @@ import { RoomResponseDto } from 'src/chat/dto/room/room-response.dto';
 import { UpdateRoomMembershipDto } from 'src/chat/dto/room/update-room-membership.dto';
 import { UpdateRoomDto } from 'src/chat/dto/room/update-room.dto';
 import { RoomEntity } from 'src/chat/entities/room.entity';
-import { UserDto } from 'src/users/dto/user.dto';
+import { UserDto } from 'src/users/dto/user/user.dto';
 import { Repository } from 'typeorm';
 import { JoinedRoomsService } from '../joined-rooms/joined-rooms.service';
 import { MessagesService } from '../messages/messages.service';

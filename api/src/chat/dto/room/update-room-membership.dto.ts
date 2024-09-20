@@ -1,4 +1,4 @@
-import { UserDto } from "src/users/dto/user.dto";
+import { UserDto } from "src/users/dto/user/user.dto";
 import { RoomDto } from "./room.dto";
 
 export class UpdateRoomMembershipDto {

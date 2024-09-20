@@ -1,6 +1,6 @@
 import { TagDto } from "src/tags/dto/tag.dto";
 import { ProjectStatus } from "../enums/project-status.enum";
-import { UserDto } from "src/users/dto/user.dto";
+import { UserDto } from "src/users/dto/user/user.dto";
 
 export class ProjectDto {
     id: number;

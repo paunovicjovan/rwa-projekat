@@ -1,4 +1,4 @@
-import { UserRoles } from "../enums/user-roles.enum";
+import { UserRoles } from "../../enums/user-roles.enum";
 import { TagResponseDto } from "src/tags/dto/tag-response.dto";
 
 export class UserResponseDto {

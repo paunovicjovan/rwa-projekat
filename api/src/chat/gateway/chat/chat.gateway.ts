@@ -18,9 +18,9 @@ import { ConnectedUserService } from 'src/chat/service/connected-user/connected-
 import { JoinedRoomsService } from 'src/chat/service/joined-rooms/joined-rooms.service';
 import { MessagesService } from 'src/chat/service/messages/messages.service';
 import { RoomsService } from 'src/chat/service/rooms/rooms.service';
-import { UserResponseDto } from 'src/users/dto/user-response.dto';
-import { UserDto } from 'src/users/dto/user.dto';
-import { UsersService } from 'src/users/service/users.service';
+import { UserResponseDto } from 'src/users/dto/user/user-response.dto';
+import { UserDto } from 'src/users/dto/user/user.dto';
+import { UsersService } from 'src/users/service/users/users.service';
 
 @WebSocketGateway({ cors: {origin: ['http://localhost:4200']}})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnModuleInit {

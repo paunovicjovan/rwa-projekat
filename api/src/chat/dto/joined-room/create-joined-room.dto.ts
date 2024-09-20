@@ -1,4 +1,4 @@
-import { CreateUserDto } from "src/users/dto/create-user.dto";
+import { CreateUserDto } from "src/users/dto/user/create-user.dto";
 import { CreateRoomDto } from "../room/create-room.dto";
 
 export class CreateJoinedRoomDto {

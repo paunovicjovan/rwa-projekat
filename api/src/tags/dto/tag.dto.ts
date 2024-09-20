@@ -1,5 +1,5 @@
 import { ProjectDto } from "src/projects/dto/project.dto";
-import { UserDto } from "src/users/dto/user.dto";
+import { UserDto } from "src/users/dto/user/user.dto";
 
 export class TagDto {
     id: number;

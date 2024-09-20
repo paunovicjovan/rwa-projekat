@@ -1,4 +1,4 @@
-import { UserResponseDto } from "src/users/dto/user-response.dto";
+import { UserResponseDto } from "src/users/dto/user/user-response.dto";
 
 export class ReviewResponseDto {
     id: number;

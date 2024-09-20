@@ -1,18 +1,18 @@
 import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, Request, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { UsersService } from '../service/users.service';
+import { UsersService } from '../../service/users/users.service';
 import { Observable, of } from 'rxjs';
-import { UserResponseDto } from '../dto/user-response.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserResponseDto } from '../../dto/user/user-response.dto';
+import { UpdateUserDto } from '../../dto/user/update-user.dto';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
-import { UserRoles } from '../enums/user-roles.enum';
+import { UserRoles } from '../../enums/user-roles.enum';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate';
-import { SearchUsersFilters } from '../dto/search-users-filters.dto';
-import { UserIsOwnerGuard } from '../guards/user-is-owner/user-is-owner.guard';
+import { SearchUsersFilters } from '../../dto/user/search-users-filters.dto';
+import { UserIsOwnerGuard } from '../../guards/user-is-owner/user-is-owner.guard';
 
 @Controller('users')
 export class UsersController {

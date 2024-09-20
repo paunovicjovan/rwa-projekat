@@ -1,4 +1,4 @@
-import { UserDto } from "src/users/dto/user.dto";
+import { UserDto } from "src/users/dto/user/user.dto";
 
 export class CreateConnectedUserDto {
     socketId: string;

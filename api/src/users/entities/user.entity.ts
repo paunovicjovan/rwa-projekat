@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserRoles } from "../enums/user-roles.enum";
 import { ReviewEntity } from "src/reviews/entities/review.entity";
 import { TagEntity } from "src/tags/entities/tag.entity";
@@ -7,6 +7,7 @@ import { ConnectedUserEntity } from "src/chat/entities/connected-user.entity";
 import { RoomEntity } from "src/chat/entities/room.entity";
 import { JoinedRoomEntity } from "src/chat/entities/joined-room.entity";
 import { MessageEntity } from "src/chat/entities/message.entity";
+import { PersonalityScoreEntity } from "./personality-score.entity";
 
 
 @Entity()
@@ -73,4 +74,7 @@ export class UserEntity {
 
     @OneToMany(() => MessageEntity, message => message.user)
     messages: MessageEntity[]
+
+    @OneToOne(() => PersonalityScoreEntity, personalityScore => personalityScore.user)
+    personalityScore: PersonalityScoreEntity;
 }

@@ -3,8 +3,8 @@ import { LoginRequestDto } from '../dto/login-request.dto';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import { UserResponseDto } from 'src/users/dto/user-response.dto';
+import { CreateUserDto } from 'src/users/dto/user/create-user.dto';
+import { UserResponseDto } from 'src/users/dto/user/user-response.dto';
 
 @Controller('auth')
 export class AuthController {

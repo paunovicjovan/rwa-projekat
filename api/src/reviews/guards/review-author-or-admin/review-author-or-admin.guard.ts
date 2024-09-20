@@ -2,9 +2,9 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { map, Observable, switchMap } from 'rxjs';
 import { ReviewDto } from 'src/reviews/dto/review.dto';
 import { ReviewsService } from 'src/reviews/service/reviews.service';
-import { UserDto } from 'src/users/dto/user.dto';
+import { UserDto } from 'src/users/dto/user/user.dto';
 import { UserRoles } from 'src/users/enums/user-roles.enum';
-import { UsersService } from 'src/users/service/users.service';
+import { UsersService } from 'src/users/service/users/users.service';
 
 @Injectable()
 export class ReviewAuthorOrAdminGuard implements CanActivate {

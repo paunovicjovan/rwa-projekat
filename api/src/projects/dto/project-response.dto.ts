@@ -1,5 +1,5 @@
 import { ProjectStatus } from "../enums/project-status.enum";
-import { UserResponseDto } from "src/users/dto/user-response.dto";
+import { UserResponseDto } from "src/users/dto/user/user-response.dto";
 import { TagResponseDto } from "src/tags/dto/tag-response.dto";
 
 export class ProjectResponseDto {

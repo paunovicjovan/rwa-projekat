@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserDto } from 'src/users/dto/user.dto';
-import { UsersService } from 'src/users/service/users.service';
+import { UserDto } from 'src/users/dto/user/user.dto';
+import { UsersService } from 'src/users/service/users/users.service';
 import { LoginRequestDto } from '../dto/login-request.dto';
 import { AuthResponseDto } from 'src/auth/dto/auth-response.dto';
 import { UserRoles } from 'src/users/enums/user-roles.enum';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/user/create-user.dto';
 import { UserEntity } from 'src/users/entities/user.entity';
 const bcrypt = require('bcrypt');
 

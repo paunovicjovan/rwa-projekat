@@ -1,4 +1,4 @@
-import { UserDto } from "src/users/dto/user.dto";
+import { UserDto } from "src/users/dto/user/user.dto";
 import { JoinedRoomDto } from "../joined-room/joined-room.dto";
 import { MessageDto } from "../message/message.dto";
 
