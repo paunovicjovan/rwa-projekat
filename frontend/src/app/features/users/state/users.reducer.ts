@@ -20,7 +20,8 @@ export const initialState: UsersState = {
     autocompletedUsers: [],
     isLoading: false,
     chosenUserProfile: null,
-    paginationMetadata: initialPaginationMetadataState
+    paginationMetadata: initialPaginationMetadataState,
+    personalityScore: null
 }
 
 export const usersAdapter: EntityAdapter<User> = createEntityAdapter<User>();
@@ -206,5 +207,43 @@ export const usersReducer = createReducer(
     }),
     on(chatsActions.receiveRoomMembersSuccess, (state, action)=>{
         return usersAdapter.setAll(action.members, state);
-    })
+    }),
+    on(usersActions.loadPersonalityScore, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.loadPersonalityScoreSuccess, (state, action) => {
+        return {
+            ...state,
+            isLoading: false,
+            personalityScore: action.personalityScore
+        }
+    }),
+    on(usersActions.loadPersonalityScoreFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(usersActions.savePersonalityScore, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.savePersonalityScoreSuccess, (state, action) => {
+        return {
+            ...state,
+            isLoading: false,
+            personalityScore: action.personalityScore
+        }
+    }),
+    on(usersActions.savePersonalityScoreFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

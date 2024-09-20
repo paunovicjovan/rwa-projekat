@@ -34,6 +34,7 @@ export class PersonalityScoreService {
                     id: userId
                 }
             },
+            relations: ['user']
         });
     }
 

@@ -11,6 +11,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { RoleChangeDialogComponent } from "../components/role-change-dialog/role-change-dialog.component";
 import { RoleChangeDialogData } from "../models/role-change-dialog-data.interface";
 import { noOperation } from "../../../shared/state/shared.actions";
+import { PersonalityScore } from "../models/personality-score.interface";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -297,3 +298,57 @@ export const acceptUserInProject$ = createEffect(
     },
     {functional: true}
 )
+
+export const loadPersonalityScore$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.loadPersonalityScore),
+            switchMap(() =>
+                usersService.loadPersonalityScore().pipe(
+                    map((personalityScore: PersonalityScore | null) => {
+                        return usersActions.loadPersonalityScoreSuccess({ personalityScore })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadPersonalityScoreFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const savePersonalityScore$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(usersActions.savePersonalityScore),
+            switchMap(({personalityScore}) =>
+                usersService.savePersonalityScore(personalityScore).pipe(
+                    map((personalityScore: PersonalityScore) => {
+                        snackBarService.openSnackBar('Uspešno ste sačuvali promene.');
+                        return usersActions.savePersonalityScoreSuccess({ personalityScore })
+                    }),
+                    catchError(() => {
+                        snackBarService.openSnackBar('Došlo je do greške prilikom čuvanja promena.');
+                        return of(usersActions.savePersonalityScoreFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const redirectAfterPersonalityScoreChange$ = createEffect((actions$ = inject(Actions), router = inject(Router))=>{
+    return actions$.pipe(
+        ofType(usersActions.savePersonalityScoreSuccess),
+        tap(({personalityScore}) => {
+            router.navigateByUrl('/users/'+personalityScore.user.username)
+        })
+    )
+}, {
+    functional:true,
+    dispatch: false
+})

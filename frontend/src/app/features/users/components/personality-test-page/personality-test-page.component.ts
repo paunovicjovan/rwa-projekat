@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppState } from '../../../../state/app-state.interface';
 import { Store } from '@ngrx/store';
+import * as usersActions from '../../state/users.actions';
+import * as usersSelectors from '../../state/users.selectors';
+import { combineLatest, filter, Observable, Subscription } from 'rxjs';
+import { PersonalityScore } from '../../models/personality-score.interface';
+import { CreatePersonalityScoreDto } from '../../models/create-personality-score-dto.interface';
+
 
 @Component({
   selector: 'app-personality-test-page',
@@ -11,6 +17,8 @@ import { Store } from '@ngrx/store';
 export class PersonalityTestPageComponent implements OnInit {
   
   traitsForm!: FormGroup;
+  isLoading$!: Observable<boolean>;
+  personalityScoreSubscription?: Subscription;
 
   constructor(private formBuilder: FormBuilder,
               private store: Store<AppState>
@@ -18,6 +26,8 @@ export class PersonalityTestPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.store.dispatch(usersActions.loadPersonalityScore())
+    this.selectDataFromStore();
   }
 
   initializeForm() {
@@ -38,8 +48,23 @@ export class PersonalityTestPageComponent implements OnInit {
     return new FormControl(1, [Validators.required, Validators.min(1), Validators.max(10)]);
   }
 
-  savePersonalityScore() {
-    console.log(this.traitsForm.getRawValue());
+  selectDataFromStore() {
+    this.isLoading$ = this.store.select(usersSelectors.selectIsLoading);
+    this.personalityScoreSubscription = this.store.select(usersSelectors.selectPersonalityScore)
+                                        .subscribe((personalityScore: PersonalityScore | null) => {
+                                          if(personalityScore)
+                                            this.traitsForm.patchValue(personalityScore);
+                                          else
+                                            this.traitsForm.reset();
+                                        });
   }
 
+  savePersonalityScore() {
+    const personalityScore: CreatePersonalityScoreDto = this.traitsForm.getRawValue();
+    this.store.dispatch(usersActions.savePersonalityScore({personalityScore}));
+  }
+
+  ngOnDestroy(): void {
+    this.personalityScoreSubscription?.unsubscribe();
+  }
 }

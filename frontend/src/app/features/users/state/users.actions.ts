@@ -6,6 +6,8 @@ import { UserRoles } from '../models/user-roles.enum';
 import { PaginationOptions } from '../../../shared/models/pagination-options.interface';
 import { UpdateUserDto } from '../models/update-user-dto.interface';
 import { RoleChangeDialogData } from '../models/role-change-dialog-data.interface';
+import { PersonalityScore } from '../models/personality-score.interface';
+import { CreatePersonalityScoreDto } from '../models/create-personality-score-dto.interface';
 
 export const loadUserProfile = createAction(
   '[Users] Load User Profile',
@@ -177,4 +179,31 @@ export const acceptUserInProjectSuccess = createAction(
 
 export const acceptUserInProjectFailure = createAction(
   '[Users] Accept User To Project Failure'
+);
+
+export const loadPersonalityScore = createAction(
+  '[Users] Load Personality Score'
+);
+
+export const loadPersonalityScoreSuccess = createAction(
+  '[Users] Load Personality Score Success',
+  props<{ personalityScore: PersonalityScore | null }>()
+);
+
+export const loadPersonalityScoreFailure = createAction(
+  '[Users] Load Personality Score Failure'
+);
+
+export const savePersonalityScore = createAction(
+  '[Users] Save Personality Score',
+  props<{ personalityScore: CreatePersonalityScoreDto }>()
+);
+
+export const savePersonalityScoreSuccess = createAction(
+  '[Users] Save Personality Score Success',
+  props<{ personalityScore: PersonalityScore }>()
+);
+
+export const savePersonalityScoreFailure = createAction(
+  '[Users] Save Personality Score Failure'
 );

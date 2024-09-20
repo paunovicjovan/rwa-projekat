@@ -1,7 +1,5 @@
-import { User } from "./user.interface";
 
-export interface PersonalityScore {
-    id: number;
+export interface CreatePersonalityScoreDto {
     adaptability: number;
     extroversion: number;
     independence: number;
@@ -11,5 +9,4 @@ export interface PersonalityScore {
     preferredTeamSize: number;
     liveCommunication: number;
     innovativeness: number;
-    user: User;
 }

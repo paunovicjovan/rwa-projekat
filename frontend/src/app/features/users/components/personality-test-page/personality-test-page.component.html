@@ -1,88 +1,93 @@
-<div class="container py-3">
-    <form [formGroup]="traitsForm" (ngSubmit)="savePersonalityScore()">
-        <mat-stepper orientation="vertical" [linear]="false" #stepper>
 
-            <mat-step [stepControl]="traitsForm">
-                <ng-template matStepLabel>Osobine ličnosti</ng-template>
+    <div class="container py-3">
+        <mat-spinner diameter="50" class="mx-auto" *ngIf="isLoading$ | async; else loadedData"></mat-spinner>
+        <ng-template #loadedData>
 
-                <p class="lead">Ocenite svoju sposobnost prilagođavanja promenama</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="adaptability">
-                </mat-slider>
-                <hr>
-                <p class="lead">Ocenite koliko ste ekstrovertni</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="extroversion">
-                </mat-slider>
-                <hr>
-                <p class="lead">Ocenite svoju samostalnost</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="independence">
-                </mat-slider>
-                <hr>
-                <div>
-                    <button mat-button type="button" matStepperNext>Sledeće</button>
-                </div>
-            </mat-step>
+            <form [formGroup]="traitsForm" (ngSubmit)="savePersonalityScore()">
+                <mat-stepper orientation="vertical" [linear]="false" #stepper>
 
-            <mat-step [stepControl]="traitsForm">
-                <ng-template matStepLabel>Odgovornost</ng-template>
+                    <mat-step [stepControl]="traitsForm">
+                        <ng-template matStepLabel>Osobine ličnosti</ng-template>
 
-                <p class="lead">Ocenite vašu motivaciju pri radu</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="workMotivation">
-                </mat-slider>
-                <hr>
-                <p class="lead">Ocenite vaš stepen poštovanja rokova pri izradi projekta</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="deadlineCommitment">
-                </mat-slider>
-                <hr>
-                <p class="lead">Ocenite vašu posvećenost detaljima pri izradi projekta</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="detailCommitment">
-                </mat-slider>
-                <hr>
-                <div>
-                    <button mat-button type="button" matStepperPrevious>Prethodno</button>
-                    <button mat-button type="button" matStepperNext>Sledeće</button>
-                </div>
-            </mat-step>
+                        <p class="lead">Ocenite svoju sposobnost prilagođavanja promenama</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="adaptability">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Ocenite koliko volite rad u timu</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="extroversion">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Ocenite svoju samostalnost</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="independence">
+                        </mat-slider>
+                        <hr>
+                        <div>
+                            <button mat-button type="button" matStepperNext>Sledeće</button>
+                        </div>
+                    </mat-step>
 
-            <mat-step [stepControl]="traitsForm">
-                <ng-template matStepLabel>Radni stil i inovativnost</ng-template>
+                    <mat-step [stepControl]="traitsForm">
+                        <ng-template matStepLabel>Odgovornost</ng-template>
 
-                <p class="lead">Odaberite veličinu tima u kojem biste najradije radili</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="preferredTeamSize">
-                </mat-slider>
-                <hr>
-                <p class="lead">Odaberite način komunikacije koji preferirate</p>
-                <p>(manji brojevi za komunikaciju putem chata, veći za komunikaciju putem poziva i uživo)</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="liveCommunication">
-                </mat-slider>
-                <hr>
-                <p class="lead">Ocenite svoju inovativnost</p>
-                <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
-                    <input matSliderThumb formControlName="innovativeness">
-                </mat-slider>
-                <hr>
-                <div>
-                    <button mat-button type="button" matStepperPrevious>Prethodno</button>
-                    <button mat-button type="button" matStepperNext>Sledeće</button>
-                </div>
-            </mat-step>
+                        <p class="lead">Ocenite vašu motivaciju pri radu</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="workMotivation">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Ocenite vaš stepen poštovanja rokova pri izradi projekta</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="deadlineCommitment">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Ocenite vašu posvećenost detaljima pri izradi projekta</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="detailCommitment">
+                        </mat-slider>
+                        <hr>
+                        <div>
+                            <button mat-button type="button" matStepperPrevious>Prethodno</button>
+                            <button mat-button type="button" matStepperNext>Sledeće</button>
+                        </div>
+                    </mat-step>
 
-            <mat-step>
-                <ng-template matStepLabel>Gotovo</ng-template>
-                <div>
-                    <button mat-button type="button" matStepperPrevious>Prethodno</button>
-                    <a class="btn bg-red text-beige me-2" routerLink="..">Odustani</a>
-                    <button class="btn bg-purple text-beige" type="submit">Sačuvaj izbor</button>
-                </div>
-            </mat-step>
+                    <mat-step [stepControl]="traitsForm">
+                        <ng-template matStepLabel>Radni stil i inovativnost</ng-template>
 
-        </mat-stepper>
-    </form>
-</div>
+                        <p class="lead">Odaberite veličinu tima u kojem biste najradije radili</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="preferredTeamSize">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Odaberite način komunikacije koji preferirate</p>
+                        <p>(manji brojevi za komunikaciju putem chata, veći za komunikaciju putem poziva i uživo)</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="liveCommunication">
+                        </mat-slider>
+                        <hr>
+                        <p class="lead">Ocenite svoju inovativnost</p>
+                        <mat-slider min="1" max="10" step="1" class="slider" showTickMarks discrete>
+                            <input matSliderThumb formControlName="innovativeness">
+                        </mat-slider>
+                        <hr>
+                        <div>
+                            <button mat-button type="button" matStepperPrevious>Prethodno</button>
+                            <button mat-button type="button" matStepperNext>Sledeće</button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step>
+                        <ng-template matStepLabel>Gotovo</ng-template>
+                        <div>
+                            <button mat-button type="button" matStepperPrevious>Prethodno</button>
+                            <button class="btn bg-purple text-beige" type="submit">Sačuvaj izbor</button>
+                        </div>
+                    </mat-step>
+
+                </mat-stepper>
+            </form>
+        </ng-template>
+
+    </div>

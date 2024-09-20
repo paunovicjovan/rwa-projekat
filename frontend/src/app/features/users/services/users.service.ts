@@ -8,6 +8,8 @@ import { PaginatedResponse } from '../../../shared/models/paginated-response.int
 import { FilterUsersRequest } from '../models/filter-users-request.interface';
 import { PaginationOptions } from '../../../shared/models/pagination-options.interface';
 import { UpdateUserDto } from '../models/update-user-dto.interface';
+import { PersonalityScore } from '../models/personality-score.interface';
+import { CreatePersonalityScoreDto } from '../models/create-personality-score-dto.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +76,13 @@ export class UsersService {
 
   acceptUserInProject(projectId: number, userId: number): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/users/accept-user-in-project/${projectId}/${userId}`, {});
+  }
+
+  loadPersonalityScore(): Observable<PersonalityScore> {
+    return this.http.get<PersonalityScore>(`${environment.apiUrl}/personality-score`);
+  }
+
+  savePersonalityScore(personalityScore: CreatePersonalityScoreDto): Observable<PersonalityScore> {
+    return this.http.put<PersonalityScore>(`${environment.apiUrl}/personality-score`, personalityScore);
   }
 }

@@ -9,14 +9,14 @@ export class PersonalityScoreController {
     constructor(private personalityScoreService: PersonalityScoreService) {}
 
     @UseGuards(JwtAuthGuard)
-    @Get(':userId')
-    async findOneByUsername(@Param('userId') userId: number) : Promise<PersonalityScoreResponseDto> {
-        return await this.personalityScoreService.findOneByUserId(+userId);
+    @Get('')
+    async findOneByUsername(@Request() req) : Promise<PersonalityScoreResponseDto> {
+        return await this.personalityScoreService.findOneByUserId(+req.user.id);
     }
 
     @UseGuards(JwtAuthGuard)
     @Put('')
     async createOrUpdate(@Body() dto: CreatePersonalityScoreDto, @Request() req) : Promise<PersonalityScoreResponseDto> {
-        return await this.personalityScoreService.createOrUpdate(dto, req.user.id);
+        return await this.personalityScoreService.createOrUpdate(dto, +req.user.id);
     }
 }

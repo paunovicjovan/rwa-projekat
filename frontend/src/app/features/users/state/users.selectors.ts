@@ -31,3 +31,8 @@ export const selectAutocompletedUsers = createSelector(
     usersFeature,
     (state: UsersState) => state.autocompletedUsers
 );
+
+export const selectPersonalityScore = createSelector(
+    usersFeature,
+    (state: UsersState) => state.personalityScore
+);
