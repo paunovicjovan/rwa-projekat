@@ -2,8 +2,22 @@
 
     <div class="mb-2">
         <mat-tab-group (selectedTabChange)="onTabChange($event)">
+            <mat-tab label="Korisnici na projektu"></mat-tab>
             <mat-tab label="Prijavljeni korisnici"></mat-tab>
-            <mat-tab label="Prihvaćeni korisnici"></mat-tab>
+            <mat-tab label="Pozovite saradnike">
+                Pozovite korisnike po vašem izboru
+                <br>
+                komponenta
+                <br>
+                Ili pozovite predložene korisnike da se pridruže na projekat
+                <mat-icon fontIcon="info" class="ms-2 text-green cursor-pointer" 
+                              matTooltip="Ovde se nalaze korisnici koji imaju barem jednu od potrebnih veština za projekat
+                              i najbolje se slažu sa vama po izabranim osobinama. Ukoliko nema predloženih korisnika
+                              proverite da li ste uneli vaše osobine. Idite na svoj profil, zatim na 'Izmeni osobine'
+                              , popunite formu i sačuvajte.">
+                </mat-icon>
+            </mat-tab>
+            <mat-tab label="Pozivnice na čekanju"></mat-tab>
         </mat-tab-group>
     </div>
 

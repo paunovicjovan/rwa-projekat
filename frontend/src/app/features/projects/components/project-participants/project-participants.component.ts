@@ -22,16 +22,16 @@ export class ProjectParticipantsComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.loadAppliedUsersForProject(1, 10);
+    this.loadAcceptedUsersForProject(1, 10);
     this.selectDataFromStore();
   }
 
   onTabChange(event: any) {
     if(event.index === 0) {
-      this.loadAppliedUsersForProject(1, 10);
+      this.loadAcceptedUsersForProject(1, 10);
     }
     else {
-      this.loadAcceptedUsersForProject(1, 10);
+      this.loadAppliedUsersForProject(1, 10);
     }
   }
 
