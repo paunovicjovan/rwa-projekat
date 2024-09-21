@@ -173,4 +173,10 @@ export class UsersController {
     async declineProjectInvitation(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
         return await this.usersService.declineProjectInvitation(+userId, +projectId);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('find-suggested-collaborators/:projectId')
+    async findSuggestedCollaborators(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto[]> {
+        return await this.usersService.findSuggestedCollaborators(+projectId, +req.user.id, 10);
+    }
 }

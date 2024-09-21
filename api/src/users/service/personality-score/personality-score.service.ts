@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PersonalityScoreEntity } from '../../entities/personality-score.entity';
-import { In, Not, Repository } from 'typeorm';
+import { In, Not, Raw, Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
 import { CreatePersonalityScoreDto } from '../../dto/personality-score/create-personality-score.dto';
 import { PersonalityScoreResponseDto } from '../../dto/personality-score/personality-score-response.dto';
@@ -59,7 +59,10 @@ export class PersonalityScoreService {
         });
     }
 
-    async findSimilarUsersIds(requesterId: number, maxCount: number): Promise<number[]> {
+    async findSimilarUsersIds(possibleUsersIds: number[] | undefined, requesterId: number, maxCount: number): Promise<number[]> {
+        if(possibleUsersIds?.length == 0)
+            return [];
+
         const requesterScore = await this.personalityScoreRepository.findOne({
           where: { user: { id: requesterId } }
         });
@@ -67,11 +70,31 @@ export class PersonalityScoreService {
         if(!requesterScore)
             return [];
 
+        let whereCondition;
+
+        if (possibleUsersIds == undefined) {
+            whereCondition = {
+                user: { 
+                    id: Raw((userId) => `${userId} != :requesterId`, { requesterId })
+                }
+            };
+        } else {
+            whereCondition = {
+                user: {
+                    id: Raw((userId) => `${userId} IN (:...possibleUsersIds) AND ${userId} != :requesterId`, {
+                        possibleUsersIds,
+                        requesterId
+                    })
+                }
+            };
+        }
+        
         const possibleScoresIds = (await this.personalityScoreRepository.find({
-                                    where: { user: { id: Not(requesterId) } },
+                                    where: whereCondition,
                                     select: ['id']
                                    }))
                                    .map((score) => score.id);
+        
 
         const numberOfSamples = 1000;
         const chosenScoresIds = this.chooseRandomScoresIds(possibleScoresIds, numberOfSamples);

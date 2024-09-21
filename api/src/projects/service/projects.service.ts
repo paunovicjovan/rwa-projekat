@@ -84,6 +84,13 @@ export class ProjectsService {
     })
   }
 
+  async findOneWithAllRelations(id: number): Promise<ProjectDto> {
+    return await this.projectsRepository.findOne({
+      where: { id },
+      relations: ['createdBy', 'tags', 'acceptedUsers', 'invitedUsers']
+    })
+  }
+
   async updateProjectImage(projectId: number, newImageName: string | null) : Promise<ProjectResponseDto> {
     await this.deleteProjectImageFromFileSystem(projectId);
     return await this.update(projectId, {image: newImageName});

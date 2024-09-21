@@ -67,7 +67,7 @@ export class UsersService {
     }
 
     async findSimilarUsers(requesterId: number, maxCount: number): Promise<UserResponseDto[]> {
-        const similarUsersIds = await this.personalityScoreService.findSimilarUsersIds(requesterId, maxCount);
+        const similarUsersIds = await this.personalityScoreService.findSimilarUsersIds(undefined, requesterId, maxCount);
         return this.usersRepository.find({
             where: {id: In(similarUsersIds) }
         })
@@ -239,6 +239,33 @@ export class UsersService {
     async findAllUsersForRoom(roomId: number): Promise<UserDto[]> {
         return await this.usersRepository.find({
             where: { rooms: { id: roomId }}
+        })
+    }
+
+    async findSuggestedCollaborators(projectId: number, requesterId: number, maxCount: number): Promise<UserResponseDto[]> {
+        const project = await this.projectsService.findOneWithAllRelations(projectId);
+        const projectTagsIds = project.tags.map(tag => tag.id);
+        const projectAcceptedUsersIds = project.acceptedUsers.map(user => user.id);
+        const projectInvitedUsersIds = project.invitedUsers.map(user => user.id);
+        
+        const possibleByTagsUsersObjects = await this.usersRepository
+                                            .createQueryBuilder('user')
+                                            .innerJoin('user.tags', 'tag')
+                                            .where('tag.id IN (:...projectTagsIds)', { projectTagsIds })
+                                            .select('user.id')
+                                            .distinct(true)
+                                            .getRawMany();
+            
+        const possibleUsersIds = possibleByTagsUsersObjects
+                                .map(user => user.user_id)
+                                .filter(userId => !projectAcceptedUsersIds.includes(userId) &&
+                                                  !projectInvitedUsersIds.includes(userId));
+
+        const suggestedUsersIds = await this.personalityScoreService
+                                        .findSimilarUsersIds(possibleUsersIds, requesterId, maxCount);
+
+        return this.usersRepository.find({
+            where: {id: In(suggestedUsersIds) }
         })
     }
 }
