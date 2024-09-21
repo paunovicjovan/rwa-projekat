@@ -1,5 +1,5 @@
 <div class="container py-3">
-    <mat-tab-group>
+    <mat-tab-group (selectedIndexChange)="onTabChange($event)">
         <mat-tab>
             <ng-template mat-tab-label>
                 Predloženi korisnici
@@ -14,7 +14,7 @@
 
                 <mat-card appearance="outlined" class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 py-3 mx-auto">
 
-                    <form [formGroup]="tagsForm" (ngSubmit)="searchByTags()">
+                    <form [formGroup]="tagsForm" (ngSubmit)="searchByTags(1, 10)">
                         <div class="d-flex flex-column">
 
                             <app-tag-viewer [tags]="formTags!.value" (addTag)="addTagToForm($event)"
@@ -31,5 +31,9 @@
         </mat-tab>
     </mat-tab-group>
 
-    <app-users-list></app-users-list>
+    <div class="mt-3">
+        <app-users-list (paginateChange)="onPaginateChange($event)"
+                        [isPaginationVisible]="exploreMode !== 0">
+        </app-users-list>
+    </div>
 </div>

@@ -9,7 +9,6 @@ import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getFileConfigurationByPath } from 'src/helpers/file-upload.helper';
 import { UserRoles } from '../../enums/user-roles.enum';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
 import { SearchUsersFilters } from '../../dto/user/search-users-filters.dto';
 import { UserIsOwnerGuard } from '../../guards/user-is-owner/user-is-owner.guard';
 
@@ -45,7 +44,7 @@ export class UsersController {
     async findManyByTags(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10,
-        @Query('tagsIds') tagsIdsSerialized: string = '',
+        @Query('tagsIdsSerialized') tagsIdsSerialized: string = '',
         @Request() req
     ) {
         limit = Math.min(100, limit);

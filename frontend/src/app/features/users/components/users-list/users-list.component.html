@@ -11,7 +11,7 @@
 
         <mat-paginator 
             class="mt-3"
-            *ngIf="dataFromStore.users.length"
+            *ngIf="isPaginationVisible && dataFromStore.users.length"
             [length]="dataFromStore.paginationMetadata.totalItems" 
             [pageSize]="dataFromStore.paginationMetadata.itemsPerPage" 
             [pageSizeOptions]="[5, 10, 25, 100]" 

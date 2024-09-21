@@ -207,3 +207,30 @@ export const savePersonalityScoreSuccess = createAction(
 export const savePersonalityScoreFailure = createAction(
   '[Users] Save Personality Score Failure'
 );
+
+export const searchSuggestedUsers = createAction(
+  '[Users] Search Suggested Users'
+);
+
+export const searchSuggestedUsersSuccess = createAction(
+  '[Users] Search Suggested Users Success',
+  props<{ users: User[] }>()
+);
+
+export const searchSuggestedUsersFailure = createAction(
+  '[Users] Search Suggested Users Failure'
+);
+
+export const searchUsersByTags = createAction(
+  '[Users] Search Users By Tags',
+  props<{ paginationOptions: PaginationOptions, tagsIds: number[] }>()
+);
+
+export const searchUsersByTagsSuccess = createAction(
+  '[Users] Search Users By Tags Success',
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
+);
+
+export const searchUsersByTagsFailure = createAction(
+  '[Users] Search Users By Tags Failure'
+);

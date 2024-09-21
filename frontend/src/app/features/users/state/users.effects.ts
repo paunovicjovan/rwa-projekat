@@ -352,3 +352,44 @@ export const redirectAfterPersonalityScoreChange$ = createEffect((actions$ = inj
     functional:true,
     dispatch: false
 })
+
+
+export const searchSuggestedUsers$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.searchSuggestedUsers),
+            switchMap(() =>
+                usersService.searchSuggestedUsers().pipe(
+                    map((users: User[]) => {
+                        return usersActions.searchSuggestedUsersSuccess({ users })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.searchSuggestedUsersFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const searchUsersByTags$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.searchUsersByTags),
+            switchMap(({paginationOptions, tagsIds}) =>
+                usersService.searchUsersByTags(paginationOptions, tagsIds).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.searchUsersByTagsSuccess({ paginatedUsers })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.searchUsersByTagsFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)

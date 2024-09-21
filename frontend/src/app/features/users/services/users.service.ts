@@ -85,4 +85,19 @@ export class UsersService {
   savePersonalityScore(personalityScore: CreatePersonalityScoreDto): Observable<PersonalityScore> {
     return this.http.put<PersonalityScore>(`${environment.apiUrl}/personality-score`, personalityScore);
   }
+
+  searchSuggestedUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/users/find-similar-users`);
+  }
+
+  searchUsersByTags(options: PaginationOptions, tagsIds: number[]): Observable<PaginatedResponse<User>> {
+    const tagsIdsSerialized = tagsIds.join(',');
+    const httpParams = new HttpParams({
+      fromObject: {
+        ...options,
+        tagsIdsSerialized
+      }
+    })
+    return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/search-by-tags`, {params: httpParams});
+  }
 }

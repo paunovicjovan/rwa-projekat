@@ -246,4 +246,41 @@ export const usersReducer = createReducer(
             isLoading: false
         }
     }),
+    on(usersActions.searchSuggestedUsers, (state) => {
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.searchSuggestedUsersSuccess, (state, action) => {
+        return usersAdapter.setAll(action.users, {...state,
+            isLoading: false,
+            paginationMetadata: initialPaginationMetadataState
+        }) 
+    }),
+    on(usersActions.searchSuggestedUsersFailure, (state) => {
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
+    on(usersActions.searchUsersByTags, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(usersActions.searchUsersByTagsSuccess, (state, action)=>{
+        return usersAdapter.setAll(action.paginatedUsers.items, {
+            ...state, 
+            isLoading: false, 
+            paginationMetadata: action.paginatedUsers.meta
+        })
+    }),
+    on(usersActions.searchUsersByTagsFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )
