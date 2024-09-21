@@ -60,6 +60,10 @@ export class UserEntity {
     @JoinTable()
     acceptedIn: ProjectEntity[]
 
+    @ManyToMany(() => ProjectEntity, project => project.invitedUsers)
+    @JoinTable()
+    invitedTo: ProjectEntity[]
+
     @OneToMany(() => ConnectedUserEntity, connectedUser => connectedUser.user)
     connections: ConnectedUserEntity[]
 

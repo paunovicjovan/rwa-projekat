@@ -24,6 +24,7 @@ export class UserDto {
     createdProjects: ProjectDto[];
     appliedTo: ProjectDto[];
     acceptedIn: ProjectDto[];
+    invitedTo: ProjectDto[]
     connections: ConnectedUserDto[]
     rooms: RoomDto[]
     createdRooms: RoomDto[]

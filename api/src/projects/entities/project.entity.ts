@@ -48,4 +48,7 @@ export class ProjectEntity {
 
     @ManyToMany(() => UserEntity, user => user.acceptedIn)
     acceptedUsers: UserEntity[]
+
+    @ManyToMany(() => UserEntity, user => user.invitedTo)
+    invitedUsers: UserEntity[]
 }

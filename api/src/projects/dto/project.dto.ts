@@ -17,4 +17,5 @@ export class ProjectDto {
     createdBy: UserDto
     appliedBy: UserDto[]
     acceptedUsers: UserDto[]
+    invitedUsers: UserDto[]
 }

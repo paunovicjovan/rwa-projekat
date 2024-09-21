@@ -150,4 +150,27 @@ export class UsersController {
     async acceptUserInProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
       return await this.usersService.acceptUserInProject(+userId, +projectId);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('invite-user-to-project/:projectId/:userId')
+    async inviteUserToProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+        try {
+            return await this.usersService.inviteUserToProject(+userId, +projectId);
+        }
+        catch(err) {
+            throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('accept-project-invitation/:projectId')
+    async acceptProjectInvitation(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
+        return await this.usersService.acceptProjectInvitation(+req.user.id, +projectId);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('decline-project-invitation/:projectId/:userId')
+    async declineProjectInvitation(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+        return await this.usersService.declineProjectInvitation(+userId, +projectId);
+    }
 }

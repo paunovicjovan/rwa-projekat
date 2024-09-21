@@ -201,6 +201,41 @@ export class UsersService {
         return await this.usersRepository.save(user);
     }
 
+    async inviteUserToProject(userId: number, projectId: number): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['appliedTo', 'acceptedIn', 'invitedTo']
+        });
+        const project = await this.projectsService.findOne(projectId);
+        if(user.acceptedIn.includes(project))
+            throw new Error('Korisnik se već nalazi na projektu. Nemoguće slanje pozivnice.')
+        if(user.appliedTo.includes(project))
+            throw new Error('Korisnik se već prijavio za projekat. Nemoguće slanje pozivnice.')
+        user.invitedTo.push(project);
+        return await this.usersRepository.save(user);
+    }
+
+    async acceptProjectInvitation(userId: number, projectId: number): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['acceptedIn', 'invitedTo']
+        })
+        const project = await this.projectsService.findOne(projectId);
+        user.appliedTo = user.appliedTo.filter((project: ProjectDto) => project.id !== projectId);
+        user.invitedTo = user.invitedTo.filter((project: ProjectDto) => project.id !== projectId);
+        user.acceptedIn.push(project);
+        return await this.usersRepository.save(user);
+    }
+
+    async declineProjectInvitation(userId: number, projectId: number): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne({
+            where: {id: userId},
+            relations: ['invitedTo']
+        })
+        user.invitedTo = user.invitedTo.filter((project: ProjectDto) => project.id !== projectId);
+        return await this.usersRepository.save(user);
+    }
+
     async findAllUsersForRoom(roomId: number): Promise<UserDto[]> {
         return await this.usersRepository.find({
             where: { rooms: { id: roomId }}
