@@ -3,7 +3,6 @@ import { PageEvent } from '@angular/material/paginator';
 import { UsersFilters } from '../../models/users-filters.interface';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../state/app-state.interface';
-import * as usersSelectors from '../../state/users.selectors';
 import * as usersActions from '../../state/users.actions';
 import { FilterUsersRequest } from '../../models/filter-users-request.interface';
 import { combineLatest, Observable } from 'rxjs';
@@ -15,9 +14,7 @@ import { combineLatest, Observable } from 'rxjs';
 })
 export class UsersPageComponent implements OnInit {
 
-  pageEvent!: PageEvent;
   filtersState!: UsersFilters;
-  dataFromStore$!: Observable<any>;
 
   constructor(private store: Store<AppState>) {}
 
@@ -28,15 +25,6 @@ export class UsersPageComponent implements OnInit {
       lastName: ''
     }
 
-    this.selectDataFromStore();
-  }
-
-  selectDataFromStore() {
-    this.dataFromStore$ = combineLatest({
-      isLoading: this.store.select(usersSelectors.selectIsLoading),
-      filteredUsers: this.store.select(usersSelectors.selectUsers),
-      paginationMetadata: this.store.select(usersSelectors.selectUsersPaginationMetadata)
-    })
   }
 
   onPaginateChange(event: PageEvent) {

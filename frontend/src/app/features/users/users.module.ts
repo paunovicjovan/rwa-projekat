@@ -15,6 +15,8 @@ import { TagsModule } from "../tags/tags.module";
 import { UserViewerComponent } from './components/user-viewer/user-viewer.component';
 import { RoleChangeDialogComponent } from './components/role-change-dialog/role-change-dialog.component';
 import { PersonalityTestPageComponent } from './components/personality-test-page/personality-test-page.component';
+import { ExploreUsersPageComponent } from './components/explore-users-page/explore-users-page.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 
 
@@ -27,7 +29,9 @@ import { PersonalityTestPageComponent } from './components/personality-test-page
     UserPreviewComponent,
     UserViewerComponent,
     RoleChangeDialogComponent,
-    PersonalityTestPageComponent
+    PersonalityTestPageComponent,
+    ExploreUsersPageComponent,
+    UsersListComponent
   ],
   imports: [
     SharedModule,

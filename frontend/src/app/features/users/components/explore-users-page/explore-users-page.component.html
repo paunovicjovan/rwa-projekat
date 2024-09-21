@@ -1,0 +1,35 @@
+<div class="container py-3">
+    <mat-tab-group>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                Predloženi korisnici
+                <mat-icon matTooltip="Ovo su predloženi korisnici koji su najsličniji vama po vašim podešavanjima osobina.
+                                      Ako nema predloženih korisnika, najverovatnije niste popunili podatke o sebi. Idite na svoj
+                                      profil, zatim na 'Izmeni osobine', popunite formu i sačuvajte izmene."
+                    class="ms-2 text-green">info</mat-icon>
+            </ng-template>
+        </mat-tab>
+        <mat-tab label="Pretraga po tagovima">
+            <div class="row w-100 p-3">
+
+                <mat-card appearance="outlined" class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 py-3 mx-auto">
+
+                    <form [formGroup]="tagsForm" (ngSubmit)="searchByTags()">
+                        <div class="d-flex flex-column">
+
+                            <app-tag-viewer [tags]="formTags!.value" (addTag)="addTagToForm($event)"
+                                (removeTag)="removeTagFromForm($event)" class="mb-3">
+                            </app-tag-viewer>
+
+                            <button type=" submit" class="btn bg-purple text-beige"
+                                [disabled]="tagsForm.invalid">Pretraži</button>
+                        </div>
+                    </form>
+
+                </mat-card>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+    <app-users-list></app-users-list>
+</div>

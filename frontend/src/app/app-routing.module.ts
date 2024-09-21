@@ -14,6 +14,7 @@ import { ManageTagsPageComponent } from './features/tags/components/manage-tags-
 import { adminOrModeratorGuard } from './core/guards/admin-or-moderator-guard/admin-or-moderator.guard';
 import { ChatsPageComponent } from './features/chat/components/chats-page/chats-page.component';
 import { PersonalityTestPageComponent } from './features/users/components/personality-test-page/personality-test-page.component';
+import { ExploreUsersPageComponent } from './features/users/components/explore-users-page/explore-users-page.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,11 @@ const routes: Routes = [
         component: UserProfilePageComponent
       }
     ],
+    canActivate: [authGuard]
+  },
+  {
+    path: 'explore-users',
+    component: ExploreUsersPageComponent,
     canActivate: [authGuard]
   },
   {
