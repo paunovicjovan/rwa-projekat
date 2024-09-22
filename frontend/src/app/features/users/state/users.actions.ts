@@ -262,3 +262,31 @@ export const loadInvitedUsersForProjectSuccess = createAction(
 export const loadInvitedUsersForProjectFailure = createAction(
   '[Users] Load Invited Users For Project Failure',
 )
+
+export const inviteUserToProject = createAction(
+  '[Users] Invite User To Project',
+  props<{ projectId: number, userId: number }>()
+)
+
+export const inviteUserToProjectSuccess = createAction(
+  '[Users] Invite User To Project Success',
+  props<{ invitedUser: User }>()
+)
+
+export const inviteUserToProjectFailure = createAction(
+  '[Users] Invite User To Project Failure',
+)
+
+export const cancelProjectInvitation = createAction(
+  '[Users] Cancel Project Invitation',
+  props<{ projectId: number, userId: number }>()
+)
+
+export const cancelProjectInvitationSuccess = createAction(
+  '[Users] Invite User To Project Success',
+  props<{ invitedUser: User }>()
+)
+
+export const cancelProjectInvitationFailure = createAction(
+  '[Users] Invite User To Project Failure',
+)

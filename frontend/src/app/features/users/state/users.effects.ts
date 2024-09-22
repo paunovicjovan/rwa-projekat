@@ -433,3 +433,44 @@ export const loadInvitedUsersForProject$ = createEffect(
     },
     {functional: true}
 )
+
+export const inviteUserToProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+        return action$.pipe(
+            ofType(usersActions.inviteUserToProject),
+            concatMap(({projectId, userId}) =>
+                usersService.inviteUserToProject(projectId, userId).pipe(
+                    map((invitedUser: User) => {
+                        snackBarService.openSnackBar('Uspešno poslata pozivnica.');
+                        return usersActions.inviteUserToProjectSuccess({ invitedUser })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.inviteUserToProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const cancelProjectInvitation$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.cancelProjectInvitation),
+            concatMap(({projectId, userId}) =>
+                usersService.cancelProjectInvitation(projectId, userId).pipe(
+                    map((invitedUser: User) => {
+                        return usersActions.cancelProjectInvitationSuccess({ invitedUser })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.cancelProjectInvitationFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)

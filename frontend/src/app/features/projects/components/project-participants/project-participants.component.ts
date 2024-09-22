@@ -127,15 +127,23 @@ export class ProjectParticipantsComponent implements OnInit {
   }
 
   inviteUsersToProject() {
-    console.log('pozivam', this.formUsers.value);
+    //temporarily, refactor to one api call
+    this.formUsers.value.forEach((user: User) => {
+      this.inviteUserToProject(user.id);
+    });
+    // this.formUsers.setValue([]); //makes error as well as
+    // this.usersForm.reset();
   }
 
   inviteUserToProject(userId: number) {
-    console.log('pozivam', userId);
+    this.store.dispatch(usersActions.inviteUserToProject({ projectId: this.projectId, userId }))
   }
 
-  revokeInvitation(userId: number) {
-    console.log('opozivam', userId);
+  cancelInvitation(userId: number) {
+    this.store.dispatch(sharedActions.openConfirmationDialog({
+      message: "Da li sigurno želite da opozovete ovu pozivnicu?",
+      actionToDispatch: usersActions.cancelProjectInvitation({projectId: this.projectId, userId})
+    }));
   }
 
   get formUsers() {

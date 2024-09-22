@@ -227,7 +227,7 @@ export class UsersService {
         return await this.usersRepository.save(user);
     }
 
-    async declineProjectInvitation(userId: number, projectId: number): Promise<UserResponseDto> {
+    async cancelProjectInvitation(userId: number, projectId: number): Promise<UserResponseDto> {
         const user = await this.usersRepository.findOne({
             where: {id: userId},
             relations: ['invitedTo']

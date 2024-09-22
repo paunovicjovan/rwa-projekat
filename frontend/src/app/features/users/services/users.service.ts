@@ -113,4 +113,12 @@ export class UsersService {
     )
     return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/find-invited-users/${projectId}`, {params: httpParams});
   }
+
+  inviteUserToProject(projectId: number, userId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/invite-user-to-project/${projectId}/${userId}`, {});
+  }
+
+  cancelProjectInvitation(projectId: number, userId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/cancel-project-invitation/${projectId}/${userId}`, {});
+  }
 }

@@ -169,9 +169,9 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post('decline-project-invitation/:projectId/:userId')
-    async declineProjectInvitation(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-        return await this.usersService.declineProjectInvitation(+userId, +projectId);
+    @Post('cancel-project-invitation/:projectId/:userId')
+    async cancelProjectInvitation(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
+        return await this.usersService.cancelProjectInvitation(+userId, +projectId);
     }
 
     @UseGuards(JwtAuthGuard)
