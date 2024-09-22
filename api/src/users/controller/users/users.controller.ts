@@ -179,4 +179,15 @@ export class UsersController {
     async findSuggestedCollaborators(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto[]> {
         return await this.usersService.findSuggestedCollaborators(+projectId, +req.user.id, 10);
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('invited-to/:projectId')
+    async findInvitedUsersForProject(
+        @Param('projectId') projectId: number,
+        @Query('page') page: number = 1,
+        @Query('limit') limit: number = 10
+    ) {
+        limit = Math.min(limit, 100);
+        return await this.usersService.findInvitedUsersForProject(projectId, {page, limit});
+    }
 }

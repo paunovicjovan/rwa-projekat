@@ -182,4 +182,14 @@ export class ProjectsService {
     return canApply;
   }
 
+  async findProjectInvitationsForUser(userId: number, options: IPaginationOptions): Promise<Pagination<ProjectResponseDto>> {
+    return await paginate(this.projectsRepository, options, {
+      where: {
+        invitedUsers: { id: userId }
+      },
+      relations: ['createdBy'],
+      order: { updatedAt: 'DESC' }
+    })
+  }
+
 }

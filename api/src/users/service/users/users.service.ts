@@ -268,4 +268,13 @@ export class UsersService {
             where: {id: In(suggestedUsersIds) }
         })
     }
+
+    async findInvitedUsersForProject(projectId: number, options: IPaginationOptions): Promise<Pagination<UserResponseDto>> {
+        const queryBuilder = this.usersRepository
+                            .createQueryBuilder('user')
+                            .innerJoin('user.invitedTo', 'project')
+                            .where('project.id = :projectId', {projectId});
+
+        return paginate(queryBuilder, options);
+    }
 }

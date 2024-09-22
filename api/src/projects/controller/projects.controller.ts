@@ -111,4 +111,14 @@ export class ProjectsController {
     const userId = req.user.id;
     return await this.projectsService.canUserApply(+userId, projectId);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('invited-to/:userId')
+  async findProjectInvitationsForUser(
+    @Param('userId') userId: number,
+    @Query('page') page: number = 1, 
+    @Query('limit') limit: number = 10
+  ) {
+    return await this.projectsService.findProjectInvitationsForUser(userId, { page, limit });
+  }
 }
