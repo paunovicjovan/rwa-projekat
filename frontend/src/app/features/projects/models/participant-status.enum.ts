@@ -1,5 +1,7 @@
 
 export enum ParticipantStatus {
     Applied = 'applied',
-    Accepted = 'accepted'
+    Accepted = 'accepted',
+    Suggested = 'suggested',
+    Invited = 'invited'
 }

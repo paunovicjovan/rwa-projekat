@@ -181,7 +181,7 @@ export class UsersController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get('invited-to/:projectId')
+    @Get('find-invited-users/:projectId')
     async findInvitedUsersForProject(
         @Param('projectId') projectId: number,
         @Query('page') page: number = 1,

@@ -5,17 +5,32 @@
             <mat-tab label="Korisnici na projektu"></mat-tab>
             <mat-tab label="Prijavljeni korisnici"></mat-tab>
             <mat-tab label="Pozovite saradnike">
-                Pozovite korisnike po vašem izboru
-                <br>
-                komponenta
-                <br>
-                Ili pozovite predložene korisnike da se pridruže na projekat
-                <mat-icon fontIcon="info" class="ms-2 text-green cursor-pointer" 
-                              matTooltip="Ovde se nalaze korisnici koji imaju barem jednu od potrebnih veština za projekat
-                              i najbolje se slažu sa vama po izabranim osobinama. Ukoliko nema predloženih korisnika
-                              proverite da li ste uneli vaše osobine. Idite na svoj profil, zatim na 'Izmeni osobine'
-                              , popunite formu i sačuvajte.">
-                </mat-icon>
+                <div class="p-3">
+                    <mat-card appearance="outlined" class="p-3">
+                        <p class="lead">Pozovite korisnike po vašem izboru</p>
+
+                        <form [formGroup]="usersForm" (ngSubmit)="inviteUsersToProject()">
+
+                            <app-user-viewer [users]="formUsers.value" (addUser)="addUserToForm($event)"
+                                (removeUser)="removeUserFromForm($event)">
+                            </app-user-viewer>
+
+                            <button class="btn mt-3 bg-purple text-beige" type="submit"
+                                [disabled]="usersForm.invalid">Pozovi korisnike</button>
+                        </form>
+
+                    </mat-card>
+                    <div class="d-flex align-items-center p-3 flex-wrap">
+
+                        <p class="lead my-0">Ili pozovite predložene korisnike da se pridruže na projekat</p>
+                        <mat-icon fontIcon="info" class="ms-2 my-0 text-green cursor-pointer" matTooltip="Ovde se nalaze korisnici koji imaju barem jednu od potrebnih veština za projekat
+                            i najbolje se slažu sa vama po izabranim osobinama. Ukoliko nema predloženih korisnika
+                            proverite da li ste uneli vaše osobine. Idite na svoj profil, zatim na 'Izmeni osobine'
+                            , popunite formu i sačuvajte.">
+                        </mat-icon>
+
+                    </div>
+                </div>
             </mat-tab>
             <mat-tab label="Pozivnice na čekanju"></mat-tab>
         </mat-tab-group>
@@ -25,27 +40,48 @@
 
     <ng-container *ngIf="!dataFromStore.isLoading">
         <p class="lead text-center mt-4" *ngIf="!dataFromStore.users?.length">Nema korisnika</p>
-        <div class="row d-flex align-items-center justify-content-center w-100" *ngFor="let user of dataFromStore.users">
-            <div class="col-md-10">
-                <app-user-preview class="w-100" [user]="user"></app-user-preview>
-            </div>
-            <div class="col-md-2 d-flex justify-content-end justify-content-md-center">
-                <button class="btn btn-sm bg-green text-beige" *ngIf="selectedParticipantsView === 'applied'">
-                    <mat-icon fontIcon="check" (click)="acceptUserInProject(user.id)"></mat-icon>
-                </button>
-                <button class="btn btn-sm bg-red text-beige ms-2" >
-                    <mat-icon fontIcon="remove" (click)="unenrollUserFromProject(user.id)"></mat-icon>
-                </button>
+        <div class="px-3">
+            <div class="row d-flex align-items-center justify-content-center w-100"
+                *ngFor="let user of dataFromStore.users">
+                <div class="col-md-10">
+                    <app-user-preview class="w-100" [user]="user"></app-user-preview>
+                </div>
+                <div class="col-md-2 d-flex justify-content-end justify-content-md-center">
+                    <button class="btn btn-sm bg-green text-beige" 
+                            *ngIf="selectedParticipantsView === 'applied'" 
+                            (click)="acceptUserInProject(user.id)">
+                        <mat-icon fontIcon="check" ></mat-icon>
+                    </button>
+
+                    <button class="btn btn-sm bg-red text-beige ms-2"
+                            *ngIf="selectedParticipantsView === 'applied' || selectedParticipantsView === 'accepted'" 
+                            (click)="unenrollUserFromProject(user.id)">
+                        <mat-icon fontIcon="remove" ></mat-icon>
+                    </button>
+
+                    <button class="btn btn-sm bg-brown text-beige" 
+                            *ngIf="selectedParticipantsView === 'suggested'" 
+                            (click)="inviteUserToProject(user.id)">
+                        Pošalji pozivnicu
+                    </button>
+
+                    <button class="btn btn-sm bg-red text-beige" 
+                            *ngIf="selectedParticipantsView === 'invited'" 
+                            (click)="revokeInvitation(user.id)">
+                        Opozovi pozivnicu
+                    </button>
+                </div>
             </div>
         </div>
     </ng-container>
 
-    <mat-paginator *ngIf="dataFromStore.users?.length > 0"
+    <mat-paginator 
         class="mt-3"
-        [length]="dataFromStore.paginationMetadata.totalItems" 
+        *ngIf="dataFromStore.users?.length > 0 && selectedParticipantsView !== 'suggested'" 
+        [length]="dataFromStore.paginationMetadata.totalItems"
         [pageSize]="dataFromStore.paginationMetadata.itemsPerPage" 
-        [pageSizeOptions]="[5, 10, 25, 50]" 
-        [showFirstLastButtons]="true"
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        [showFirstLastButtons]="true" 
         (page)="onPaginateChange($event)">
     </mat-paginator>
 

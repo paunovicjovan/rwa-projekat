@@ -113,12 +113,12 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('invited-to/:userId')
+  @Get('find-received-invitations')
   async findProjectInvitationsForUser(
-    @Param('userId') userId: number,
     @Query('page') page: number = 1, 
-    @Query('limit') limit: number = 10
+    @Query('limit') limit: number = 10,
+    @Request() req
   ) {
-    return await this.projectsService.findProjectInvitationsForUser(userId, { page, limit });
+    return await this.projectsService.findProjectInvitationsForUser(+req.user.id, { page, limit });
   }
 }

@@ -100,4 +100,17 @@ export class UsersService {
     })
     return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/search-by-tags`, {params: httpParams});
   }
+
+  loadSuggestedCollaborators(projectId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.apiUrl}/users/find-suggested-collaborators/${projectId}`);
+  }
+
+  loadInvitedUsers(projectId: number, options: PaginationOptions): Observable<PaginatedResponse<User>> {
+    const httpParams = new HttpParams(
+      {
+        fromObject: { ...options }
+      }
+    )
+    return this.http.get<PaginatedResponse<User>>(`${environment.apiUrl}/users/find-invited-users/${projectId}`, {params: httpParams});
+  }
 }

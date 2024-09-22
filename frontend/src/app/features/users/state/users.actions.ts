@@ -234,3 +234,31 @@ export const searchUsersByTagsSuccess = createAction(
 export const searchUsersByTagsFailure = createAction(
   '[Users] Search Users By Tags Failure'
 );
+
+export const loadSuggestedCollaborators = createAction(
+  '[Users] Load Suggested Collaborators',
+  props<{ projectId: number }>()
+)
+
+export const loadSuggestedCollaboratorsSuccess = createAction(
+  '[Users] Load Suggested Collaborators Success',
+  props<{ users: User[] }>()
+)
+
+export const loadSuggestedCollaboratorsFailure = createAction(
+  '[Users] Load Suggested Collaborators Failure',
+)
+
+export const loadInvitedUsersForProject = createAction(
+  '[Users] Load Invited Users For Project',
+  props<{ projectId: number, paginationOptions: PaginationOptions }>()
+)
+
+export const loadInvitedUsersForProjectSuccess = createAction(
+  '[Users] Load Invited Users For Project Success',
+  props<{ paginatedUsers: PaginatedResponse<User> }>()
+)
+
+export const loadInvitedUsersForProjectFailure = createAction(
+  '[Users] Load Invited Users For Project Failure',
+)

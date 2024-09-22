@@ -393,3 +393,43 @@ export const searchUsersByTags$ = createEffect(
     },
     {functional: true}
 )
+
+export const loadSuggestedCollaborators$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.loadSuggestedCollaborators),
+            switchMap(({projectId}) =>
+                usersService.loadSuggestedCollaborators(projectId).pipe(
+                    map((users: User[]) => {
+                        return usersActions.loadSuggestedCollaboratorsSuccess({ users })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadSuggestedCollaboratorsFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const loadInvitedUsersForProject$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.loadInvitedUsersForProject),
+            switchMap(({projectId, paginationOptions}) =>
+                usersService.loadInvitedUsers(projectId, paginationOptions).pipe(
+                    map((paginatedUsers: PaginatedResponse<User>) => {
+                        return usersActions.loadInvitedUsersForProjectSuccess({ paginatedUsers })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadInvitedUsersForProjectFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
