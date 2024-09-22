@@ -127,12 +127,9 @@ export class ProjectParticipantsComponent implements OnInit {
   }
 
   inviteUsersToProject() {
-    //temporarily, refactor to one api call
     this.formUsers.value.forEach((user: User) => {
       this.inviteUserToProject(user.id);
     });
-    // this.formUsers.setValue([]); //makes error as well as
-    // this.usersForm.reset();
   }
 
   inviteUserToProject(userId: number) {

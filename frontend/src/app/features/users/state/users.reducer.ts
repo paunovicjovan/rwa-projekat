@@ -264,67 +264,67 @@ export const usersReducer = createReducer(
             isLoading: false
         }
     }),
-    on(usersActions.searchUsersByTags, (state)=>{
+    on(usersActions.searchUsersByTags, (state) => {
         return {
             ...state,
             isLoading: true
         }
     }),
-    on(usersActions.searchUsersByTagsSuccess, (state, action)=>{
+    on(usersActions.searchUsersByTagsSuccess, (state, action) => {
         return usersAdapter.setAll(action.paginatedUsers.items, {
             ...state, 
             isLoading: false, 
             paginationMetadata: action.paginatedUsers.meta
         })
     }),
-    on(usersActions.searchUsersByTagsFailure, (state)=>{
+    on(usersActions.searchUsersByTagsFailure, (state) => {
         return {
             ...state,
             isLoading: false
         }
     }),
-    on(usersActions.loadSuggestedCollaborators, (state)=>{
+    on(usersActions.loadSuggestedCollaborators, (state) => {
         return {
             ...state,
             isLoading: true
         }
     }),
-    on(usersActions.loadSuggestedCollaboratorsSuccess, (state, action)=>{
+    on(usersActions.loadSuggestedCollaboratorsSuccess, (state, action) => {
         return usersAdapter.setAll(action.users, {
             ...state, 
             isLoading: false, 
             paginationMetadata: initialPaginationMetadataState
         })
     }),
-    on(usersActions.loadSuggestedCollaboratorsFailure, (state)=>{
+    on(usersActions.loadSuggestedCollaboratorsFailure, (state) => {
         return {
             ...state,
             isLoading: false
         }
     }),
-    on(usersActions.loadInvitedUsersForProject, (state)=>{
+    on(usersActions.loadInvitedUsersForProject, (state) => {
         return {
             ...state,
             isLoading: true
         }
     }),
-    on(usersActions.loadInvitedUsersForProjectSuccess, (state, action)=>{
+    on(usersActions.loadInvitedUsersForProjectSuccess, (state, action) => {
         return usersAdapter.setAll(action.paginatedUsers.items, {
             ...state, 
             isLoading: false, 
             paginationMetadata: action.paginatedUsers.meta
         })
     }),
-    on(usersActions.loadInvitedUsersForProjectFailure, (state)=>{
+    on(usersActions.loadInvitedUsersForProjectFailure, (state) => {
         return {
             ...state,
             isLoading: false
         }
     }),
-    on(usersActions.inviteUserToProjectSuccess, (state, action)=>{
+    on(usersActions.inviteUserToProjectSuccess, (state, action) => {
         return usersAdapter.removeOne(action.invitedUser.id, state)
     }),
-    on(usersActions.cancelProjectInvitationSuccess, (state, action)=>{
+    on(usersActions.cancelProjectInvitationSuccess, (state, action) => {
         return usersAdapter.removeOne(action.invitedUser.id, {
             ...state,
             paginationMetadata: {

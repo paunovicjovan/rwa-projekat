@@ -12,6 +12,7 @@ import { RoleChangeDialogComponent } from "../components/role-change-dialog/role
 import { RoleChangeDialogData } from "../models/role-change-dialog-data.interface";
 import { noOperation } from "../../../shared/state/shared.actions";
 import { PersonalityScore } from "../models/personality-score.interface";
+import { HttpErrorResponse } from "@angular/common/http";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -240,7 +241,7 @@ export const loadAcceptedUsersForProject$ = createEffect(
 )
 
 export const applyForProject$ = createEffect(
-    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
         return action$.pipe(
             ofType(usersActions.applyForProject),
             exhaustMap(({ projectId }) =>
@@ -248,7 +249,8 @@ export const applyForProject$ = createEffect(
                     map(() => {
                         return usersActions.applyForProjectSuccess()
                     }),
-                    catchError(() => {
+                    catchError((err: HttpErrorResponse) => {
+                        snackBarService.openSnackBar(err.error.message);
                         return of(usersActions.applyForProjectFailure())
                     }
                     )
@@ -444,7 +446,8 @@ export const inviteUserToProject$ = createEffect(
                         snackBarService.openSnackBar('Uspešno poslata pozivnica.');
                         return usersActions.inviteUserToProjectSuccess({ invitedUser })
                     }),
-                    catchError(() => {
+                    catchError((err: HttpErrorResponse) => {
+                        snackBarService.openSnackBar(err.error.message);
                         return of(usersActions.inviteUserToProjectFailure())
                     }
                     )

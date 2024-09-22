@@ -136,7 +136,12 @@ export class UsersController {
     @Post('enroll-user-in-project/:projectId')
     async enrollUserInProject(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
       const userId = req.user.id;
-      return await this.usersService.enrollUserInProject(+userId, +projectId);
+      try {
+          return await this.usersService.enrollUserInProject(+userId, +projectId);
+      }
+      catch(err) {
+        throw new HttpException(err.message, HttpStatus.BAD_REQUEST);
+      }
     }
   
     @UseGuards(JwtAuthGuard)

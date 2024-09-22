@@ -171,11 +171,16 @@ export class UsersService {
     }
 
     async enrollUserInProject(userId: number, projectId: number): Promise<UserResponseDto> {
-        const project = await this.projectsService.findOne(projectId);
         const user = await this.usersRepository.findOne({
             where: {id: userId},
-            relations: ['appliedTo']
+            relations: ['appliedTo', 'invitedTo']
         });
+        
+        const isInvitedToProject = user.invitedTo.findIndex(project => project.id == projectId) >= 0;
+        if(isInvitedToProject)
+            throw new Error(`Već ste pozvani na ovaj projekat. Nemoguća prijava.`);
+
+        const project = await this.projectsService.findOne(projectId);
         user.appliedTo.push(project);
         return await this.usersRepository.save(user);
     }
@@ -183,10 +188,11 @@ export class UsersService {
     async unenrollUserFromProject(userId: number, projectId: number): Promise<UserResponseDto> {
         const user = await this.usersRepository.findOne({
             where: {id: userId},
-            relations: ['appliedTo', 'acceptedIn']
+            relations: ['appliedTo', 'acceptedIn', 'invitedTo']
         })
         user.appliedTo = user.appliedTo.filter((project: ProjectDto) => project.id !== projectId);
         user.acceptedIn = user.acceptedIn.filter((project: ProjectDto) => project.id !== projectId);
+        user.invitedTo = user.invitedTo.filter((project: ProjectDto) => project.id !== projectId);
         return await this.usersRepository.save(user);
     }
 
@@ -206,11 +212,16 @@ export class UsersService {
             where: {id: userId},
             relations: ['appliedTo', 'acceptedIn', 'invitedTo']
         });
+
+        const isAcceptedInProject = user.acceptedIn.findIndex(project => project.id == projectId) >= 0;
+        if(isAcceptedInProject)
+            throw new Error(`Korisnik ${user.username} se već nalazi na projektu. Nemoguće slanje pozivnice.`);
+
+        const hasAppliedForProject = user.appliedTo.findIndex(project => project.id == projectId) >= 0;
+        if(hasAppliedForProject)
+            throw new Error(`Korisnik ${user.username} se već prijavio za projekat. Nemoguće slanje pozivnice.`);
+
         const project = await this.projectsService.findOne(projectId);
-        if(user.acceptedIn.includes(project))
-            throw new Error('Korisnik se već nalazi na projektu. Nemoguće slanje pozivnice.')
-        if(user.appliedTo.includes(project))
-            throw new Error('Korisnik se već prijavio za projekat. Nemoguće slanje pozivnice.')
         user.invitedTo.push(project);
         return await this.usersRepository.save(user);
     }
