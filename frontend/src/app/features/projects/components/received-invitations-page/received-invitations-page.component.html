@@ -1,0 +1,8 @@
+<div class="container p-3">
+    <p class="lead">Projekti na koje ste pozvani:</p>
+    <app-projects-list [extendedProjectActionsVisible]="true"
+                        (onInvitationAccept)="acceptInvitation()"
+                        (onInvitationDecline)="declineInvitation()"
+                        (onPaginateChange)="onPaginateChange($event)">
+    </app-projects-list>
+</div>

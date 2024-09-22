@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, OnInit, Output } from '@angular/core';
 import { Project } from '../../models/project.interface';
 import { combineLatest, Observable } from 'rxjs';
 import { AppState } from '../../../../state/app-state.interface';
@@ -14,7 +14,10 @@ import { PageEvent } from '@angular/material/paginator';
 export class ProjectsListComponent implements OnInit {
 
   @Input() isSuggestedMode: boolean = false;
+  @Input() extendedProjectActionsVisible: boolean = false;
   @Output() onPaginateChange: EventEmitter<PageEvent> = new EventEmitter();
+  @Output() onInvitationAccept: EventEmitter<number> = new EventEmitter();
+  @Output() onInvitationDecline: EventEmitter<number> = new EventEmitter();
   dataFromStore$!: Observable<any>;
 
   constructor(private store: Store<AppState>) {}
@@ -29,9 +32,5 @@ export class ProjectsListComponent implements OnInit {
       projects: this.store.select(projectsSelectors.selectProjects),
       paginationMetadata: this.store.select(projectsSelectors.selectPaginationMetadata)
     })
-  }
-
-  handlePaginateChange(pageEvent: PageEvent) {
-    this.onPaginateChange.emit(pageEvent);
   }
 }

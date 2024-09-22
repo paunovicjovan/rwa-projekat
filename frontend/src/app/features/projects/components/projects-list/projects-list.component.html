@@ -4,7 +4,12 @@
 
     <ng-container *ngIf="!dataFromStore.isLoading">
         <div *ngIf="dataFromStore.projects.length > 0; else noResults" class="d-flex flex-wrap gap-3 justify-content-center">
-            <app-project-preview *ngFor="let project of dataFromStore.projects" [project]="project"></app-project-preview>
+            <app-project-preview *ngFor="let project of dataFromStore.projects" 
+                                 [project]="project"
+                                 [extendedActionsVisible]="extendedProjectActionsVisible"
+                                 (invitationAccept)="onInvitationAccept.emit($event)"
+                                 (invitationDecline)="onInvitationDecline.emit($event)">
+            </app-project-preview>
         </div>
         <ng-template #noResults>
             <div class="d-flex flex-column align-items-center">
@@ -27,7 +32,7 @@
         [pageSize]="dataFromStore.paginationMetadata.itemsPerPage"
         [pageSizeOptions]="[5, 10, 25, 50]"
         [showFirstLastButtons]="true"
-        (page)="handlePaginateChange($event)">
+        (page)="onPaginateChange.emit($event)">
     </mat-paginator>
 
 </ng-container>

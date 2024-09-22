@@ -19,5 +19,13 @@
     
     <mat-card-actions class="mt-2">
         <a class="btn w-100 bg-green text-beige" [routerLink]="'/projects/' + project.id">Pogledaj detalje</a>
+        <div class="gap-2 row" *ngIf="extendedActionsVisible">
+            <button class="btn bg-red text-beige col-6" (click)="invitationDecline.emit(project.id)">
+                <mat-icon fontIcon="cancel"></mat-icon>
+            </button>
+            <button class="btn bg-green text-beige col-6" (click)="invitationAccept.emit(project.id)">
+                <mat-icon fontIcon="check"></mat-icon>
+            </button>
+        </div>
     </mat-card-actions>
 </mat-card>

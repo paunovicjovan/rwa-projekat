@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Project } from '../../models/project.interface';
 
 @Component({
@@ -8,4 +8,7 @@ import { Project } from '../../models/project.interface';
 })
 export class ProjectPreviewComponent {
   @Input({required: true}) project!: Project;
+  @Input() extendedActionsVisible: boolean = false;
+  @Output() invitationAccept: EventEmitter<number> = new EventEmitter();
+  @Output() invitationDecline: EventEmitter<number> = new EventEmitter();
 }

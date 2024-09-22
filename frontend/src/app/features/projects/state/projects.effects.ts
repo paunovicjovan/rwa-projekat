@@ -310,3 +310,23 @@ export const enhanceProjectData$ = createEffect(
     },
     {functional: true}
 )
+
+export const loadReceivedInvitations$ = createEffect(
+    (action$ = inject(Actions), projectsService = inject(ProjectsService)) => {
+        return action$.pipe(
+            ofType(projectsActions.loadReceivedInvitations),
+            exhaustMap(({ options }) =>
+                projectsService.loadReceivedInvitations(options).pipe(
+                    map((paginatedProjects: PaginatedResponse<Project>) => {
+                        return projectsActions.loadReceivedInvitationsSuccess({ paginatedProjects })
+                    }),
+                    catchError(() => {
+                        return of(projectsActions.loadReceivedInvitationsFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)

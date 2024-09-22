@@ -96,4 +96,13 @@ export class ProjectsService {
     formData.append('file', image);
     return this.http.post<Project>(`${environment.apiUrl}/projects/upload-project-image/${projectId}`, formData)
   }
+
+  loadReceivedInvitations(options: PaginationOptions): Observable<PaginatedResponse<Project>> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        ...options
+      }
+    });
+    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/find-received-invitations`, {params: httpParams});
+  }
 }

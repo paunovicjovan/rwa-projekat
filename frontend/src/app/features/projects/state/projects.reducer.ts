@@ -270,4 +270,23 @@ export const projectsReducer = createReducer(
             generatedImage: null
         }
     }),
+    on(projectsActions.loadReceivedInvitations, (state)=>{
+        return {
+            ...state,
+            isLoading: true
+        }
+    }),
+    on(projectsActions.loadReceivedInvitationsSuccess, (state, action)=>{
+        return projectsAdapter.setAll(action.paginatedProjects.items, {
+            ...state,
+            isLoading: false,
+            paginationMetadata: action.paginatedProjects.meta
+        })
+    }),
+    on(projectsActions.loadReceivedInvitationsFailure, (state)=>{
+        return {
+            ...state,
+            isLoading: false
+        }
+    }),
 )

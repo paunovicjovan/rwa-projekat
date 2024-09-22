@@ -15,6 +15,7 @@ import { adminOrModeratorGuard } from './core/guards/admin-or-moderator-guard/ad
 import { ChatsPageComponent } from './features/chat/components/chats-page/chats-page.component';
 import { PersonalityTestPageComponent } from './features/users/components/personality-test-page/personality-test-page.component';
 import { ExploreUsersPageComponent } from './features/users/components/explore-users-page/explore-users-page.component';
+import { ReceivedInvitationsPageComponent } from './features/projects/components/received-invitations-page/received-invitations-page.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,11 @@ const routes: Routes = [
   {
     path: 'chats',
     component: ChatsPageComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'invitations',
+    component: ReceivedInvitationsPageComponent,
     canActivate: [authGuard]
   }
 ];

@@ -185,3 +185,17 @@ export const enhanceProjectDataFailure = createAction(
 export const clearEnhancedProjectData = createAction(
     '[Projects] Clear Enhanced Project Data'
 );
+
+export const loadReceivedInvitations = createAction(
+    '[Projects] Load Received Invitations',
+    props<{ options: PaginationOptions }>()
+);
+
+export const loadReceivedInvitationsSuccess = createAction(
+    '[Projects] Load Received Invitations Success',
+    props<{ paginatedProjects: PaginatedResponse<Project> }>()
+);
+
+export const loadReceivedInvitationsFailure = createAction(
+    '[Projects] Load Received Invitations Failure'
+);

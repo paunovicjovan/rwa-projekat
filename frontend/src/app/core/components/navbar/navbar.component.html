@@ -21,15 +21,16 @@
 
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                 <span class="me-2 username">{{currentUser.username | uppercase}}</span>
-                            <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + currentUser.profileImage" alt="">
-                            <ng-template #defaultProfileImage>
-                                <img src="assets/default-profile-image.jpg" alt="">
-                            </ng-template>
+                                <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + currentUser.profileImage" alt="">
+                                <ng-template #defaultProfileImage>
+                                    <img src="assets/default-profile-image.jpg" alt="">
+                                </ng-template>
                             </a>
                             
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a [routerLink]="'/users/'+ currentUser.username" class="dropdown-item">MOJ PROFIL</a>
                                 <a [routerLink]="'user-projects/'+currentUser.username" class="dropdown-item">MOJI PROJEKTI</a>
+                                <a routerLink="invitations" class="dropdown-item">PRIMLJENE POZIVNICE</a>
                                 <div class="dropdown-divider"></div>
                                 <button (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</button>
                             </div>
