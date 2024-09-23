@@ -458,6 +458,26 @@ export const inviteUserToProject$ = createEffect(
     {functional: true}
 )
 
+export const acceptProjectInvitation$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
+        return action$.pipe(
+            ofType(usersActions.acceptProjectInvitation),
+            exhaustMap(({projectId}) =>
+                usersService.acceptProjectInvitation(projectId).pipe(
+                    map(() => {
+                        return usersActions.acceptProjectInvitationSuccess({ projectId })
+                    }),
+                    catchError(() => {
+                        return of(usersActions.acceptProjectInvitationFailure())
+                    }
+                    )
+                )
+            )
+        )
+    },
+    {functional: true}
+)
+
 export const cancelProjectInvitation$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
@@ -465,7 +485,7 @@ export const cancelProjectInvitation$ = createEffect(
             concatMap(({projectId, userId}) =>
                 usersService.cancelProjectInvitation(projectId, userId).pipe(
                     map((invitedUser: User) => {
-                        return usersActions.cancelProjectInvitationSuccess({ invitedUser })
+                        return usersActions.cancelProjectInvitationSuccess({ invitedUser, projectId })
                     }),
                     catchError(() => {
                         return of(usersActions.cancelProjectInvitationFailure())

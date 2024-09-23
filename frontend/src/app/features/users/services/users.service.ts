@@ -118,7 +118,12 @@ export class UsersService {
     return this.http.post<User>(`${environment.apiUrl}/users/invite-user-to-project/${projectId}/${userId}`, {});
   }
 
+  acceptProjectInvitation(projectId: number): Observable<User> {
+    return this.http.post<User>(`${environment.apiUrl}/users/accept-project-invitation/${projectId}`, {});
+  }
+
   cancelProjectInvitation(projectId: number, userId: number): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/users/cancel-project-invitation/${projectId}/${userId}`, {});
   }
+
 }

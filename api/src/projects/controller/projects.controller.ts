@@ -113,7 +113,7 @@ export class ProjectsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('find-received-invitations')
+  @Post('find-received-invitations')
   async findProjectInvitationsForUser(
     @Query('page') page: number = 1, 
     @Query('limit') limit: number = 10,

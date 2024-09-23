@@ -103,6 +103,6 @@ export class ProjectsService {
         ...options
       }
     });
-    return this.http.get<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/find-received-invitations`, {params: httpParams});
+    return this.http.post<PaginatedResponse<Project>>(`${environment.apiUrl}/projects/find-received-invitations`, null, {params: httpParams});
   }
 }

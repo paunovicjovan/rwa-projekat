@@ -2,7 +2,9 @@
     <app-avatar-image [imageUrl]="project.image" route="projects/project-image" defaultImageUrl="assets/default-project-image.jpg"></app-avatar-image>
 
     <mat-card-header>
-        <mat-card-title><p class="text-bold">{{project.title}}</p> </mat-card-title>
+        <mat-card-title>
+            <p class="text-bold">{{project.title}}</p>
+        </mat-card-title>
         <mat-card-subtitle>
             <p>Autor: 
                 <a class="text-decoration-none text-bold text-green" [routerLink]="'../users/' + project.createdBy.username">
@@ -18,14 +20,16 @@
     </mat-card-content>
     
     <mat-card-actions class="mt-2">
-        <a class="btn w-100 bg-green text-beige" [routerLink]="'/projects/' + project.id">Pogledaj detalje</a>
-        <div class="gap-2 row" *ngIf="extendedActionsVisible">
-            <button class="btn bg-red text-beige col-6" (click)="invitationDecline.emit(project.id)">
-                <mat-icon fontIcon="cancel"></mat-icon>
-            </button>
-            <button class="btn bg-green text-beige col-6" (click)="invitationAccept.emit(project.id)">
-                <mat-icon fontIcon="check"></mat-icon>
-            </button>
+        <div class="d-flex flex-column w-100 gap-2">
+            <a class="btn bg-purple text-beige" [routerLink]="'/projects/' + project.id">Pogledaj detalje</a>
+            <div class="d-flex gap-2" *ngIf="extendedActionsVisible">
+                <button class="btn bg-red text-beige col-6" (click)="invitationDecline.emit(project.id)">
+                    <mat-icon fontIcon="remove"></mat-icon>
+                </button>
+                <button class="btn bg-green text-beige col-6" (click)="invitationAccept.emit(project.id)">
+                    <mat-icon fontIcon="check"></mat-icon>
+                </button>
+            </div>
         </div>
     </mat-card-actions>
 </mat-card>

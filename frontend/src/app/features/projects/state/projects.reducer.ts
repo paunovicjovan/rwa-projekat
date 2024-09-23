@@ -289,4 +289,24 @@ export const projectsReducer = createReducer(
             isLoading: false
         }
     }),
+    on(usersActions.acceptProjectInvitationSuccess, (state, action) => {
+        return projectsAdapter.removeOne(action.projectId, {
+            ...state,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems - 1,
+                itemCount: state.paginationMetadata.itemCount - 1
+            }
+        })
+    }),
+    on(usersActions.cancelProjectInvitationSuccess, (state, action) => {
+        return projectsAdapter.removeOne(action.projectId, {
+            ...state,
+            paginationMetadata: {
+                ...state.paginationMetadata,
+                totalItems: state.paginationMetadata.totalItems - 1,
+                itemCount: state.paginationMetadata.itemCount - 1
+            }
+        })
+    })
 )

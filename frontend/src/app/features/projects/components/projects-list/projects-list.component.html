@@ -25,8 +25,8 @@
     </ng-container>
 
     <mat-paginator 
-        class="mt-2" 
-        *ngIf="!isSuggestedMode" 
+        class="mt-2 d-flex justify-content-center" 
+        *ngIf="!isSuggestedMode && dataFromStore.projects?.length" 
         [hidden]="dataFromStore.projects?.length === 0" 
         [length]="dataFromStore.paginationMetadata.totalItems"
         [pageSize]="dataFromStore.paginationMetadata.itemsPerPage"

@@ -277,16 +277,30 @@ export const inviteUserToProjectFailure = createAction(
   '[Users] Invite User To Project Failure',
 )
 
+export const acceptProjectInvitation = createAction(
+  '[Users] Accept Project Invitation',
+  props<{ projectId: number }>()
+)
+
+export const acceptProjectInvitationSuccess = createAction(
+  '[Users] Accept Project Invitation Success',
+  props<{ projectId: number }>()
+)
+
+export const acceptProjectInvitationFailure = createAction(
+  '[Users] Accept Project Invitation Failure',
+)
+
 export const cancelProjectInvitation = createAction(
   '[Users] Cancel Project Invitation',
   props<{ projectId: number, userId: number }>()
 )
 
 export const cancelProjectInvitationSuccess = createAction(
-  '[Users] Invite User To Project Success',
-  props<{ invitedUser: User }>()
+  '[Users] Cancel Project Invitation Success',
+  props<{ invitedUser: User, projectId: number }>()
 )
 
 export const cancelProjectInvitationFailure = createAction(
-  '[Users] Invite User To Project Failure',
+  '[Users] Cancel Project Invitation Failure',
 )

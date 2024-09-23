@@ -229,7 +229,7 @@ export class UsersService {
     async acceptProjectInvitation(userId: number, projectId: number): Promise<UserResponseDto> {
         const user = await this.usersRepository.findOne({
             where: {id: userId},
-            relations: ['acceptedIn', 'invitedTo']
+            relations: ['appliedTo', 'acceptedIn', 'invitedTo']
         })
         const project = await this.projectsService.findOne(projectId);
         user.appliedTo = user.appliedTo.filter((project: ProjectDto) => project.id !== projectId);
