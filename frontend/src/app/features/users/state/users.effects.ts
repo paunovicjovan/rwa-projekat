@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UsersService } from "../services/users.service";
 import * as usersActions from '../state/users.actions'
-import { catchError, concatMap, exhaustMap, map, of, switchMap, tap } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
@@ -13,6 +13,8 @@ import { RoleChangeDialogData } from "../models/role-change-dialog-data.interfac
 import { noOperation } from "../../../shared/state/shared.actions";
 import { PersonalityScore } from "../models/personality-score.interface";
 import { HttpErrorResponse } from "@angular/common/http";
+import { Action, Store } from "@ngrx/store";
+import * as authSelectors from '../../auth/state/auth.selectors';
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -492,6 +494,26 @@ export const cancelProjectInvitation$ = createEffect(
                     }
                     )
                 )
+            )
+        )
+    },
+    {functional: true}
+)
+
+export const loadInvitationsCount$ = createEffect(
+    (action$ = inject(Actions), usersService = inject(UsersService), store = inject(Store)) => {
+        return action$.pipe(
+            ofType(usersActions.loadInvitationsCount),
+            switchMap(() => {
+                return usersService.getInvitationsCount().pipe(
+                    map((invitationsCount: number) => {
+                        return usersActions.loadInvitationsCountSuccess({invitationsCount});
+                    }),
+                    catchError(() => {
+                        return of(usersActions.loadInvitationsCountFailure());
+                    })
+                );
+            }
             )
         )
     },

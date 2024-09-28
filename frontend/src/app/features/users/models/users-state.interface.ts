@@ -8,5 +8,6 @@ export interface UsersState extends EntityState<User> {
     isLoading: boolean;
     chosenUserProfile: User | null;
     paginationMetadata: PaginationMetadata;
-    personalityScore: PersonalityScore | null;
+    currentUserPersonalityScore: PersonalityScore | null;
+    invitationsCount: number | null;
 }

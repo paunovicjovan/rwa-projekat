@@ -126,4 +126,7 @@ export class UsersService {
     return this.http.post<User>(`${environment.apiUrl}/users/cancel-project-invitation/${projectId}/${userId}`, {});
   }
 
+  getInvitationsCount(): Observable<number> {
+    return this.http.post<number>(`${environment.apiUrl}/users/get-invitations-count`, {});
+  }
 }

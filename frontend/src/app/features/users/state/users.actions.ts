@@ -304,3 +304,16 @@ export const cancelProjectInvitationSuccess = createAction(
 export const cancelProjectInvitationFailure = createAction(
   '[Users] Cancel Project Invitation Failure',
 )
+
+export const loadInvitationsCount = createAction(
+  '[Users] Load Invitations Count'
+)
+
+export const loadInvitationsCountSuccess = createAction(
+  '[Users] Load Invitations Count Success',
+  props<{ invitationsCount: number }>()
+)
+
+export const loadInvitationsCountFailure = createAction(
+  '[Users] Load Invitations Count Failure',
+)

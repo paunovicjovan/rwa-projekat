@@ -195,4 +195,10 @@ export class UsersController {
         limit = Math.min(limit, 100);
         return await this.usersService.findInvitedUsersForProject(projectId, {page, limit});
     }
+
+    @UseGuards(JwtAuthGuard)
+    @Post('get-invitations-count')
+    async getInvitationsCount(@Request() req): Promise<number> {
+        return await this.usersService.getInvitationsCountForUser(+req.user.id);
+    }
 }

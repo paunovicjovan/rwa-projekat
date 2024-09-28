@@ -288,4 +288,14 @@ export class UsersService {
 
         return paginate(queryBuilder, options);
     }
+
+    async getInvitationsCountForUser(userId: number): Promise<number> {
+        const user = await this.usersRepository.findOne({
+            where: {
+                id: userId
+            },
+            relations: ['invitedTo']
+        });
+        return user.invitedTo.length;
+    }
 }

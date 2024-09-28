@@ -5,6 +5,7 @@ import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { User } from "../models/user.interface";
 import { PaginationMetadata } from "../../../shared/models/pagination-metadata.interface";
 import * as chatsActions from '../../chat/state/chat.actions';
+import * as authActions from '../../auth/state/auth.actions';
 
 const initialPaginationMetadataState : PaginationMetadata = {
     totalItems: 0,
@@ -21,7 +22,8 @@ export const initialState: UsersState = {
     isLoading: false,
     chosenUserProfile: null,
     paginationMetadata: initialPaginationMetadataState,
-    personalityScore: null
+    currentUserPersonalityScore: null,
+    invitationsCount: null
 }
 
 export const usersAdapter: EntityAdapter<User> = createEntityAdapter<User>();
@@ -218,7 +220,7 @@ export const usersReducer = createReducer(
         return {
             ...state,
             isLoading: false,
-            personalityScore: action.personalityScore
+            currentUserPersonalityScore: action.personalityScore
         }
     }),
     on(usersActions.loadPersonalityScoreFailure, (state) => {
@@ -237,7 +239,7 @@ export const usersReducer = createReducer(
         return {
             ...state,
             isLoading: false,
-            personalityScore: action.personalityScore
+            currentUserPersonalityScore: action.personalityScore
         }
     }),
     on(usersActions.savePersonalityScoreFailure, (state) => {
@@ -334,4 +336,27 @@ export const usersReducer = createReducer(
             }
         })
     }),
+    on(usersActions.loadInvitationsCountSuccess, (state, action) => {
+        return {
+            ...state,
+            invitationsCount: action.invitationsCount
+        }
+    }),
+    on(authActions.logout, () => {
+        return {
+            ...initialState
+        }
+    }),
+    on(usersActions.cancelProjectInvitationSuccess, (state) => {
+        return {
+            ...state,
+            invitationsCount: state.invitationsCount ? state.invitationsCount - 1 : null
+        }
+    }),
+    on(usersActions.acceptProjectInvitation, (state) => {
+        return {
+            ...state,
+            invitationsCount: state.invitationsCount ? state.invitationsCount - 1 : null
+        }
+    })
 )

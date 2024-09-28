@@ -1,49 +1,62 @@
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="container d-flex justify-content-between">
-        <a class="navbar-brand" routerLink="/">
-            <img src="assets/full-logo.png" alt="logo" class="logo-img logo" />
-        </a>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<ng-container *ngIf="dataFromStore$ | async as dataFromStore">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container d-flex justify-content-between">
+            <a class="navbar-brand" routerLink="/">
+                <img src="assets/full-logo.png" alt="logo" class="logo-img logo" />
+            </a>
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex align-items-end justify-content-end justify-content-lg-end" id="navbar">
-            <ul class="navbar-nav d-flex align-items-end align-items-lg-center">
-                <ng-container *ngIf="currentLoggedInUser$ | async as currentUser; else notLoggedIn">
-                    <li *ngIf="currentUser.role === 'moderator' || currentUser.role === 'admin'" class="nav-item me-lg-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
-                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="chats">PORUKE</a></li>
-                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
-                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="explore-users">ISTRAŽI</a></li>
-                    <li class="nav-item me-lg-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
+            <div class="collapse navbar-collapse py-4 py-lg-0 d-lg-flex align-items-end justify-content-end justify-content-lg-end"
+                id="navbar">
+                <ul class="navbar-nav d-flex align-items-end align-items-lg-center">
+                    <ng-container *ngIf="dataFromStore.currentUser; else notLoggedIn">
+                        <li *ngIf="dataFromStore.currentUser.role === 'moderator' || dataFromStore.currentUser.role === 'admin'"
+                            class="nav-item me-lg-3"><a class="nav-link" routerLink="manage-tags">TAGOVI</a></li>
+                        <li class="nav-item me-lg-3"><a class="nav-link" routerLink="chats">PORUKE</a></li>
+                        <li class="nav-item me-lg-3"><a class="nav-link" routerLink="projects">PRONAĐI PROJEKTE</a></li>
+                        <li class="nav-item me-lg-3"><a class="nav-link" routerLink="explore-users">ISTRAŽI</a></li>
+                        <li class="nav-item me-lg-3"><a class="nav-link" routerLink="users">KORISNICI</a></li>
 
-                    <li class="nav-item dropdown cursor-pointer">
-                        <div class="d-flex flex-column align-items-end">
+                        <li class="nav-item dropdown cursor-pointer">
+                            <div class="d-flex flex-column align-items-end">
 
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                                <span class="me-2 username">{{currentUser.username | uppercase}}</span>
-                                <img *ngIf="currentUser.profileImage; else defaultProfileImage" [src]="apiUrl + '/users/profile-image/' + currentUser.profileImage" alt="">
-                                <ng-template #defaultProfileImage>
-                                    <img src="assets/default-profile-image.jpg" alt="">
-                                </ng-template>
-                            </a>
-                            
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a [routerLink]="'/users/'+ currentUser.username" class="dropdown-item">MOJ PROFIL</a>
-                                <a [routerLink]="'user-projects/'+currentUser.username" class="dropdown-item">MOJI PROJEKTI</a>
-                                <a routerLink="invitations" class="dropdown-item">PRIMLJENE POZIVNICE</a>
-                                <div class="dropdown-divider"></div>
-                                <button (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</button>
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" (click)="loadInvitationsCount()">
+                                    <span class="me-2 username">{{dataFromStore.currentUser.username | uppercase}}</span>
+                                    <img *ngIf="dataFromStore.currentUser.profileImage; else defaultProfileImage"
+                                        [src]="apiUrl + '/users/profile-image/' + dataFromStore.currentUser.profileImage" alt="">
+                                    <ng-template #defaultProfileImage>
+                                        <img src="assets/default-profile-image.jpg" alt="">
+                                    </ng-template>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a [routerLink]="'/users/'+ dataFromStore.currentUser.username" class="dropdown-item">MOJ
+                                        PROFIL</a>
+                                    <a [routerLink]="'user-projects/'+dataFromStore.currentUser.username" class="dropdown-item">MOJI
+                                        PROJEKTI</a>
+                                    <a routerLink="invitations" class="dropdown-item">
+                                        PRIMLJENE POZIVNICE
+                                        <span *ngIf="dataFromStore.invitationsCount" class="ms-2 px-2 py-1 rounded-5 bg-red text-beige">
+                                            {{dataFromStore.invitationsCount}}
+                                        </span>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <button (click)="logout()" class="dropdown-item cursor-pointer">ODJAVA</button>
+                                </div>
+
                             </div>
-                            
-                        </div>
-                    </li>
-                </ng-container>
+                        </li>
+                    </ng-container>
 
-                <ng-template #notLoggedIn>
-                    <li class="nav-item text-end"><a class="nav-link me-lg-4" routerLink="login">PRIJAVA</a></li>
-                    <li class="nav-item text-end"><a class="nav-link btn px-3 bg-purple text-beige" routerLink="register">REGISTRACIJA</a></li>
-                </ng-template>
-            </ul>
+                    <ng-template #notLoggedIn>
+                        <li class="nav-item text-end"><a class="nav-link me-lg-4" routerLink="login">PRIJAVA</a></li>
+                        <li class="nav-item text-end"><a class="nav-link btn px-3 bg-purple text-beige"
+                                routerLink="register">REGISTRACIJA</a></li>
+                    </ng-template>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</ng-container>

@@ -1,11 +1,13 @@
 <ng-container *ngIf="loggedInUser$ | async as loggedInUser">
 
     <div class="container p-3">
-        <p class="lead">Projekti na koje ste pozvani:</p>
-        <app-projects-list [extendedProjectActionsVisible]="true"
-            (onInvitationAccept)="acceptInvitation($event)"
-            (onInvitationDecline)="declineInvitation($event, loggedInUser.id)"
-            (onPaginateChange)="onPaginateChange($event)">
-        </app-projects-list>
+        <mat-card appearance="outlined" class="p-3">
+            <p class="lead">Projekti na koje ste pozvani:</p>
+            <app-projects-list [extendedProjectActionsVisible]="true"
+                (onInvitationAccept)="acceptInvitation($event)"
+                (onInvitationDecline)="declineInvitation($event, loggedInUser.id)"
+                (onPaginateChange)="onPaginateChange($event)">
+            </app-projects-list>
+        </mat-card>
     </div>
 </ng-container>

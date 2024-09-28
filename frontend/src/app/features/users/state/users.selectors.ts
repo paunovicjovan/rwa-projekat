@@ -34,5 +34,10 @@ export const selectAutocompletedUsers = createSelector(
 
 export const selectPersonalityScore = createSelector(
     usersFeature,
-    (state: UsersState) => state.personalityScore
+    (state: UsersState) => state.currentUserPersonalityScore
+);
+
+export const selectInvitationsCount = createSelector(
+    usersFeature,
+    (state: UsersState) => state.invitationsCount
 );
