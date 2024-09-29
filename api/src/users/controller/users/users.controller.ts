@@ -29,14 +29,20 @@ export class UsersController {
         @Query('lastName') lastName: string = '',
         @Request() req
     ) {
-        limit = Math.min(100, limit);
-        const usersFilters : SearchUsersFilters = {
-            username,
-            firstName,
-            lastName
+        try {
+
+            limit = Math.min(100, limit);
+            const usersFilters : SearchUsersFilters = {
+                username,
+                firstName,
+                lastName
+            }
+            const requesterId = req.user.id;
+            return await this.usersService.findManyByName({ page, limit }, usersFilters, +requesterId);
         }
-        const requesterId = req.user.id;
-        return await this.usersService.findManyByName({ page, limit }, usersFilters, +requesterId);
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -47,27 +53,42 @@ export class UsersController {
         @Query('tagsIdsSerialized') tagsIdsSerialized: string = '',
         @Request() req
     ) {
-        limit = Math.min(100, limit);
+        try {
+            limit = Math.min(100, limit);
 
-        const tagsIds = tagsIdsSerialized
-                        .split(',')
-                        .map(id => Number(id));
+            const tagsIds = tagsIdsSerialized
+                            .split(',')
+                            .map(id => Number(id));
 
-        const requesterId = req.user.id;
+            const requesterId = req.user.id;
 
-        return await this.usersService.findManyByTags({ page, limit }, tagsIds, +requesterId);
+            return await this.usersService.findManyByTags({ page, limit }, tagsIds, +requesterId);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('find-similar-users')
     async findSimilarUsers(@Request() req): Promise<UserResponseDto[]> {
-        return await this.usersService.findSimilarUsers(+req.user.id, 10);
+        try {
+            return await this.usersService.findSimilarUsers(+req.user.id, 10);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Get(':username')
     async findOneByUsername(@Param('username') username: string) : Promise<UserResponseDto> {
-        return await this.usersService.findOneByUsername(username);
+        try {
+            return await this.usersService.findOneByUsername(username);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja podataka o korisniku.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard, UserIsOwnerGuard)
@@ -85,29 +106,49 @@ export class UsersController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('/role/:id')
     async updateRoleOfUser(@Param('id') id: number, @Body() userData: UpdateUserDto) : Promise<UserResponseDto> {
-        return await this.usersService.updateOne(id, userData);
+        try {
+            return await this.usersService.updateOne(id, userData);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom izmene uloge korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Roles(UserRoles.ADMIN)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Delete(':id')
     async deleteOne(@Param('id') id:number) : Promise<any> {
-        return await this.usersService.deleteOne(id);
+        try {
+            return await this.usersService.deleteOne(id);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom brisanja podataka o korisniku.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/profile-images')))
     @Post('upload-profile-image')
     async uploadProfileImage(@UploadedFile() file, @Request() req) : Promise<UserResponseDto> {
-        const user = req.user;
-        return await this.usersService.updateProfileImage(user.id, file.filename);
+        try {
+            const user = req.user;
+            return await this.usersService.updateProfileImage(user.id, file.filename);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom promene profilne slike.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Get('profile-image/:imageName')
     getProfileImage(@Param('imageName') imageName: string, @Res() res) : Promise<Object> {
-        const relativeFilePath = `uploads/profile-images/${imageName}`;
-        const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
-        return res.sendFile(absoluteFilePath);
+        try {
+            const relativeFilePath = `uploads/profile-images/${imageName}`;
+            const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
+            return res.sendFile(absoluteFilePath);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja profilne slike.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -117,8 +158,13 @@ export class UsersController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
-        limit = Math.min(limit, 100);
-        return await this.usersService.findAppliedUsersForProject(projectId, {page, limit});
+        try {
+            limit = Math.min(limit, 100);
+            return await this.usersService.findAppliedUsersForProject(projectId, {page, limit});
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -128,8 +174,13 @@ export class UsersController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
-        limit = Math.min(limit, 100);
-        return await this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
+        try {
+            limit = Math.min(limit, 100);
+            return await this.usersService.findAcceptedUsersForProject(projectId, {page, limit});
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -147,13 +198,23 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Post('unenroll-user/:projectId/:userId')
     async unenrollUserFromProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-      return await this.usersService.unenrollUserFromProject(+userId, +projectId);
+        try {
+            return await this.usersService.unenrollUserFromProject(+userId, +projectId);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom odjave korisnika sa projekta.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('accept-user-in-project/:projectId/:userId')
     async acceptUserInProject(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-      return await this.usersService.acceptUserInProject(+userId, +projectId);
+        try {
+            return await this.usersService.acceptUserInProject(+userId, +projectId);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom prihvatanja korisnika na projekat.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -170,19 +231,34 @@ export class UsersController {
     @UseGuards(JwtAuthGuard)
     @Post('accept-project-invitation/:projectId')
     async acceptProjectInvitation(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto> {
-        return await this.usersService.acceptProjectInvitation(+req.user.id, +projectId);
+        try {
+            return await this.usersService.acceptProjectInvitation(+req.user.id, +projectId);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom prihvatanja pozivnice za projekat.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('cancel-project-invitation/:projectId/:userId')
     async cancelProjectInvitation(@Param('projectId') projectId: number, @Param('userId') userId: number): Promise<UserResponseDto> {
-        return await this.usersService.cancelProjectInvitation(+userId, +projectId);
+        try {
+            return await this.usersService.cancelProjectInvitation(+userId, +projectId);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom odbijanja pozivnice za projekat.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('find-suggested-collaborators/:projectId')
     async findSuggestedCollaborators(@Param('projectId') projectId: number, @Request() req): Promise<UserResponseDto[]> {
-        return await this.usersService.findSuggestedCollaborators(+projectId, +req.user.id, 10);
+        try {
+            return await this.usersService.findSuggestedCollaborators(+projectId, +req.user.id, 10);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja podataka o korisnicima.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -192,13 +268,23 @@ export class UsersController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 10
     ) {
-        limit = Math.min(limit, 100);
-        return await this.usersService.findInvitedUsersForProject(projectId, {page, limit});
+        try {
+            limit = Math.min(limit, 100);
+            return await this.usersService.findInvitedUsersForProject(projectId, {page, limit});
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja pozvanih korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @UseGuards(JwtAuthGuard)
     @Post('get-invitations-count')
     async getInvitationsCount(@Request() req): Promise<number> {
-        return await this.usersService.getInvitationsCountForUser(+req.user.id);
+        try {
+            return await this.usersService.getInvitationsCountForUser(+req.user.id);
+        }
+        catch(err) {
+            throw new HttpException('Došlo je do greške prilikom učitavanja broja pozivnica.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
