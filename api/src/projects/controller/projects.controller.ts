@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request, Query, Res, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, UseInterceptors, UploadedFile, Request, Query, Res, Put, HttpException, HttpStatus } from '@nestjs/common';
 import { ProjectsService } from '../service/projects.service';
 import { CreateProjectDto } from '../dto/create-project.dto';
 import { UpdateProjectDto } from '../dto/update-project.dto';
@@ -22,15 +22,25 @@ export class ProjectsController {
   @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post()
   async create(@UploadedFile() file, @Body() projectData: CreateProjectFormData, @Request() req): Promise<ProjectDto> {
-    const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
-    return await this.projectsService.create(file?.filename, createProjectDto, +req.user.id);
+    try {
+      const createProjectDto: CreateProjectDto = JSON.parse(projectData.projectDtoStringified);
+      return await this.projectsService.create(file?.filename, createProjectDto, +req.user.id);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom kreiranja projekta.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('suggested-projects')
   async findSuggestedProjectsForUser(@Request() req): Promise<ProjectResponseDto[]> {
-    const userId = req.user.id;
-    return await this.projectsService.findSuggestedProjectsForUser(+userId);
+    try {
+      const userId = req.user.id;
+      return await this.projectsService.findSuggestedProjectsForUser(+userId);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom traženja predloženih projekata.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -40,40 +50,70 @@ export class ProjectsController {
     @Query('limit') limit: number = 10,
     @Body() searchFilters: SearchProjectsFilters 
   ) {
-    limit = Math.min(100, limit);
-    return await this.projectsService.findManyPaginated({ page, limit }, searchFilters);
+    try {
+      limit = Math.min(100, limit);
+      return await this.projectsService.findManyPaginated({ page, limit }, searchFilters);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom pretrage projekata.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<ProjectResponseDto> {
-    return await this.projectsService.findOne(+id);
+    try {
+      return await this.projectsService.findOne(+id);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja podataka o projektu.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard, UserIsProjectAuthorGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() updateProjectDto: UpdateProjectDto): Promise<ProjectResponseDto> {
-    return await this.projectsService.update(+id, updateProjectDto);
+    try {
+      return await this.projectsService.update(+id, updateProjectDto);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom ažuriranja podataka o projektu.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard, ProjectAuthorOrAdminGuard)
   @Delete(':id')
   async delete(@Param('id') id: number) {
-    return await this.projectsService.deleteOne(+id);
+    try {
+      return await this.projectsService.deleteOne(+id);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom brisanja projekta.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file', getFileConfigurationByPath('uploads/project-images')))
   @Post('upload-project-image/:id')
   async uploadProjectImage(@UploadedFile() file, @Param('id') id: number) : Promise<ProjectResponseDto> {
+    try {
       return await this.projectsService.updateProjectImage(+id, file.filename);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom ažuriranja slike projekta.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get('project-image/:imageName')
   getProfileImage(@Param('imageName') imageName: string, @Res() res) : Promise<Object> {
+    try {
       const relativeFilePath = `uploads/project-images/${imageName}`;
       const absoluteFilePath = path.join(process.cwd(), relativeFilePath); 
       return res.sendFile(absoluteFilePath);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja slike projekta.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -82,7 +122,12 @@ export class ProjectsController {
                              @Query('page') page: number = 1, 
                              @Query('limit') limit: number = 10
   ) {
-    return await this.projectsService.findAppliedProjectsForUser(username, { page, limit });
+    try {
+      return await this.projectsService.findAppliedProjectsForUser(username, { page, limit });
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja projekata.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -92,7 +137,12 @@ export class ProjectsController {
                               @Query('page') page: number = 1, 
                               @Query('limit') limit: number = 10
   ) {
-    return await this.projectsService.findAcceptedProjectsForUser(username, isCompleted === 'true', { page, limit });
+    try {
+      return await this.projectsService.findAcceptedProjectsForUser(username, isCompleted === 'true', { page, limit });
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja projekata.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -102,14 +152,24 @@ export class ProjectsController {
                               @Query('page') page: number = 1, 
                               @Query('limit') limit: number = 10
   ) {
-    return await this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
+    try {
+      return await this.projectsService.findCreatedProjectsForUser(username, status, { page, limit });
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja projekata.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('can-apply/:projectId')
   async canUserApply(@Param('projectId') projectId: number, @Request() req): Promise<boolean> {
-    const userId = req.user.id;
-    return await this.projectsService.canUserApply(+userId, projectId);
+    try {
+      const userId = req.user.id;
+      return await this.projectsService.canUserApply(+userId, projectId);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -119,6 +179,11 @@ export class ProjectsController {
     @Query('limit') limit: number = 10,
     @Request() req
   ) {
-    return await this.projectsService.findProjectInvitationsForUser(+req.user.id, { page, limit });
+    try {
+      return await this.projectsService.findProjectInvitationsForUser(+req.user.id, { page, limit });
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja primljenih pozivnica.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

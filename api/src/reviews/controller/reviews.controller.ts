@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Put, Query, HttpException, HttpStatus } from '@nestjs/common';
 import { ReviewsService } from '../service/reviews.service';
 import { CreateReviewDto } from '../dto/create-review.dto';
 import { UpdateReviewDto } from '../dto/update-review.dto';
@@ -15,8 +15,13 @@ export class ReviewsController {
   @UseGuards(JwtAuthGuard)
   @Post(':revieweeUsername')
   async create(@Param('revieweeUsername') revieweeUsername: string, @Body() review: CreateReviewDto, @Request() req) : Promise<ReviewResponseDto> {
-    const authorId = req.user.id;
-    return await this.reviewsService.create(review, +authorId, revieweeUsername);
+    try {
+      const authorId = req.user.id;
+      return await this.reviewsService.create(review, +authorId, revieweeUsername);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom kreiranja nove ocene.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
@@ -26,29 +31,49 @@ export class ReviewsController {
       @Query('page') page: number = 1,
       @Query('limit') limit: number = 10,
   ) {
+    try {
       limit = Math.min(100, limit);
       const paginateOptions : IPaginationOptions = {
-          limit,
-          page
+        limit,
+        page
       }
       return await this.reviewsService.findManyPaginated(paginateOptions, revieweeUsername);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja ocena korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id') id: string) : Promise<ReviewResponseDto> {
-    return await this.reviewsService.findOneById(+id);
+    try {
+      return await this.reviewsService.findOneById(+id);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom učitavanja ocene korisnika.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard, UserIsReviewAuthorGuard)
   @Put(':id')
   async update(@Param('id') id: number, @Body() reviewData: UpdateReviewDto) : Promise<ReviewResponseDto> {
-    return await this.reviewsService.update(+id, reviewData);
+    try {
+      return await this.reviewsService.update(+id, reviewData);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom ažuriranja ocene.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @UseGuards(JwtAuthGuard, ReviewAuthorOrAdminGuard)
   @Delete(':id')
   async remove(@Param('id') id: number) : Promise<any> {
-    return await this.reviewsService.deleteOne(+id);
+    try {
+      return await this.reviewsService.deleteOne(+id);
+    }
+    catch(err) {
+      throw new HttpException('Došlo je do greške prilikom brisanja ocene.', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
