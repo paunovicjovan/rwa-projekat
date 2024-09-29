@@ -189,13 +189,5 @@
                 </div>
             </div>
         </mat-card>
-        
-        <!-- Project Participants -->
-        <ng-container *ngIf="dataFromStore.chosenProject.createdBy.id === dataFromStore.loggedInUser.id">
-            <mat-card appearance="outlined" class="mt-3 p-3">
-                <app-project-participants [projectId]="projectId"></app-project-participants>
-            </mat-card>
-        </ng-container>
-
     </ng-template>
 </ng-container>

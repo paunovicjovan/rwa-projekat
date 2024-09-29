@@ -3,36 +3,40 @@
     <div class="mb-2">
         <mat-tab-group (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Korisnici na projektu"></mat-tab>
-            <mat-tab label="Prijavljeni korisnici"></mat-tab>
-            <mat-tab label="Pozovite saradnike">
-                <div class="p-3">
-                    <mat-card appearance="outlined" class="p-3">
-                        <p class="lead">Pozovite korisnike po vašem izboru</p>
 
-                        <form [formGroup]="usersForm" (ngSubmit)="inviteUsersToProject()">
+            <ng-container *ngIf="dataFromStore.loggedInUser.id === dataFromStore.chosenProject?.createdBy.id">
+                <mat-tab label="Prijavljeni korisnici"></mat-tab>
+                <mat-tab label="Pozovite saradnike">
+                    <div class="p-3">
+                        <mat-card appearance="outlined" class="p-3">
+                            <p class="lead">Pozovite korisnike po vašem izboru</p>
 
-                            <app-user-viewer [users]="formUsers.value" (addUser)="addUserToForm($event)"
-                                (removeUser)="removeUserFromForm($event)">
-                            </app-user-viewer>
+                            <form [formGroup]="usersForm" (ngSubmit)="inviteUsersToProject()">
 
-                            <button class="btn mt-3 bg-purple text-beige" type="submit"
-                                [disabled]="usersForm.invalid">Pozovi korisnike</button>
-                        </form>
+                                <app-user-viewer [users]="formUsers.value" (addUser)="addUserToForm($event)"
+                                    (removeUser)="removeUserFromForm($event)">
+                                </app-user-viewer>
 
-                    </mat-card>
-                    <div class="d-flex align-items-center p-3 flex-wrap">
+                                <button class="btn mt-3 bg-purple text-beige" type="submit"
+                                    [disabled]="usersForm.invalid">Pozovi korisnike</button>
+                            </form>
 
-                        <p class="lead my-0">Ili pozovite predložene korisnike da se pridruže na projekat</p>
-                        <mat-icon fontIcon="info" class="ms-2 my-0 text-green cursor-pointer" matTooltip="Ovde se nalaze korisnici koji imaju barem jednu od potrebnih veština za projekat
-                            i najbolje se slažu sa vama po izabranim osobinama. Ukoliko nema predloženih korisnika
-                            proverite da li ste uneli vaše osobine. Idite na svoj profil, zatim na 'Izmeni osobine'
-                            , popunite formu i sačuvajte.">
-                        </mat-icon>
+                        </mat-card>
+                        <div class="d-flex align-items-center p-3 flex-wrap">
 
+                            <p class="lead my-0">Ili pozovite predložene korisnike da se pridruže na projekat</p>
+                            <mat-icon fontIcon="info" class="ms-2 my-0 text-green cursor-pointer" matTooltip="Ovde se nalaze korisnici koji imaju barem jednu od potrebnih veština za projekat
+                                i najbolje se slažu sa vama po izabranim osobinama. Ukoliko nema predloženih korisnika
+                                proverite da li ste uneli vaše osobine. Idite na svoj profil, zatim na 'Izmeni osobine'
+                                , popunite formu i sačuvajte.">
+                            </mat-icon>
+
+                        </div>
                     </div>
-                </div>
-            </mat-tab>
-            <mat-tab label="Pozivnice na čekanju"></mat-tab>
+                </mat-tab>
+                <mat-tab label="Pozivnice na čekanju"></mat-tab>
+            </ng-container>
+
         </mat-tab-group>
     </div>
 
@@ -43,10 +47,13 @@
         <div class="px-3">
             <div class="row d-flex align-items-center justify-content-center w-100"
                 *ngFor="let user of dataFromStore.users">
+                
                 <div class="col-md-10">
                     <app-user-preview class="w-100" [user]="user"></app-user-preview>
                 </div>
-                <div class="col-md-2 d-flex justify-content-end justify-content-md-center">
+
+                <div class="col-md-2 d-flex justify-content-end justify-content-md-center"
+                    *ngIf="dataFromStore.loggedInUser.id === dataFromStore.chosenProject?.createdBy.id">
                     <button class="btn btn-sm bg-green text-beige" 
                             *ngIf="selectedParticipantsView === 'applied'" 
                             (click)="acceptUserInProject(user.id)">
@@ -54,7 +61,7 @@
                     </button>
 
                     <button class="btn btn-sm bg-red text-beige ms-2"
-                            *ngIf="selectedParticipantsView === 'applied' || selectedParticipantsView === 'accepted'" 
+                            *ngIf="selectedParticipantsView === 'applied' || selectedParticipantsView === 'accepted'"
                             (click)="unenrollUserFromProject(user.id)">
                         <mat-icon fontIcon="remove" ></mat-icon>
                     </button>

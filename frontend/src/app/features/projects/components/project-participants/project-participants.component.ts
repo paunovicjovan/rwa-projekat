@@ -9,6 +9,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { ParticipantStatus } from '../../models/participant-status.enum';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../../../users/models/user.interface';
+import * as authSelectors from '../../../auth/state/auth.selectors';
+import * as projectsSelectors from '../../state/projects.selectors';
 
 @Component({
   selector: 'app-project-participants',
@@ -93,7 +95,9 @@ export class ProjectParticipantsComponent implements OnInit {
     this.dataFromStore$ = combineLatest({
       isLoading: this.store.select(usersSelectors.selectIsLoading),
       users: this.store.select(usersSelectors.selectUsers),
-      paginationMetadata: this.store.select(usersSelectors.selectUsersPaginationMetadata)
+      paginationMetadata: this.store.select(usersSelectors.selectUsersPaginationMetadata),
+      loggedInUser: this.store.select(authSelectors.selectCurrentLoggedInUser),
+      chosenProject: this.store.select(projectsSelectors.selectChosenProject)
     })
   }
 
