@@ -11,6 +11,7 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { errorHandlingInterceptor } from './interceptors/error-handling.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule
   ],
   providers: [
-    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor, errorHandlingInterceptor])),
     JwtHelperService,
     {provide:JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],

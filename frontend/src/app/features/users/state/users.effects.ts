@@ -2,7 +2,7 @@ import { inject } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UsersService } from "../services/users.service";
 import * as usersActions from '../state/users.actions'
-import { catchError, concatMap, exhaustMap, map, of, switchMap, tap, withLatestFrom } from "rxjs";
+import { catchError, concatMap, exhaustMap, map, of, switchMap, tap } from "rxjs";
 import { User } from "../models/user.interface";
 import { PaginatedResponse } from "../../../shared/models/paginated-response.interface";
 import { Router } from "@angular/router";
@@ -12,9 +12,7 @@ import { RoleChangeDialogComponent } from "../components/role-change-dialog/role
 import { RoleChangeDialogData } from "../models/role-change-dialog-data.interface";
 import { noOperation } from "../../../shared/state/shared.actions";
 import { PersonalityScore } from "../models/personality-score.interface";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Action, Store } from "@ngrx/store";
-import * as authSelectors from '../../auth/state/auth.selectors';
+import { Store } from "@ngrx/store";
 
 export const loadUserProfile$ = createEffect(
     (action$ = inject(Actions), usersService = inject(UsersService)) => {
@@ -118,7 +116,7 @@ export const changeUserRole$ = createEffect(
 )
 
 export const updateUserData$ = createEffect(
-    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.updateUserData),
             exhaustMap(({ userData }) =>
@@ -126,8 +124,7 @@ export const updateUserData$ = createEffect(
                     map((user: User) => {
                         return usersActions.updateUserDataSuccess({ user })
                     }),
-                    catchError(({error}) => {
-                        snackBarService.openSnackBar(error.message);
+                    catchError(() => {
                         return of(usersActions.updateUserDataFailure())
                     }
                     )
@@ -243,7 +240,7 @@ export const loadAcceptedUsersForProject$ = createEffect(
 )
 
 export const applyForProject$ = createEffect(
-    (action$ = inject(Actions), usersService = inject(UsersService), snackBarService = inject(SnackbarService)) => {
+    (action$ = inject(Actions), usersService = inject(UsersService)) => {
         return action$.pipe(
             ofType(usersActions.applyForProject),
             exhaustMap(({ projectId }) =>
@@ -251,8 +248,7 @@ export const applyForProject$ = createEffect(
                     map(() => {
                         return usersActions.applyForProjectSuccess()
                     }),
-                    catchError((err: HttpErrorResponse) => {
-                        snackBarService.openSnackBar(err.error.message);
+                    catchError(() => {
                         return of(usersActions.applyForProjectFailure())
                     }
                     )
@@ -448,8 +444,7 @@ export const inviteUserToProject$ = createEffect(
                         snackBarService.openSnackBar('Uspešno poslata pozivnica.');
                         return usersActions.inviteUserToProjectSuccess({ invitedUser })
                     }),
-                    catchError((err: HttpErrorResponse) => {
-                        snackBarService.openSnackBar(err.error.message);
+                    catchError(() => {
                         return of(usersActions.inviteUserToProjectFailure())
                     }
                     )
