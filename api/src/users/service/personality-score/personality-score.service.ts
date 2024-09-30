@@ -70,6 +70,22 @@ export class PersonalityScoreService {
         if(!requesterScore)
             return [];
 
+        const possibleScoresCondition = this.prepareScoresCondition(possibleUsersIds, requesterId);
+        
+        const possibleScoresIds = (await this.personalityScoreRepository.find({
+                                    where: possibleScoresCondition,
+                                    select: ['id']
+                                   }))
+                                   .map((score) => score.id);
+        
+        const numberOfSamples = 1000;
+        const chosenScoresIds = this.chooseRandomScoresIds(possibleScoresIds, numberOfSamples);
+        const closestScores = await this.findClosestScores(chosenScoresIds, requesterScore, maxCount);
+        const similarUsersIds = closestScores.map(score => score.user.id);
+        return similarUsersIds;
+    }
+
+    prepareScoresCondition(possibleUsersIds: number[] | undefined, requesterId: number) {
         let whereCondition;
 
         if (possibleUsersIds == undefined) {
@@ -88,19 +104,8 @@ export class PersonalityScoreService {
                 }
             };
         }
-        
-        const possibleScoresIds = (await this.personalityScoreRepository.find({
-                                    where: whereCondition,
-                                    select: ['id']
-                                   }))
-                                   .map((score) => score.id);
-        
 
-        const numberOfSamples = 1000;
-        const chosenScoresIds = this.chooseRandomScoresIds(possibleScoresIds, numberOfSamples);
-        const closestScores = await this.findClosestScores(chosenScoresIds, requesterScore, maxCount);
-        const similarUsersIds = closestScores.map(score => score.user.id);
-        return similarUsersIds;
+        return whereCondition;
     }
 
     chooseRandomScoresIds(allScoresIds: number[], numberOfSamples: number): number[] {
