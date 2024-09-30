@@ -55,11 +55,18 @@ export class PersonalityTestPageComponent implements OnInit {
                                           if(personalityScore)
                                             this.traitsForm.patchValue(personalityScore);
                                           else
-                                            this.traitsForm.reset();
+                                            this.resetFormToDefaultValues();
                                         });
   }
 
+  resetFormToDefaultValues() {
+    Object.keys(this.traitsForm.controls).forEach(key => {
+      this.traitsForm.get(key)?.setValue(1);
+    });
+  }
+
   savePersonalityScore() {
+    console.log(this.traitsForm.getRawValue());
     const personalityScore: CreatePersonalityScoreDto = this.traitsForm.getRawValue();
     this.store.dispatch(usersActions.savePersonalityScore({personalityScore}));
   }

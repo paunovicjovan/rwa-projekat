@@ -113,6 +113,7 @@ export class UsersService {
                         'tags', 
                         'appliedTo', 
                         'acceptedIn',
+                        'invitedTo',
                         'createdRooms'
             ]
         })
@@ -120,10 +121,12 @@ export class UsersService {
         user.tags = [];
         user.appliedTo = [];
         user.acceptedIn = [];
+        user.invitedTo = [];
         user.createdRooms = [];
 
         await this.usersRepository.save(user);
 
+        await this.personalityScoreService.deleteByUserId(id);
         await this.projectsService.deleteManyByAuthorId(id);
         await this.reviewsService.deleteManyByAuthorId(id);
         await this.reviewsService.deleteManyByRevieweeId(id);

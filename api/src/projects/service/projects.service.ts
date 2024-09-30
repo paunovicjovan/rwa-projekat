@@ -106,6 +106,7 @@ export class ProjectsService {
     project.tags = [];
     project.appliedBy = [];
     project.acceptedUsers = [];
+    project.invitedUsers = [];
     await this.projectsRepository.save(project);
     await this.deleteProjectImageFromFileSystem(id);
     return await this.projectsRepository.delete(id);
@@ -123,6 +124,7 @@ export class ProjectsService {
       project.tags = [];
       project.appliedBy = [];
       project.acceptedUsers = [];
+      project.invitedUsers = [];
     })
 
     await this.projectsRepository.save(projectsToDelete);

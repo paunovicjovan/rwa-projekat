@@ -158,5 +158,9 @@ export class PersonalityScoreService {
     
         return Math.sqrt(distanceSquared);
     }
+
+    async deleteByUserId(userId: number): Promise<any> {
+        return await this.personalityScoreRepository.delete({user: {id: userId}});
+    }
     
 }
