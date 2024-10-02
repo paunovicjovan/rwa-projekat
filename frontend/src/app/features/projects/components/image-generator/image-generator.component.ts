@@ -32,7 +32,7 @@ export class ImageGeneratorComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       imageDescription: [null, [Validators.required, 
                                 Validators.minLength(10),
-                                Validators.maxLength(100)]]
+                                Validators.maxLength(300)]]
     });
   }
 
